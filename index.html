@@ -192,6 +192,22 @@ footer strong { color: var(--navy); }
 .login-btn { width: 100%; background: var(--teal); border: none; border-radius: 8px; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; transition: opacity .2s; margin-top: 4px; }
 .login-btn:hover { opacity: .88; }
 .login-footer { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,.2); }
+
+/* FEEDBACK MODE */
+.feedback-toggle-btn { background: transparent; color: var(--teal); border: 1.5px solid var(--teal); font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 999px; cursor: pointer; }
+.feedback-toggle-btn.active { background: var(--coral); border-color: var(--coral); color: #fff; }
+.feedback-banner { display: none; background: var(--teal); color: #fff; text-align: center; padding: 11px 20px; font-size: 14px; position: sticky; top: 56px; z-index: 90; }
+body.feedback-mode .feedback-banner { display: block; }
+.feedback-zone { display: none; margin-top: 20px; padding: 16px 18px; background: rgba(61,122,111,.05); border: 1.5px dashed rgba(61,122,111,.4); border-radius: 10px; }
+body.feedback-mode .feedback-zone { display: block; }
+.fb-label { display: block; font-size: 12px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.feedback-zone textarea { width: 100%; min-height: 80px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); resize: vertical; background: #fff; }
+.copy-feedback-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy); padding: 14px 40px; align-items: center; justify-content: space-between; z-index: 200; }
+body.feedback-mode .copy-feedback-bar { display: flex; }
+.copy-feedback-bar p { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 2px; }
+.copy-feedback-bar strong { color: #fff; font-size: 15px; }
+.copy-fb-btn { background: var(--teal); color: #fff; border: none; font-size: 14px; font-weight: 600; padding: 11px 24px; border-radius: 8px; cursor: pointer; }
+.copy-fb-btn.copied { background: var(--green); }
 </style>
 </head>
 <body>
@@ -217,7 +233,10 @@ footer strong { color: var(--navy); }
     <li><a href="#before-after">Before &amp; After</a></li>
     <li><a href="#ai">Using AI</a></li>
   </ul>
+
+<button class="feedback-toggle-btn" id="feedbackToggle" onclick="toggleFeedbackMode()">Leave Feedback</button>
 </nav>
+<div class="feedback-banner">Feedback mode is on — leave your notes below each section, then click <strong>Copy My Feedback</strong> at the bottom and paste it into a reply to Harshit.</div>
 <div class="hero">
   <div class="hero-label">Brand Voice Guide &middot; v1.0</div>
   <h1>Sound like <em>Wellspring.</em><br/>Every time.</h1>
@@ -597,6 +616,13 @@ My request: [write your request here]</div>
     <p style="margin-top:16px;font-size:14px;opacity:.8">Ask: would Melissa&rsquo;s or Tabitha&rsquo;s bio sound like this? If no, rewrite.</p>
   </div>
 </section>
+<div class="copy-feedback-bar">
+  <div>
+    <strong>Ready to send your feedback?</strong>
+    <p>Click the button to copy all your notes, then paste into an email reply to Harshit.</p>
+  </div>
+  <button class="copy-fb-btn" id="copyFbBtn" onclick="copyFeedback()">Copy My Feedback</button>
+</div>
 <footer>
   <div><strong>Wellspring Therapeutic Partners</strong> &mdash; Brand Voice Guide v1.0</div>
   <div>Prepared by Damco Digital &middot; Confidential</div>
@@ -644,6 +670,75 @@ var observer = new IntersectionObserver(function(entries) {
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
 document.querySelector('.rule-card .rule-header').click();
+</script>
+
+<script>
+var feedbackData = {};
+var feedbackSections = [
+  { id: 'fb-voice',    selector: '.voice-sentence',                    label: 'The Voice Sentence — does this capture Wellspring accurately?' },
+  { id: 'fb-rule1',   selector: '.rules-list .rule-card:nth-child(1)', label: 'Rule 1: Make them feel seen. Never say it.' },
+  { id: 'fb-rule2',   selector: '.rules-list .rule-card:nth-child(2)', label: 'Rule 2: Stay light, even on heavy topics.' },
+  { id: 'fb-rule3',   selector: '.rules-list .rule-card:nth-child(3)', label: 'Rule 3: Describe the feeling, not the diagnosis.' },
+  { id: 'fb-rule4',   selector: '.rules-list .rule-card:nth-child(4)', label: 'Rule 4: Sound like a person, not a practice.' },
+  { id: 'fb-rule5',   selector: '.rules-list .rule-card:nth-child(5)', label: 'Rule 5: Specific beats general, always.' },
+  { id: 'fb-banned',  selector: '.forbidden-grid',                     label: 'The Banned Phrases — anything here you want to keep or change?' },
+  { id: 'fb-ba1',     selector: '.ba-cards .ba-card:nth-child(1)',     label: 'Before & After: Service Page — does the After version feel right?' },
+  { id: 'fb-ba2',     selector: '.ba-cards .ba-card:nth-child(2)',     label: 'Before & After: Social Post' },
+  { id: 'fb-ba3',     selector: '.ba-cards .ba-card:nth-child(3)',     label: 'Before & After: Newsletter Opening' },
+  { id: 'fb-ba4',     selector: '.ba-cards .ba-card:nth-child(4)',     label: 'Before & After: Google Ad' },
+  { id: 'fb-overall', selector: 'footer',                             label: 'Overall — anything missing, or anything you want to add?' }
+];
+
+function toggleFeedbackMode() {
+  var body = document.body;
+  var btn = document.getElementById('feedbackToggle');
+  if (body.classList.contains('feedback-mode')) {
+    feedbackSections.forEach(function(s) {
+      var ta = document.getElementById(s.id + '-ta');
+      if (ta) feedbackData[s.id] = ta.value;
+      var zone = document.getElementById(s.id + '-zone');
+      if (zone) zone.remove();
+    });
+    body.classList.remove('feedback-mode');
+    btn.textContent = 'Leave Feedback';
+    btn.classList.remove('active');
+  } else {
+    feedbackSections.forEach(function(s) {
+      var target = document.querySelector(s.selector);
+      if (!target) return;
+      var zone = document.createElement('div');
+      zone.className = 'feedback-zone';
+      zone.id = s.id + '-zone';
+      zone.innerHTML = '<span class="fb-label">' + s.label + '</span><textarea id="' + s.id + '-ta" placeholder="Your thoughts here..."></textarea>';
+      target.after(zone);
+      if (feedbackData[s.id]) document.getElementById(s.id + '-ta').value = feedbackData[s.id];
+    });
+    body.classList.add('feedback-mode');
+    btn.textContent = 'Exit Feedback';
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function copyFeedback() {
+  feedbackSections.forEach(function(s) {
+    var ta = document.getElementById(s.id + '-ta');
+    if (ta) feedbackData[s.id] = ta.value;
+  });
+  var lines = ['WELLSPRING VOICE GUIDE — FEEDBACK', new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}), ''];
+  var hasContent = false;
+  feedbackSections.forEach(function(s) {
+    var val = (feedbackData[s.id] || '').trim();
+    if (val) { hasContent = true; lines.push(s.label); lines.push(val); lines.push(''); }
+  });
+  if (!hasContent) { alert('No feedback entered yet.'); return; }
+  navigator.clipboard.writeText(lines.join('\n')).then(function() {
+    var btn = document.getElementById('copyFbBtn');
+    btn.textContent = 'Copied — paste it into your email reply';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Copy My Feedback'; btn.classList.remove('copied'); }, 4000);
+  });
+}
 </script>
 </body>
 </html>
