@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Cultural Landing Page — 3 Variations | Wellspring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:#1f2a44; --teal:#3d7a6f; --teal-d:#336961; --teal-light:#eef5f4;
+    --coral:#c8583a; --cream:#f7f5f1; --warm:#f0ebe2; --line:#e3ddd5;
+    --text:#22272f; --muted:#6b7280; --gold:#b88a4a;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); font-size:16px; line-height:1.7; }
+  .serif { font-family:'Cormorant Garamond',serif; }
+
+  /* MOCKUP FLAG */
+  .mockup-flag { background:var(--coral); color:#fff; text-align:center; font-size:13px; padding:8px 20px; }
+  .mockup-flag strong { font-weight:600; }
+
+  /* VERSION SWITCHER */
+  .switcher { position:sticky; top:0; z-index:200; background:var(--navy); display:flex; align-items:center; gap:10px; padding:12px 24px; flex-wrap:wrap; border-bottom:1px solid rgba(255,255,255,.1); }
+  .switcher .sw-label { font-size:12px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,.55); margin-right:6px; }
+  .sw-btn { background:transparent; color:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.25); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; padding:8px 16px; border-radius:999px; cursor:pointer; transition:all .2s; }
+  .sw-btn:hover { color:#fff; border-color:rgba(255,255,255,.5); }
+  .sw-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
+
+  .version { display:none; }
+  .version.active { display:block; }
+
+  /* SHARED CTA BUTTONS */
+  .btn { font-family:'DM Sans',sans-serif; font-weight:600; cursor:pointer; border:none; text-decoration:none; display:inline-block; transition:all .2s; border-radius:8px; }
+  .btn-primary { background:var(--teal); color:#fff; }
+  .btn-primary:hover { background:var(--teal-d); }
+  .btn-ghost { background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,.45); }
+  .btn-ghost:hover { border-color:#fff; }
+  .btn-ghost-dark { background:transparent; color:var(--navy); border:1.5px solid var(--navy); }
+  .btn-ghost-dark:hover { background:var(--navy); color:#fff; }
+
+  /* STICKY MINI CTA (shared) */
+  .cta-bar { position:sticky; top:49px; z-index:150; background:rgba(31,42,68,.97); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:space-between; padding:11px 28px; gap:14px; flex-wrap:wrap; }
+  .cta-bar .brand { font-size:19px; color:#fff; font-weight:500; }
+  .cta-bar .brand span { color:var(--teal); }
+  .cta-bar .cta-group { display:flex; gap:9px; flex-wrap:wrap; }
+  .cta-bar .btn { font-size:13.5px; padding:10px 18px; }
+
+  section { padding:70px 28px; }
+  .inner { max-width:780px; margin:0 auto; }
+  .label { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--teal); margin-bottom:14px; }
+  h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,4vw,40px); font-weight:400; color:var(--navy); line-height:1.2; margin-bottom:18px; }
+
+  /* ============ VERSION A — NARRATIVE & WARMTH ============ */
+  .vA .hero { background:var(--navy); padding:78px 28px 84px; text-align:center; position:relative; overflow:hidden; }
+  .vA .hero::before { content:''; position:absolute; top:-60px; right:-40px; width:300px; height:300px; border-radius:50%; background:rgba(61,122,111,.15); }
+  .vA .hero::after { content:''; position:absolute; bottom:-80px; left:-50px; width:260px; height:260px; border-radius:50%; background:rgba(184,138,74,.1); }
+  .vA .hero-inner { max-width:720px; margin:0 auto; position:relative; z-index:1; }
+  .vA .hero-q { font-family:'Cormorant Garamond',serif; font-size:clamp(30px,5vw,52px); font-style:italic; font-weight:400; color:#fff; line-height:1.25; margin-bottom:22px; }
+  .vA .hero-sub { font-size:17px; color:rgba(255,255,255,.62); max-width:540px; margin:0 auto 34px; }
+  .vA .hero-ctas { display:flex; gap:13px; justify-content:center; flex-wrap:wrap; }
+  .vA .hero .btn { padding:15px 30px; font-size:15px; }
+  .vA .narrative p { font-size:18px; margin-bottom:20px; color:var(--text); }
+  .vA .narrative .em { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:23px; color:var(--navy); line-height:1.5; display:block; margin:30px 0; padding-left:18px; border-left:3px solid var(--teal); }
+  .vA .narrative strong { color:var(--navy); }
+  .vA .therapists { background:var(--teal-light); }
+  .vA .t-card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:30px; margin-top:22px; display:flex; gap:24px; align-items:flex-start; }
+  .vA .t-photo { width:104px; height:104px; border-radius:12px; background:var(--warm); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:11px; text-align:center; border:1px dashed var(--line); padding:8px; }
+  .vA .t-name { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--navy); }
+  .vA .t-role { font-size:12.5px; color:var(--teal); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; }
+  .vA .t-quote { font-family:'Cormorant Garamond',serif; font-size:19px; font-style:italic; color:var(--navy); line-height:1.55; border-left:3px solid var(--teal); padding-left:15px; margin-bottom:14px; }
+  .vA .t-card p { font-size:15px; color:var(--text); margin-bottom:10px; }
+
+  /* ============ VERSION B — CLEAN & STRUCTURED ============ */
+  .vB .hero { background:#fff; padding:70px 28px; }
+  .vB .hero-grid { max-width:980px; margin:0 auto; display:grid; grid-template-columns:1.1fr .9fr; gap:44px; align-items:center; }
+  .vB .hero-text h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4.5vw,48px); font-weight:400; color:var(--navy); line-height:1.18; margin-bottom:18px; }
+  .vB .hero-text p { font-size:17px; color:var(--muted); margin-bottom:28px; }
+  .vB .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; }
+  .vB .hero .btn { padding:14px 26px; font-size:14.5px; }
+  .vB .hero-img { background:var(--warm); border-radius:16px; aspect-ratio:4/5; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:13px; text-align:center; border:1px dashed var(--line); padding:18px; }
+  .vB .pillars { background:var(--navy); }
+  .vB .pillars h2 { color:#fff; text-align:center; margin-bottom:40px; }
+  .vB .pillar-grid { max-width:980px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .vB .pillar { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:28px 24px; text-align:center; }
+  .vB .pillar .p-icon { font-family:'Cormorant Garamond',serif; font-size:34px; color:var(--teal); margin-bottom:10px; }
+  .vB .pillar h3 { font-family:'Cormorant Garamond',serif; font-size:21px; color:#fff; margin-bottom:8px; font-weight:500; }
+  .vB .pillar p { font-size:14.5px; color:rgba(255,255,255,.6); }
+  .vB .name-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:26px; }
+  .vB .name-card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px 22px; transition:all .2s; }
+  .vB .name-card:hover { border-color:var(--teal); transform:translateY(-2px); box-shadow:0 6px 18px rgba(31,42,68,.06); }
+  .vB .name-card h4 { font-size:15px; color:var(--navy); margin-bottom:6px; }
+  .vB .name-card p { font-size:14px; color:var(--muted); }
+  .vB .team { background:var(--warm); text-align:center; }
+  .vB .team-cards { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:30px; max-width:680px; margin-left:auto; margin-right:auto; }
+  .vB .team-card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px; text-align:center; }
+  .vB .team-photo { width:90px; height:90px; border-radius:50%; background:var(--warm); margin:0 auto 14px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:11px; border:1px dashed var(--line); }
+  .vB .team-card .t-name { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--navy); }
+  .vB .team-card .t-role { font-size:12px; color:var(--teal); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+  .vB .team-card p { font-size:14px; color:var(--text); }
+
+  /* ============ VERSION C — INTERACTIVE MATCH ============ */
+  .vC .hero { background:var(--navy); padding:74px 28px 78px; text-align:center; }
+  .vC .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(30px,4.8vw,50px); font-weight:400; color:#fff; line-height:1.2; margin-bottom:20px; max-width:720px; margin-left:auto; margin-right:auto; }
+  .vC .hero p { font-size:17px; color:rgba(255,255,255,.62); max-width:520px; margin:0 auto 30px; }
+  .vC .hero .btn { padding:15px 30px; font-size:15px; }
+  .vC .hero-ctas { display:flex; gap:13px; justify-content:center; flex-wrap:wrap; }
+  /* tabs */
+  .vC .tabs { display:flex; gap:8px; justify-content:center; margin-top:30px; flex-wrap:wrap; }
+  .vC .tab-btn { background:#fff; border:1px solid var(--line); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; padding:11px 22px; border-radius:999px; cursor:pointer; color:var(--muted); transition:all .2s; }
+  .vC .tab-btn.active { background:var(--navy); border-color:var(--navy); color:#fff; }
+  .vC .tab-panel { display:none; margin-top:26px; }
+  .vC .tab-panel.active { display:block; }
+  .vC .t-card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:32px; display:flex; gap:24px; align-items:flex-start; text-align:left; }
+  .vC .t-photo { width:104px; height:104px; border-radius:12px; background:var(--warm); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:11px; text-align:center; border:1px dashed var(--line); padding:8px; }
+  .vC .t-name { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--navy); }
+  .vC .t-role { font-size:12.5px; color:var(--teal); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; }
+  .vC .t-quote { font-family:'Cormorant Garamond',serif; font-size:19px; font-style:italic; color:var(--navy); line-height:1.55; border-left:3px solid var(--teal); padding-left:15px; margin-bottom:14px; }
+  .vC .t-card p { font-size:15px; color:var(--text); margin-bottom:10px; }
+
+  /* ACCORDION (shared A + C) */
+  .acc-item { border:1px solid var(--line); border-radius:12px; background:#fff; margin-bottom:12px; overflow:hidden; }
+  .acc-head { display:flex; align-items:center; gap:14px; padding:18px 22px; cursor:pointer; user-select:none; }
+  .acc-head:hover { background:var(--cream); }
+  .acc-num { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--teal); font-weight:600; }
+  .acc-q { font-size:16px; font-weight:600; color:var(--navy); flex:1; }
+  .acc-chev { color:var(--muted); transition:transform .25s; }
+  .acc-item.open .acc-chev { transform:rotate(180deg); }
+  .acc-body { display:none; padding:0 22px 20px 56px; }
+  .acc-item.open .acc-body { display:block; }
+  .acc-body p { font-size:15px; color:var(--muted); }
+
+  .draft-note { font-size:12.5px; color:var(--coral); background:rgba(200,88,58,.06); border:1px dashed rgba(200,88,58,.3); border-radius:8px; padding:9px 12px; margin-top:8px; }
+
+  /* HOW IT WORKS (shared) */
+  .how-list { list-style:none; margin-top:22px; }
+  .how-list li { display:flex; gap:15px; margin-bottom:16px; align-items:flex-start; }
+  .how-num { width:30px; height:30px; border-radius:50%; background:var(--navy); color:#fff; font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .how-list p { margin:0; font-size:16px; }
+  .how-list strong { color:var(--navy); }
+
+  /* CTA BAND (shared) */
+  .cta-band { background:var(--navy); text-align:center; }
+  .cta-band h2 { color:#fff; }
+  .cta-band p { color:rgba(255,255,255,.6); max-width:480px; margin:0 auto 28px; }
+  .cta-band .hero-ctas { display:flex; gap:13px; justify-content:center; flex-wrap:wrap; }
+  .cta-band .btn { padding:15px 30px; font-size:15px; }
+
+  footer { background:var(--cream); padding:34px 28px; text-align:center; border-top:1px solid var(--line); }
+  footer .flogo { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--navy); }
+  footer .flogo span { color:var(--teal); }
+  footer p { font-size:13px; color:var(--muted); margin:4px 0; }
+
+  @media (max-width:720px) {
+    .vB .hero-grid { grid-template-columns:1fr; }
+    .vB .pillar-grid { grid-template-columns:1fr; }
+    .vB .name-grid, .vB .team-cards { grid-template-columns:1fr; }
+    .vA .t-card, .vC .t-card { flex-direction:column; align-items:center; text-align:center; }
+    .vA .t-quote, .vC .t-quote { text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-flag"><strong>INTERNAL MOCKUP — not live.</strong> Three layout variations of the ad-only cultural landing page. Same content, different UX. Therapist stories are draft placeholders for Olivia and Raya to approve.</div>
+
+<div class="switcher">
+  <span class="sw-label">Compare layouts</span>
+  <button class="sw-btn active" onclick="showVersion('A',this)">A — Narrative &amp; Warmth</button>
+  <button class="sw-btn" onclick="showVersion('B',this)">B — Clean &amp; Structured</button>
+  <button class="sw-btn" onclick="showVersion('C',this)">C — Interactive Match</button>
+</div>
+
+<!-- ===================== VERSION A ===================== -->
+<div id="version-A" class="version vA active">
+  <div class="cta-bar">
+    <div class="brand serif">Wellspring <span>Therapeutic Partners</span></div>
+    <div class="cta-group">
+      <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+      <a href="#" class="btn btn-primary">Book an Appointment</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="label" style="color:var(--teal)">Therapy that honors where you come from</div>
+      <p class="hero-q">"Are you trying to stay true to yourself and meet everyone's expectations at the same time?"</p>
+      <p class="hero-sub">Culturally grounded therapy for the South Asian, Sikh, Chaldean, and Muslim communities across Michigan. In person in Troy and Clinton Township, or online anywhere in the state.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+        <a href="#" class="btn btn-primary">Book an Appointment</a>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="inner narrative">
+      <div class="label">The part that usually goes unsaid</div>
+      <p>In a lot of our families, therapy was not something you talked about. You handled things quietly, you kept the peace, and you did not air anything outside the house.</p>
+      <span class="em">So even thinking about counseling comes with a layer most people never have to deal with.</span>
+      <p>The worry about what your family would say. The guilt of putting yourself first. The quiet question of whether a therapist would even <strong>get the weight you are carrying</strong> without a long explanation first.</p>
+      <p>That last part is exactly what this is meant to fix. You should not have to teach someone your whole background before the real conversation can start.</p>
+    </div>
+  </section>
+
+  <section class="therapists">
+    <div class="inner">
+      <div class="label">The people you would be working with</div>
+      <h2>Therapists who come from these communities, not just trained about them</h2>
+      <div class="t-card">
+        <div class="t-photo">[ Olivia's photo ]</div>
+        <div>
+          <div class="t-name serif">Olivia</div>
+          <div class="t-role">Chaldean &amp; Muslim community</div>
+          <p class="t-quote">"A lot of what my clients describe, I do not need them to explain. I already know the shape of it."</p>
+          <p>Olivia works with people navigating family expectation, faith, identity, and the pull between honoring where you come from and building a life that is your own. She speaks Chaldean and meets clients in person and online.</p>
+          <div class="draft-note">DRAFT placeholder — Olivia to review, edit in her own words, and approve before this goes live.</div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-photo">[ Raya's photo ]</div>
+        <div>
+          <div class="t-name serif">Raya</div>
+          <div class="t-role">Sikh &amp; South Asian community</div>
+          <p class="t-quote">"So much of what we carry gets passed down without anyone ever naming it. My work is helping people see which expectations are actually theirs."</p>
+          <p>Raya works with South Asian clients on intergenerational pressure, identity, boundaries with family, and the quiet anxiety of feeling caught between two worlds. She offers Saturday availability, in person and online.</p>
+          <div class="draft-note">DRAFT placeholder — Raya to review, edit in her own words, and approve before this goes live.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <div class="label">The questions people usually have first</div>
+      <h2>It is okay to have reservations</h2>
+      <div class="acc-item open"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-num">01</span><span class="acc-q">What if my family would not support this?</span><span class="acc-chev">⌄</span></div><div class="acc-body"><p>You do not need anyone's permission to take care of yourself, and you do not have to tell anyone you are here. A lot of our clients start quietly, on their own terms. We work at whatever pace feels safe.</p></div></div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-num">02</span><span class="acc-q">Will therapy ask me to let go of my faith or culture?</span><span class="acc-chev">⌄</span></div><div class="acc-body"><p>No. Healing does not mean rejecting your heritage. Our therapists work within your values, not against them.</p></div></div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-num">03</span><span class="acc-q">Do I have to have something seriously wrong to come?</span><span class="acc-chev">⌄</span></div><div class="acc-body"><p>Not at all. Most people come while they are building something, not just when something breaks. A first conversation is just a conversation.</p></div></div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="inner">
+      <h2>You do not have to keep carrying it quietly</h2>
+      <p>A first conversation is just that. No commitment, no pressure, just a space to see if this is right for you.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+        <a href="#" class="btn btn-primary">Book an Appointment</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== VERSION B ===================== -->
+<div id="version-B" class="version vB">
+  <div class="cta-bar">
+    <div class="brand serif">Wellspring <span>Therapeutic Partners</span></div>
+    <div class="cta-group">
+      <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+      <a href="#" class="btn btn-primary">Book an Appointment</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="label">Culturally grounded therapy · Michigan</div>
+        <h1>A therapist who already understands the part you would have to explain everywhere else</h1>
+        <p>For the South Asian, Sikh, Chaldean, and Muslim communities. In person in Troy and Clinton Township, or online across Michigan.</p>
+        <div class="hero-ctas">
+          <a href="#" class="btn btn-primary" style="padding:14px 26px">Book an Appointment</a>
+          <a href="#" class="btn btn-ghost-dark" style="padding:14px 26px">Schedule a Consultation</a>
+        </div>
+      </div>
+      <div class="hero-img">[ Warm photo of Olivia &amp; Raya, or a candid in-office image ]</div>
+    </div>
+  </div>
+
+  <section class="pillars">
+    <div class="inner" style="max-width:980px">
+      <h2>Why this is different</h2>
+      <div class="pillar-grid">
+        <div class="pillar"><div class="p-icon">“</div><h3>Understood, not explained</h3><p>You will not have to teach your therapist your background before the real work begins.</p></div>
+        <div class="pillar"><div class="p-icon">✦</div><h3>Your faith stays</h3><p>Support that works within your values and culture, never asking you to leave them at the door.</p></div>
+        <div class="pillar"><div class="p-icon">↻</div><h3>Seen within 48 hours</h3><p>Most clients are matched and seen within two days. In person or online, on your schedule.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <div class="label">You should not have to spell it out</div>
+      <h2>The things that come with the territory</h2>
+      <div class="name-grid">
+        <div class="name-card"><h4>The expectations</h4><p>The respectable career, the right timeline, the marriage question at every gathering.</p></div>
+        <div class="name-card"><h4>Being the strong one</h4><p>The one who holds it together for everyone and is not really allowed to fall apart.</p></div>
+        <div class="name-card"><h4>Faith and identity</h4><p>Wanting support that respects your beliefs and your background, not one that ignores them.</p></div>
+        <div class="name-card"><h4>What people will think</h4><p>The quiet fear that needing help reflects on you, or on your family.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team">
+    <div class="inner">
+      <div class="label">A team that comes from these communities</div>
+      <h2>Meet Olivia and Raya</h2>
+      <div class="team-cards">
+        <div class="team-card">
+          <div class="team-photo">[ Olivia ]</div>
+          <div class="t-name serif">Olivia</div>
+          <div class="t-role">Chaldean &amp; Muslim</div>
+          <p>Family expectation, faith, identity, and building a life that is your own. Speaks Chaldean.</p>
+          <div class="draft-note">Draft — Olivia to approve.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo">[ Raya ]</div>
+          <div class="t-name serif">Raya</div>
+          <div class="t-role">Sikh &amp; South Asian</div>
+          <p>Intergenerational pressure, identity, family boundaries. Saturday availability.</p>
+          <div class="draft-note">Draft — Raya to approve.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="inner">
+      <h2>A first conversation is just a conversation</h2>
+      <p>No commitment, no pressure. Just a space to see if this is right for you.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+        <a href="#" class="btn btn-primary">Book an Appointment</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== VERSION C ===================== -->
+<div id="version-C" class="version vC">
+  <div class="cta-bar">
+    <div class="brand serif">Wellspring <span>Therapeutic Partners</span></div>
+    <div class="cta-group">
+      <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+      <a href="#" class="btn btn-primary">Book an Appointment</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="label" style="color:var(--teal)">Therapy that honors where you come from</div>
+    <h1>You should not have to explain your whole background before the real conversation starts</h1>
+    <p>Culturally grounded therapy for the South Asian, Sikh, Chaldean, and Muslim communities across Michigan.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+      <a href="#" class="btn btn-primary">Book an Appointment</a>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('olivia',this)">Olivia · Chaldean &amp; Muslim</button>
+      <button class="tab-btn" onclick="showTab('raya',this)">Raya · Sikh &amp; South Asian</button>
+    </div>
+    <div class="inner" style="max-width:720px">
+      <div id="tab-olivia" class="tab-panel active">
+        <div class="t-card">
+          <div class="t-photo">[ Olivia's photo ]</div>
+          <div>
+            <div class="t-name serif">Olivia</div>
+            <div class="t-role">Chaldean &amp; Muslim community</div>
+            <p class="t-quote">"A lot of what my clients describe, I do not need them to explain. I already know the shape of it."</p>
+            <p>Olivia works with people navigating family expectation, faith, identity, and the pull between honoring where you come from and building your own life. She speaks Chaldean.</p>
+            <div class="draft-note">DRAFT — Olivia to review and approve.</div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-raya" class="tab-panel">
+        <div class="t-card">
+          <div class="t-photo">[ Raya's photo ]</div>
+          <div>
+            <div class="t-name serif">Raya</div>
+            <div class="t-role">Sikh &amp; South Asian community</div>
+            <p class="t-quote">"So much of what we carry gets passed down without anyone naming it. My work is helping people see which expectations are actually theirs."</p>
+            <p>Raya works with South Asian clients on intergenerational pressure, identity, and boundaries with family. Saturday availability, in person and online.</p>
+            <div class="draft-note">DRAFT — Raya to review and approve.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="inner">
+      <div class="label">What it actually looks like</div>
+      <h2>Simple to start, and on your terms</h2>
+      <ul class="how-list">
+        <li><span class="how-num">1</span><p><strong>Reach out.</strong> Schedule a quick consultation or book an appointment directly, whichever feels easier.</p></li>
+        <li><span class="how-num">2</span><p><strong>Get matched.</strong> We pair you with Olivia or Raya based on what you are looking for.</p></li>
+        <li><span class="how-num">3</span><p><strong>Start when you are ready.</strong> In person in Troy or Clinton Township, or online across Michigan. Most people are seen within 48 hours.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section style="background:var(--teal-light)">
+    <div class="inner">
+      <div class="label">The questions people usually have first</div>
+      <h2>It is okay to have reservations</h2>
+      <div class="acc-item open"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-num">01</span><span class="acc-q">What if my family would not support this?</span><span class="acc-chev">⌄</span></div><div class="acc-body"><p>You do not need anyone's permission, and you do not have to tell anyone you are here. We work at whatever pace feels safe.</p></div></div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-num">02</span><span class="acc-q">Will therapy ask me to let go of my faith or culture?</span><span class="acc-chev">⌄</span></div><div class="acc-body"><p>No. Healing does not mean rejecting your heritage. We work within your values, not against them.</p></div></div>
+      <div class="acc-item"><div class="acc-head" onclick="toggleAcc(this)"><span class="acc-num">03</span><span class="acc-q">Do I need something seriously wrong to come?</span><span class="acc-chev">⌄</span></div><div class="acc-body"><p>Not at all. Most people come while they are building something, not just when something breaks.</p></div></div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="inner">
+      <h2>You do not have to keep carrying it quietly</h2>
+      <p>A first conversation is just that. No commitment, no pressure.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-ghost">Schedule a Consultation</a>
+        <a href="#" class="btn btn-primary">Book an Appointment</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p class="flogo">Wellspring <span>Therapeutic Partners</span></p>
+  <p>Troy &amp; Clinton Township, Michigan · Online across Michigan</p>
+  <p>Commercial insurance accepted · Most clients seen within 48 hours</p>
+</footer>
+
+<script>
+function showVersion(v, btn) {
+  document.querySelectorAll('.version').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('version-' + v).classList.add('active');
+  document.querySelectorAll('.switcher .sw-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function toggleAcc(head) {
+  head.parentElement.classList.toggle('open');
+}
+function showTab(id, btn) {
+  var parent = btn.closest('.hero');
+  parent.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('tab-' + id).classList.add('active');
+  parent.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
