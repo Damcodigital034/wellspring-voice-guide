@@ -41,6 +41,9 @@
   .btn-ghost:hover { border-color:#fff; }
   .btn-ghost-dark { background:transparent; color:var(--navy); border:1.5px solid var(--navy); }
   .btn-ghost-dark:hover { background:var(--navy); color:#fff; }
+  /* Call button: secondary (coral outline) on desktop, primary (solid, first) on mobile */
+  .btn-call { background:transparent; color:var(--coral); border:1.5px solid var(--coral); order:2; }
+  .btn-call:hover { background:var(--coral); color:#fff; }
 
   /* STICKY MINI CTA (shared) */
   .cta-bar { position:sticky; top:49px; z-index:150; background:rgba(31,42,68,.97); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:space-between; padding:11px 28px; gap:14px; flex-wrap:wrap; }
@@ -160,6 +163,7 @@
     .vB .name-grid, .vB .team-cards { grid-template-columns:1fr; }
     .vA .t-card, .vC .t-card { flex-direction:column; align-items:center; text-align:center; }
     .vA .t-quote, .vC .t-quote { text-align:left; }
+    .btn-call { background:var(--coral); color:#fff; border-color:var(--coral); order:-1; }
   }
 </style>
 </head>
@@ -447,6 +451,18 @@ function showTab(id, btn) {
   parent.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
 }
+// Inject a Call Now button into every CTA group. Coral outline (secondary) on desktop,
+// solid coral and first in order on mobile, per the phone-converts-better data.
+document.addEventListener('DOMContentLoaded', function() {
+  var tel = 'tel:+15868464835';
+  document.querySelectorAll('.cta-group, .hero-ctas').forEach(function(group) {
+    var call = document.createElement('a');
+    call.className = 'btn btn-call';
+    call.href = tel;
+    call.textContent = 'Call Now';
+    group.insertBefore(call, group.firstChild);
+  });
+});
 </script>
 
 </body>
