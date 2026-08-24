@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wellspring Consultation Intelligence Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Consultation funnel analysis for Wellspring Therapeutic Partners. Confidential.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+  :root {
+    --cream:#F7F3EE; --cream-dark:#EDE7DC; --charcoal:#1C1C1A; --warm-mid:#6B6460;
+    --teal:#3D7A72; --teal-light:#5A9E95; --teal-pale:#EAF3F2;
+    --rust:#C25B3F; --amber:#C9882A; --violet:#5C4E9E; --green:#3D8A60;
+    --pink:#C4527A; --red:#C44040; --border:#DDD5C8;
+    --serif:'Cormorant Garamond','Cormorant',Georgia,'Times New Roman',serif;
+    --sans:'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--cream);font-family:var(--sans);color:var(--charcoal);font-size:13px;line-height:1.6;}
+  .page{max-width:1100px;margin:0 auto;padding:24px 28px 40px;}
+
+  .header{display:flex;align-items:flex-start;justify-content:space-between;
+    padding-bottom:16px;border-bottom:1.5px solid var(--border);margin-bottom:14px;flex-wrap:wrap;gap:12px;}
+  .logo-name{font-family:var(--serif);font-size:34px;font-weight:600;letter-spacing:-.5px;line-height:1;}
+  .logo-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--rust);margin-top:4px;font-weight:500;}
+  .header-meta{text-align:right;}
+  .report-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--warm-mid);font-weight:500;}
+  .report-week{font-family:var(--serif);font-size:20px;font-weight:600;margin-top:2px;}
+  .report-prepared{font-size:11px;color:var(--warm-mid);margin-top:4px;}
+  .section-label{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:var(--teal);font-weight:600;margin-bottom:8px;}
+
+  /* ---- nav ---- */
+  nav{display:flex;gap:4px;flex-wrap:wrap;position:sticky;top:0;z-index:20;
+    background:var(--cream);padding:10px 0 12px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+  nav button{font-family:var(--sans);font-size:11.5px;font-weight:500;letter-spacing:.02em;
+    background:#fff;border:1px solid var(--border);color:var(--warm-mid);
+    padding:7px 13px;border-radius:20px;cursor:pointer;transition:all .15s ease;}
+  nav button:hover{border-color:var(--teal-light);color:var(--teal);}
+  nav button[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#fff;}
+  nav button:focus-visible{outline:2px solid var(--rust);outline-offset:2px;}
+
+  .tabpanel{display:none;} .tabpanel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.tabpanel.active{animation:none;}}
+
+  /* ---- kpi ---- */
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px;}
+  .kpi-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;position:relative;}
+  .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:10px 10px 0 0;}
+  .kpi-card.amber::before{background:var(--amber);} .kpi-card.violet::before{background:var(--violet);}
+  .kpi-card.green::before{background:var(--green);} .kpi-card.rust::before{background:var(--rust);}
+  .kpi-card.pink::before{background:var(--pink);}
+  .kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--warm-mid);font-weight:500;margin-bottom:4px;}
+  .kpi-value{font-family:var(--serif);font-size:40px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;}
+  .kpi-sub{font-size:11.5px;color:var(--warm-mid);margin-top:4px;}
+  .kpi-badge{display:inline-block;font-size:9.5px;padding:2px 7px;border-radius:20px;margin-top:5px;font-weight:500;}
+  .badge-up{background:#E8F5EC;color:#2E7D4F;} .badge-down{background:#FDECEA;color:#C44040;}
+  .badge-neutral{background:#F0EDE8;color:#6B6460;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .two-col.wide-left{grid-template-columns:1.45fr 1fr;}
+  @media (max-width:820px){.two-col,.two-col.wide-left{grid-template-columns:1fr;}}
+
+  .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .panel-title{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .panel-title .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;}
+  .panel-title .dot.amber{background:var(--amber);} .panel-title .dot.rust{background:var(--rust);}
+  .panel-title .dot.violet{background:var(--violet);} .panel-title .dot.green{background:var(--green);}
+  .panel-note{font-size:11.5px;color:var(--warm-mid);font-style:italic;margin-top:10px;line-height:1.5;}
+
+  /* ---- tables ---- */
+  .tbl-wrap{overflow-x:auto;}
+  .campaign-table{width:100%;border-collapse:collapse;min-width:380px;}
+  .campaign-table th{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--warm-mid);
+    font-weight:600;padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap;}
+  .campaign-table th:first-child{text-align:left;}
+  .campaign-table td{padding:10px;font-size:12.5px;text-align:right;border-bottom:1px solid #F0EDE8;
+    font-variant-numeric:tabular-nums;}
+  .campaign-table td:first-child{text-align:left;font-variant-numeric:normal;}
+  .campaign-table tr:last-child td{border-bottom:none;}
+  .campaign-table tr.total td{background:var(--teal-pale);font-weight:600;border-bottom:none;}
+  .campaign-table tr.mark td{background:#FDF6EC;}
+  .metric-highlight{display:inline-block;background:var(--teal-pale);color:var(--teal);font-weight:600;
+    border-radius:4px;padding:1px 6px;font-size:12px;font-variant-numeric:tabular-nums;}
+  .metric-highlight.warn{background:#FDF1EE;color:var(--rust);}
+
+  /* ---- hbars ---- */
+  .hbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .hbar-label{font-size:11.5px;min-width:172px;flex-shrink:0;line-height:1.3;}
+  .hbar-track{flex:1;background:var(--cream-dark);border-radius:4px;height:26px;min-width:60px;}
+  .hbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;
+    padding-right:8px;min-width:44px;background:var(--teal);transition:filter .15s ease;}
+  .hbar-row:hover .hbar-fill{filter:brightness(1.12);}
+  .hbar-fill.amber{background:var(--amber);} .hbar-fill.rust{background:var(--rust);}
+  .hbar-fill.violet{background:var(--violet);} .hbar-fill.green{background:var(--green);}
+  .hbar-fill.pink{background:var(--pink);} .hbar-fill.light{background:var(--teal-light);}
+  .hbar-pct{font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
+  .hbar-count{font-size:12px;color:var(--warm-mid);min-width:34px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;}
+  @media (max-width:640px){.hbar-label{min-width:110px;font-size:11px;}}
+
+  /* ---- column chart ---- */
+  .chart{display:flex;align-items:flex-end;gap:6px;height:190px;padding:6px 0 0;}
+  .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;
+    position:relative;cursor:default;}
+  .col .stack{width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:100%;}
+  .col .seg{width:100%;transition:filter .15s ease;}
+  .col:hover .seg{filter:brightness(1.14);}
+  .col .cap{font-size:10px;color:var(--warm-mid);margin-top:6px;font-weight:500;}
+  .col .tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+    background:var(--charcoal);color:#fff;font-size:10.5px;line-height:1.45;padding:7px 10px;border-radius:6px;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .14s ease;z-index:12;text-align:left;}
+  .col .tip b{font-weight:600;}
+  .col:hover .tip,.col:focus-within .tip{opacity:1;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--warm-mid);}
+  .legend span{display:flex;align-items:center;gap:5px;}
+  .legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+  /* ---- toggle ---- */
+  .toggle{display:flex;gap:0;border:1px solid var(--border);border-radius:20px;overflow:hidden;background:#fff;}
+  .toggle button{font-family:var(--sans);font-size:10.5px;font-weight:500;padding:5px 12px;border:none;
+    background:#fff;color:var(--warm-mid);cursor:pointer;transition:all .15s ease;}
+  .toggle button[aria-pressed="true"]{background:var(--teal);color:#fff;}
+  .toggle button:focus-visible{outline:2px solid var(--rust);outline-offset:-2px;}
+  .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .panel-head .panel-title{margin-bottom:0;}
+
+  /* ---- funnel ---- */
+  .funnel{display:flex;flex-direction:column;gap:7px;}
+  .fstep{display:flex;align-items:center;gap:11px;}
+  .fbar{height:34px;border-radius:6px;display:flex;align-items:center;padding:0 12px;color:#fff;
+    font-size:12px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .fmeta{font-size:11.5px;color:var(--warm-mid);line-height:1.35;}
+  .fmeta b{color:var(--charcoal);font-weight:600;}
+
+  /* ---- donut ---- */
+  .donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .donut{position:relative;flex-shrink:0;}
+  .donut .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .donut .mid .v{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1;}
+  .donut .mid .l{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--warm-mid);margin-top:2px;}
+
+  /* ---- insights ---- */
+  .insight-card{border-left:3px solid var(--teal);padding:9px 13px;margin-bottom:7px;background:var(--teal-pale);
+    border-radius:0 8px 8px 0;font-size:12px;line-height:1.55;}
+  .insight-card.amber{border-left-color:var(--amber);background:#FDF6EC;}
+  .insight-card.rust{border-left-color:var(--rust);background:#FDF1EE;}
+  .insight-card.violet{border-left-color:var(--violet);background:#F4F2FA;}
+  .insight-card.green{border-left-color:var(--green);background:#EEF7F1;}
+  .insight-card strong{font-weight:600;}
+  .ilabel{font-size:8.5px;text-transform:uppercase;letter-spacing:1.6px;font-weight:700;display:block;margin-bottom:3px;}
+  .insight-card .ilabel{color:var(--teal);}
+  .insight-card.amber .ilabel{color:var(--amber);} .insight-card.rust .ilabel{color:var(--rust);}
+  .insight-card.violet .ilabel{color:var(--violet);} .insight-card.green .ilabel{color:var(--green);}
+
+  .next-step{display:flex;gap:11px;align-items:flex-start;margin-bottom:11px;}
+  .step-num{width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font-size:11px;
+    font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .step-num.amber{background:var(--amber);} .step-num.rust{background:var(--rust);}
+  .step-text{font-size:12.5px;line-height:1.6;}
+  .step-text strong{font-weight:600;}
+  .owner{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:1px;font-weight:600;
+    background:var(--cream-dark);color:var(--warm-mid);padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:1px;}
+
+  .flag-card{display:flex;gap:12px;align-items:flex-start;background:#FDF1EE;border:1px solid #F0D5CC;
+    border-left:3px solid var(--rust);border-radius:0 10px 10px 0;padding:13px 16px;margin-bottom:14px;}
+  .flag-icon{font-size:17px;line-height:1.2;flex-shrink:0;}
+  .flag-text{font-size:12.5px;line-height:1.6;}
+  .flag-text strong{font-weight:600;}
+  .divider{height:1px;background:var(--border);margin:18px 0;}
+  .footer{display:flex;justify-content:space-between;padding-top:16px;margin-top:24px;
+    border-top:1.5px solid var(--border);font-size:11px;color:var(--warm-mid);flex-wrap:wrap;gap:8px;}
+</style>
+
+<div class="page">
+
+<div class="header">
+  <div class="logo-block">
+    <div class="logo-name">Wellspring</div>
+    <div class="logo-sub">Therapeutic Partners</div>
+  </div>
+  <div class="header-meta">
+    <div class="report-label">Consultation Intelligence</div>
+    <div class="report-week">1,491 enquiries analysed</div>
+    <div class="report-prepared">2023 &middot; Dec 2025 to Aug 2026 &middot; Prepared by Damco Digital</div>
+  </div>
+</div>
+
+<nav role="tablist" aria-label="Dashboard sections">
+  <button role="tab" aria-selected="true"  data-tab="overview">Overview</button>
+  <button role="tab" aria-selected="false" data-tab="season">Seasonality</button>
+  <button role="tab" aria-selected="false" data-tab="services">Services</button>
+  <button role="tab" aria-selected="false" data-tab="funnel">Funnel</button>
+  <button role="tab" aria-selected="false" data-tab="audience">Audience</button>
+  <button role="tab" aria-selected="false" data-tab="sources">Sources</button>
+  <button role="tab" aria-selected="false" data-tab="issues">Presenting issues</button>
+  <button role="tab" aria-selected="false" data-tab="actions">Learnings &amp; next steps</button>
+</nav>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="tabpanel active" id="overview" role="tabpanel">
+  <div class="section-label">The six numbers that matter</div>
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-label">Scheduling rate, Jul</div>
+      <div class="kpi-value">63%</div>
+      <div class="kpi-sub">against 35% in January</div>
+      <div class="kpi-badge badge-up">+28 pts this year</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Same-day contact</div>
+      <div class="kpi-value">71%</div>
+      <div class="kpi-sub">vs 46% if it slips a day</div>
+      <div class="kpi-badge badge-up">biggest single lever</div>
+    </div>
+    <div class="kpi-card violet">
+      <div class="kpi-label">Children &amp; teens</div>
+      <div class="kpi-value">29%</div>
+      <div class="kpi-sub">of all enquiries, 85% convert</div>
+      <div class="kpi-badge badge-up">best segment</div>
+    </div>
+    <div class="kpi-card rust">
+      <div class="kpi-label">Lost to insurance</div>
+      <div class="kpi-value">33%</div>
+      <div class="kpi-sub">of unscheduled enquiries</div>
+      <div class="kpi-badge badge-down">3 years running</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Incomplete enquiries</div>
+      <div class="kpi-value">1%</div>
+      <div class="kpi-sub">schedule. Effectively zero.</div>
+      <div class="kpi-badge badge-down">hard gate</div>
+    </div>
+    <div class="kpi-card pink">
+      <div class="kpi-label">Booked but no intake</div>
+      <div class="kpi-value">1 in 3</div>
+      <div class="kpi-sub">37% of scheduled drop out</div>
+      <div class="kpi-badge badge-down">practice-side leak</div>
+    </div>
+  </div>
+
+  <div class="flag-card">
+    <div class="flag-icon">&#9873;</div>
+    <div class="flag-text">
+      <strong>Read the seasonality tab before drawing any seasonal conclusion.</strong>
+      2023 peaked in May, 2026 peaked in February, and the two disagree because 2026 volume is largely bought on an evenly paced budget. The flat April to July curve is our media plan, not the market. Real seasonality needs the 2024 and 2025 years.
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><span class="dot green"></span>What is working</div>
+      <div class="insight-card green">
+        <span class="ilabel">Observation</span>
+        <strong>Scheduling rate has nearly doubled since January</strong> and has held above 63% for four straight months. The 2023 baseline never exceeded 51% in any month and averaged about 39%.
+      </div>
+      <div class="insight-card green">
+        <span class="ilabel">Observation</span>
+        <strong>Testing demand has collapsed from 29% of enquiries to 6%.</strong> Three years of deliberately not marketing it worked exactly as intended.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Observation</span>
+        <strong>Female share climbed from 63% to 77%</strong> between January and July as targeting and content sharpened.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot rust"></span>What is leaking</div>
+      <div class="insight-card rust">
+        <span class="ilabel">Observation</span>
+        <strong>Insurance is the largest loss driver for the third consecutive year.</strong> 67 of 206 unscheduled 2026 enquiries, and 119 of 182 referrals out in 2023.
+      </div>
+      <div class="insight-card amber">
+        <span class="ilabel">Observation</span>
+        <strong>An unfinished enquiry is a dead one, not a weak one.</strong> 1% schedule in 2026, and zero of 346 did in 2023. Two datasets, three years apart, same answer.
+      </div>
+      <div class="insight-card rust">
+        <span class="ilabel">Observation</span>
+        <strong>A third of booked patients never complete intake.</strong> Larger than any acquisition-side leak, and entirely after the handover.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEASONALITY ================= -->
+<section class="tabpanel" id="season" role="tabpanel">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title"><span class="dot"></span>Monthly enquiry volume</div>
+      <div class="toggle" role="group" aria-label="Choose year">
+        <button data-yr="2026" aria-pressed="true">2026</button>
+        <button data-yr="2023" aria-pressed="false">2023</button>
+      </div>
+    </div>
+    <div id="seasonChart"></div>
+    <div class="legend">
+      <span><i style="background:var(--teal)"></i> Scheduled</span>
+      <span><i style="background:var(--cream-dark)"></i> Not scheduled</span>
+      <span style="color:var(--warm-mid)">Hover a column for detail</span>
+    </div>
+    <p class="panel-note" id="seasonNote"></p>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><span class="dot amber"></span>Why the two years disagree</div>
+      <div class="insight-card amber">
+        <span class="ilabel">Learning</span>
+        <strong>2023 is close to real demand. 2026 is substantially bought.</strong> 2023 was pre-engagement, so volume came from organic search, Psychology Today and referral. In 2026 paid budget is paced evenly by design, which mechanically flattens the curve.
+      </div>
+      <div class="insight-card rust">
+        <span class="ilabel">Learning</span>
+        <strong>One partial pre-engagement year cannot carry a seasonal claim.</strong> 2023 covers April to December only. Any month-level seasonal statement is provisional until we have more years.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Next step</span>
+        <strong>Get the 2024 and 2025 years from Jessica.</strong> Three Januaries and three Julys separates seasonality from spend, and lets budget be paced against demand instead of spread evenly by default.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot green"></span>What does survive both years</div>
+      <div class="insight-card green">
+        <span class="ilabel">Observation</span>
+        <strong>Summer is soft in both years.</strong> July and September were the two lowest months of 2023 at 74 each, and 2026 declines steadily from May to August.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Observation</span>
+        <strong>Autumn recovers, in the only year we can see it.</strong> October 2023 jumped to 121 and November posted the best rate in the whole 2023 file at 51%.
+      </div>
+      <div class="insight-card violet">
+        <span class="ilabel">Observation</span>
+        <strong>December fails differently.</strong> 40 of 101 December 2023 enquiries went to no response, the highest of any month, while rejections fell. A follow-up timing problem, not a demand problem.
+      </div>
+      <div class="insight-card green">
+        <span class="ilabel">Next step</span>
+        <strong>Plan a December follow-up rota now.</strong> It is the cheapest fix in the dataset and the month is knowable in advance.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>The 2026 curve that is real</div>
+    <div id="rateChart"></div>
+    <p class="panel-note">Volume is not the 2026 story, conversion is. This is our funnel work rather than the market, and it is the number worth putting in front of Jessica.</p>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="tabpanel" id="services" role="tabpanel">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title"><span class="dot violet"></span>Service mix by month, absolute enquiries</div>
+      <div class="legend" style="margin-top:0">
+        <span><i style="background:var(--teal)"></i> Psychotherapy</span>
+        <span><i style="background:var(--amber)"></i> Medication mgmt</span>
+        <span><i style="background:var(--violet)"></i> Testing &amp; eval</span>
+        <span><i style="background:var(--cream-dark)"></i> Not stated</span>
+      </div>
+    </div>
+    <div id="svcChart"></div>
+    <p class="panel-note">Hover any column for the month's breakdown.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><span class="dot"></span>Scheduling rate by service</div>
+      <div class="hbar-row"><div class="hbar-label">Psychotherapy</div>
+        <div class="hbar-track"><div class="hbar-fill green" style="width:75%"><span class="hbar-pct">75%</span></div></div>
+        <div class="hbar-count">272</div></div>
+      <div class="hbar-row"><div class="hbar-label">Medication management</div>
+        <div class="hbar-track"><div class="hbar-fill amber" style="width:57%"><span class="hbar-pct">57%</span></div></div>
+        <div class="hbar-count">113</div></div>
+      <div class="hbar-row"><div class="hbar-label">Testing &amp; evaluation</div>
+        <div class="hbar-track"><div class="hbar-fill violet" style="width:17%"><span class="hbar-pct">17%</span></div></div>
+        <div class="hbar-count">29</div></div>
+      <div class="hbar-row"><div class="hbar-label">No service stated</div>
+        <div class="hbar-track"><div class="hbar-fill rust" style="width:2%"><span class="hbar-pct">1%</span></div></div>
+        <div class="hbar-count">75</div></div>
+      <p class="panel-note">Counts are enquiries; rates are computed on records with a known outcome. Testing sits on only six known outcomes, too small to conclude from.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot amber"></span>The substitution question, answered</div>
+      <div class="insight-card">
+        <span class="ilabel">Observation</span>
+        <strong>Psychotherapy is the stable base.</strong> From February onward it sits between 38 and 46 every month, a band of eight enquiries. It does not move seasonally in this window.
+      </div>
+      <div class="insight-card amber">
+        <span class="ilabel">Observation</span>
+        <strong>Medication management is the volatile line.</strong> February spiked to 19 against a baseline of 9 to 12. That single month is most of the February peak, and it is not therapy demand.
+      </div>
+      <div class="insight-card green">
+        <span class="ilabel">Learning</span>
+        <strong>There is no substitution.</strong> When medication management fell 19 to 8 in March, psychotherapy rose by 5, not by 11. The lines move independently, so the services draw from different populations rather than trading against each other.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot rust"></span>Medication management is now a target to shrink</div>
+    <p style="font-size:12.5px;margin-bottom:12px;">Jessica confirmed the practice wants fewer of these enquiries, which turns a neutral finding into an acquisition instruction. Here is where they arrive from, and which part we can actually influence.</p>
+    <div class="two-col wide-left">
+      <div>
+        <div class="hbar-row"><div class="hbar-label">Google / online search</div>
+          <div class="hbar-track"><div class="hbar-fill rust" style="width:100%"><span class="hbar-pct">34 &middot; addressable</span></div></div></div>
+        <div class="hbar-row"><div class="hbar-label">Not recorded</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:41%"><span class="hbar-pct">14</span></div></div></div>
+        <div class="hbar-row"><div class="hbar-label">Returning patient</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:26%"><span class="hbar-pct">9</span></div></div></div>
+        <div class="hbar-row"><div class="hbar-label">Psychology Today</div>
+          <div class="hbar-track"><div class="hbar-fill rust" style="width:26%"><span class="hbar-pct">9</span></div></div></div>
+        <div class="hbar-row"><div class="hbar-label">Insurance directory</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:21%"><span class="hbar-pct">7</span></div></div></div>
+        <div class="hbar-row"><div class="hbar-label">Provider referral</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:12%"><span class="hbar-pct">4</span></div></div></div>
+        <div class="hbar-row"><div class="hbar-label">Social</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:9%"><span class="hbar-pct">3</span></div></div></div>
+        <p class="panel-note">Rust bars are the channels we control. Roughly 50 of 113 are addressable; the rest arrive through returning patients, directories and provider referrals, which are neither controllable nor unwelcome.</p>
+      </div>
+      <div>
+        <div class="insight-card rust">
+          <span class="ilabel">Observation</span>
+          <strong>It is trending back up, not down.</strong> By month: 4, 5, 24, 14, 14, 12, 14, <strong>19</strong>, 7. July was its second-highest month, so whatever pulls it is still live.
+        </div>
+        <div class="insight-card amber">
+          <span class="ilabel">Learning</span>
+          <strong>Suppressing it will nudge the headline rate down.</strong> Medication management converts at 57%, so removing it improves fit while slightly lowering the blended scheduling rate. Worth saying in advance rather than explaining a dip later.
+        </div>
+        <div class="insight-card">
+          <span class="ilabel">Next step</span>
+          <strong>Find and dial down the keywords, ad groups and Psychology Today profile fields</strong> pulling medication management. <span class="owner">Rishabh</span><span class="owner">Diksha</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flag-card">
+    <div class="flag-icon">&#9873;</div>
+    <div class="flag-text">
+      <strong>One 2023 figure is not safe to use.</strong> Individual therapy falls from 67% of August 2023 enquiries to 6% in November, a 61-point swing in three months, coinciding exactly with the spreadsheet's column layout reverting. Now that TE is confirmed as testing, November reading 63% medication management is less plausible, not more. Two questions to Jessica resolve it: what changed in November 2023, and was the form redesigned that year.
+    </div>
+  </div>
+</section>
+
+<!-- ================= FUNNEL ================= -->
+<section class="tabpanel" id="funnel" role="tabpanel">
+  <div class="two-col wide-left">
+    <div class="panel">
+      <div class="panel-title"><span class="dot"></span>Enquiry to completed intake</div>
+      <div class="funnel">
+        <div class="fstep"><div class="fbar" style="width:100%;background:var(--teal)">496 enquiries</div></div>
+        <div class="fstep"><div class="fbar" style="width:53%;background:var(--teal-light)">263 scheduled</div>
+          <div class="fmeta"><b>53%</b> of enquiries</div></div>
+        <div class="fstep"><div class="fbar" style="width:35%;background:var(--amber)">174 paperwork</div>
+          <div class="fmeta"><b>66%</b> of scheduled</div></div>
+        <div class="fstep"><div class="fbar" style="width:33%;background:var(--rust)">166 intake done</div>
+          <div class="fmeta"><b>63%</b> of scheduled</div></div>
+      </div>
+      <p class="panel-note">Paperwork and intake fields are sparsely maintained, so treat the exact figures as directional. The order of magnitude holds.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot rust"></span>Why enquiries do not convert</div>
+      <div class="hbar-row"><div class="hbar-label">Insurance / coverage</div>
+        <div class="hbar-track"><div class="hbar-fill rust" style="width:100%"><span class="hbar-pct">67</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Incomplete enquiry</div>
+        <div class="hbar-track"><div class="hbar-fill amber" style="width:42%"><span class="hbar-pct">28</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Did not answer</div>
+        <div class="hbar-track"><div class="hbar-fill amber" style="width:39%"><span class="hbar-pct">26</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Cost / billing</div>
+        <div class="hbar-track"><div class="hbar-fill violet" style="width:10%"><span class="hbar-pct">7</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Substance use</div>
+        <div class="hbar-track"><div class="hbar-fill violet" style="width:5%"><span class="hbar-pct">3</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Location</div>
+        <div class="hbar-track"><div class="hbar-fill violet" style="width:3%"><span class="hbar-pct">2</span></div></div></div>
+      <p class="panel-note">206 unscheduled records. Insurance groups the generic entries with named payers: HAP 10, Blue Cross Complete 4, Cigna 3, all already known exclusions.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot green"></span>The same-day cliff</div>
+    <div class="two-col wide-left">
+      <div>
+        <div id="lagChart"></div>
+        <div class="legend"><span><i style="background:var(--green)"></i> Scheduling rate by response lag</span></div>
+      </div>
+      <div>
+        <div class="insight-card green">
+          <span class="ilabel">Observation</span>
+          <strong>Scheduling falls 25 points the moment contact slips past the same day,</strong> then plateaus. The damage is done in the first 24 hours, not gradually.
+        </div>
+        <div class="insight-card">
+          <span class="ilabel">Learning</span>
+          <strong>The practice is mostly fast already.</strong> 63% of enquiries are handled same day and the median lag is zero. The 37% that are not lose about a third of their conversion.
+        </div>
+        <div class="insight-card">
+          <span class="ilabel">Next step</span>
+          <strong>Concentrate the response effort in day one,</strong> not across the booking window. This is the strongest evidence behind the shortened window and the halfway reminder, and it reframes both. <span class="owner">Harshit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><span class="dot amber"></span>Completion is the whole funnel</div>
+      <div class="insight-card amber">
+        <span class="ilabel">Observation</span>
+        <strong>2026: enquiries with no service stated schedule at 1%.</strong> One booking from 74 known outcomes.
+      </div>
+      <div class="insight-card amber">
+        <span class="ilabel">Observation</span>
+        <strong>2023: zero of 346 unfinished forms were ever scheduled,</strong> while completed forms scheduled at 55%.
+      </div>
+      <div class="insight-card green">
+        <span class="ilabel">Learning</span>
+        <strong>Two independent datasets, three years apart, agree.</strong> An incomplete enquiry is not a weak lead, it is a dead one. Any friction removed from the form pays out at the full downstream rate.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Observation</span>
+        <strong>It is improving.</strong> Not-stated fell from 20 records in February to 4 in July, so either the form or the intake discipline is getting better.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot violet"></span>A trap in the follow-up data</div>
+      <div class="tbl-wrap"><table class="campaign-table">
+        <thead><tr><th>Follow-ups logged</th><th>Enquiries</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>None</td><td>364</td><td><span class="metric-highlight">65%</span></td></tr>
+          <tr><td>One</td><td>53</td><td>47%</td></tr>
+          <tr><td>Two</td><td>55</td><td><span class="metric-highlight warn">18%</span></td></tr>
+          <tr><td>Three or more</td><td>24</td><td>25%</td></tr>
+        </tbody>
+      </table></div>
+      <div class="insight-card violet" style="margin-top:12px;">
+        <span class="ilabel">Learning</span>
+        <strong>This does not mean follow-ups fail.</strong> They are only logged for people who did not book immediately, so the column records difficulty, not treatment. Easy conversions never need chasing. The honest read is that a logged follow-up is a useful early warning that an enquiry is in trouble.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Next step</span>
+        <strong>Test whether follow-ups actually help</strong> by comparing within the not-booked-immediately group only. The data supports it; it just needs the follow-up dates parsed against outcome dates.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AUDIENCE ================= -->
+<section class="tabpanel" id="audience" role="tabpanel">
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><span class="dot pink"></span>Gender, a recorded field</div>
+      <div class="donut-wrap">
+        <div class="donut" id="genderDonut"></div>
+        <div style="flex:1;min-width:150px;">
+          <div class="tbl-wrap"><table class="campaign-table">
+            <thead><tr><th></th><th>n</th><th>Rate</th></tr></thead>
+            <tbody>
+              <tr><td>Female</td><td>337</td><td>60%</td></tr>
+              <tr><td>Male</td><td>126</td><td>54%</td></tr>
+              <tr><td>Not recorded</td><td>33</td><td>&mdash;</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="insight-card" style="margin-top:12px;">
+        <span class="ilabel">Observation</span>
+        <strong>Female share climbed from 63% in January to 77% in July.</strong> The women-primary assumption is now confirmed with recorded data rather than asserted.
+      </div>
+      <div class="insight-card violet">
+        <span class="ilabel">Learning</span>
+        <strong>Men are a quarter of demand and convert only six points lower.</strong> A larger and healthier segment than the positioning implies, and nothing in the funnel currently speaks to them.
+      </div>
+      <p class="panel-note">2023 has names but no sex field. Name-based inference covers 61% of records and returns 64.8% female, with the unmatched names skewing female too. Directionally consistent, not precise.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title"><span class="dot violet"></span>Age, from date of birth</div>
+      <div id="ageChart"></div>
+      <div class="legend"><span><i style="background:var(--violet)"></i> Share of enquiries</span><span style="color:var(--warm-mid)">hover for scheduling rate</span></div>
+      <p class="panel-note">Median age 27. DOB present on 351 of 496 records, 71%. Age is stable across every month, so the audience is not drifting.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot green"></span>The finding nobody was looking for</div>
+    <div class="two-col">
+      <div>
+        <div class="insight-card green">
+          <span class="ilabel">Observation</span>
+          <strong>Children and teenagers are 28.7% of all enquiries and convert better than any adult band, at 85% and 84%.</strong> Nearly three in ten enquiries are for a minor, almost entirely psychotherapy.
+        </div>
+        <div class="insight-card green">
+          <span class="ilabel">Learning</span>
+          <strong>These are parent-initiated enquiries.</strong> The parent is the decision maker, the buyer and the audience, and they arrive with the decision already made, which is why they convert so well.
+        </div>
+      </div>
+      <div>
+        <div class="insight-card amber">
+          <span class="ilabel">Learning</span>
+          <strong>Almost nothing in current marketing speaks to them.</strong> The back-to-school parent content is the first thing that does. With medication management now confirmed as a service to shrink, this is the clearest candidate for where that attention goes instead.
+        </div>
+        <div class="insight-card">
+          <span class="ilabel">Next step</span>
+          <strong>Ask Jessica whether this is deliberate and whether she wants more of it,</strong> then build parent-intent keywords as their own set. <span class="owner">Harshit</span><span class="owner">Diksha</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><span class="dot"></span>Day of week</div>
+      <div id="dowChart"></div>
+      <div class="legend"><span><i style="background:var(--teal)"></i> Enquiries arriving</span><span style="color:var(--warm-mid)">hover for scheduling rate</span></div>
+      <div class="insight-card rust" style="margin-top:12px;">
+        <span class="ilabel">Observation</span>
+        <strong>Weekend enquiries convert about 20 points worse, in both years.</strong> Saturday 38% against a weekday band of 56 to 63% in 2026, and 21% against 31 to 46% in 2023. It replicates across three years and two schemas.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Learning</span>
+        <strong>Weekend volume is small,</strong> 9.7% in 2026 and 7.5% in 2023, so this is a conversion problem worth roughly 8 to 12 bookings a year, not a volume opportunity.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot amber"></span>When consultations actually happen</div>
+      <div class="hbar-row"><div class="hbar-label">Monday</div><div class="hbar-track"><div class="hbar-fill" style="width:100%"><span class="hbar-pct">118 &middot; 26%</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Wednesday</div><div class="hbar-track"><div class="hbar-fill" style="width:86%"><span class="hbar-pct">102 &middot; 23%</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Friday</div><div class="hbar-track"><div class="hbar-fill" style="width:86%"><span class="hbar-pct">102 &middot; 23%</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Tuesday</div><div class="hbar-track"><div class="hbar-fill light" style="width:59%"><span class="hbar-pct">70 &middot; 16%</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Thursday</div><div class="hbar-track"><div class="hbar-fill rust" style="width:37%"><span class="hbar-pct">44 &middot; 10%</span></div></div></div>
+      <div class="hbar-row"><div class="hbar-label">Weekend</div><div class="hbar-track"><div class="hbar-fill light" style="width:14%"><span class="hbar-pct">16 &middot; 4%</span></div></div></div>
+      <div class="insight-card amber" style="margin-top:12px;">
+        <span class="ilabel">Observation</span>
+        <strong>Thursday consultations are conspicuously rare</strong> at 10% against Monday's 26%. This looks like a staffing artifact rather than demand, and it lines up with Megan being off Thursdays. Worth confirming.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>Geography and modality</div>
+    <div class="two-col">
+      <div>
+        <div class="tbl-wrap"><table class="campaign-table">
+          <thead><tr><th>Top zips</th><th>n</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>48038 Clinton Township</td><td>35</td><td>70%</td></tr>
+            <tr><td>48044 Macomb</td><td>29</td><td>85%</td></tr>
+            <tr><td>48036 Mount Clemens</td><td>12</td><td>92%</td></tr>
+            <tr><td>48035</td><td>11</td><td>82%</td></tr>
+            <tr class="mark"><td>48083 + 48084 Troy</td><td>21</td><td>80&ndash;89%</td></tr>
+            <tr><td>48047</td><td>10</td><td>90%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="panel-note">349 of 496 records carry a zip, across 101 distinct zips. Troy is thinner than the two-office footprint implies but converts well.</p>
+      </div>
+      <div>
+        <div class="tbl-wrap"><table class="campaign-table">
+          <thead><tr><th>Modality preference</th><th>n</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr class="mark"><td>In person</td><td>188</td><td><span class="metric-highlight">82%</span></td></tr>
+            <tr><td>Virtual</td><td>71</td><td>70%</td></tr>
+            <tr><td>Either</td><td>90</td><td>66%</td></tr>
+            <tr><td>Not stated</td><td>141</td><td><span class="metric-highlight warn">7%</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="insight-card green" style="margin-top:12px;">
+          <span class="ilabel">Learning</span>
+          <strong>Stating a preference at all is the signal.</strong> In-person is the best-converting segment in the whole analysis at 82%, while not stating one converts at 7%, the incomplete-enquiry gate again. In-person preference also rises to 65% in April and falls back to 48% by July, so virtual demand climbs over summer.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section class="tabpanel" id="sources" role="tabpanel">
+  <div class="two-col wide-left">
+    <div class="panel">
+      <div class="panel-title"><span class="dot"></span>Where enquiries come from</div>
+      <div class="tbl-wrap"><table class="campaign-table">
+        <thead><tr><th>How they heard</th><th>n</th><th>Share</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Google or online search</td><td>155</td><td>31.2%</td><td>55%</td></tr>
+          <tr><td>Not recorded</td><td>90</td><td>18.1%</td><td>20%</td></tr>
+          <tr class="mark"><td>Returning or existing patient</td><td>51</td><td>10.3%</td><td><span class="metric-highlight">81%</span></td></tr>
+          <tr><td>Psychology Today</td><td>32</td><td>6.5%</td><td>68%</td></tr>
+          <tr class="mark"><td>Friend or family</td><td>25</td><td>5.0%</td><td><span class="metric-highlight">78%</span></td></tr>
+          <tr><td>Provider referral</td><td>20</td><td>4.0%</td><td>56%</td></tr>
+          <tr class="mark"><td>Social media</td><td>15</td><td>3.0%</td><td><span class="metric-highlight warn">0%</span></td></tr>
+          <tr><td>Insurance directory</td><td>12</td><td>2.4%</td><td>67%</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot green"></span>Warm beats cold, consistently</div>
+      <div class="insight-card green">
+        <span class="ilabel">Observation</span>
+        <strong>More than 20 points, in both datasets.</strong> Returning patients 81% and friend or family 78% against Google at 55%. 2023 said the same: friend or family 62%, previous patient 54%, online search 40%.
+      </div>
+      <div class="insight-card rust">
+        <span class="ilabel">Observation</span>
+        <strong>Social media has produced 15 enquiries and zero bookings in nine months.</strong> Not a low rate, a zero.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Learning</span>
+        <strong>That vindicates the social KPI choice rather than undermining it.</strong> Measuring social on saves, shares and website visits is the right call, because it is not a lead channel for this practice on current evidence. Use the number to defend the measurement, not the channel.
+      </div>
+      <div class="insight-card amber">
+        <span class="ilabel">Observation</span>
+        <strong>18% of enquiries have no source recorded and they convert at 20%.</strong> Blank is not random, it correlates with a thinner enquiry.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot amber"></span>Phone versus form, settled</div>
+    <div class="two-col wide-left">
+      <div>
+        <div class="hbar-row"><div class="hbar-label">Completed inquiry</div>
+          <div class="hbar-track"><div class="hbar-fill green" style="width:75%"><span class="hbar-pct">75%</span></div></div><div class="hbar-count">141</div></div>
+        <div class="hbar-row"><div class="hbar-label">Organic phone call</div>
+          <div class="hbar-track"><div class="hbar-fill green" style="width:69%"><span class="hbar-pct">69%</span></div></div><div class="hbar-count">160</div></div>
+        <div class="hbar-row"><div class="hbar-label">Scheduled via form</div>
+          <div class="hbar-track"><div class="hbar-fill amber" style="width:45%"><span class="hbar-pct">45%</span></div></div><div class="hbar-count">132</div></div>
+        <div class="hbar-row"><div class="hbar-label">Started, not finished</div>
+          <div class="hbar-track"><div class="hbar-fill rust" style="width:2%"><span class="hbar-pct">0%</span></div></div><div class="hbar-count">42</div></div>
+        <div class="hbar-row"><div class="hbar-label">Meta lead call</div>
+          <div class="hbar-track"><div class="hbar-fill rust" style="width:2%"><span class="hbar-pct">0%</span></div></div><div class="hbar-count">14</div></div>
+      </div>
+      <div>
+        <div class="insight-card green">
+          <span class="ilabel">Learning</span>
+          <strong>It is not that phones are magic, it is that completion is.</strong> A completed inquiry converts at 75% and a phone call at 69%, against 45% for the form route. A finished enquiry converts well by whichever route it arrives.
+        </div>
+        <div class="insight-card rust">
+          <span class="ilabel">Observation</span>
+          <strong>Two channels have produced 56 enquiries and no bookings at all:</strong> 42 started-but-unfinished inquiries and 14 Meta lead calls.
+        </div>
+        <div class="insight-card">
+          <span class="ilabel">Next step</span>
+          <strong>Bring a recommendation on Meta lead ads.</strong> Nine months and no bookings is a decision, not a data point. <span class="owner">Rishabh</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot rust"></span>Insurance, the most durable finding in the dataset</div>
+    <div class="two-col">
+      <div>
+        <div class="insight-card rust">
+          <span class="ilabel">Observation</span>
+          <strong>Largest single loss driver for three consecutive years.</strong> 67 of 206 unscheduled enquiries in 2026, 119 of 182 referrals out in 2023, and 19% of all 2023 enquiries once form drop-offs are counted. It was still the top non-booking reason in the week of 9 to 15 August 2026.
+        </div>
+        <div class="insight-card amber">
+          <span class="ilabel">Learning</span>
+          <strong>The exclusion list is already settled client-side.</strong> HAP, Blue Cross Complete and Cigna are known non-accepted payers, so every enquiry that arrives from one and is then rejected is preventable spend.
+        </div>
+      </div>
+      <div>
+        <div class="insight-card">
+          <span class="ilabel">Next step</span>
+          <strong>Verify on our side, not theirs.</strong> Is every non-accepted payer actually present in the negative keyword list, and does the non-accepted-insurance ad copy name them? Checkable without asking the client anything. <span class="owner">Rishabh</span>
+        </div>
+        <div class="insight-card">
+          <span class="ilabel">Next step</span>
+          <strong>Take the eligibility-before-enquiry case into the CRM transition,</strong> while the flow is still being built rather than after it ships. <span class="owner">Harshit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ISSUES ================= -->
+<section class="tabpanel" id="issues" role="tabpanel">
+  <div class="two-col wide-left">
+    <div class="panel">
+      <div class="panel-title"><span class="dot violet"></span>Presenting issues, and how they convert</div>
+      <div class="tbl-wrap"><table class="campaign-table">
+        <thead><tr><th>Issue</th><th>n</th><th>Share</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Anxiety</td><td>179</td><td>51.0%</td><td><span class="metric-highlight">81%</span></td></tr>
+          <tr><td>Depression</td><td>121</td><td>34.5%</td><td>76%</td></tr>
+          <tr><td>ADHD</td><td>98</td><td>27.9%</td><td>76%</td></tr>
+          <tr><td>Stress</td><td>84</td><td>23.9%</td><td>71%</td></tr>
+          <tr><td>Relationship issues</td><td>48</td><td>13.7%</td><td>71%</td></tr>
+          <tr><td>Trauma</td><td>45</td><td>12.8%</td><td>68%</td></tr>
+          <tr><td>Grief and loss</td><td>36</td><td>10.3%</td><td>67%</td></tr>
+          <tr><td>OCD</td><td>34</td><td>9.7%</td><td><span class="metric-highlight">82%</span></td></tr>
+          <tr><td>PTSD</td><td>21</td><td>6.0%</td><td>60%</td></tr>
+          <tr><td>Sleep</td><td>18</td><td>5.1%</td><td><span class="metric-highlight warn">44%</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="panel-note">Multi-select field, recorded on 351 of 496 records. Percentages are share of records with reasons recorded.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot green"></span>The real seasonal signal</div>
+      <div class="insight-card green">
+        <span class="ilabel">Learning</span>
+        <strong>Seasonality lives in the presenting problem, not the volume.</strong> This is the answer the volume data could not give.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Observation</span>
+        <strong>Anxiety climbs almost monotonically from 35% in January to 65% in July,</strong> a 30-point rise. It is now the presenting issue in roughly two of every three enquiries.
+      </div>
+      <div class="insight-card amber">
+        <span class="ilabel">Observation</span>
+        <strong>ADHD peaks in March at 37%</strong> and again in May, then falls to 20% by July. A March peak is consistent with school-year assessment timing, which makes it predictable and therefore plannable.
+      </div>
+      <div class="insight-card violet">
+        <span class="ilabel">Observation</span>
+        <strong>Grief was the third most common issue in January</strong> and barely registers later, the sharpest single-month concentration in the data.
+      </div>
+      <div class="insight-card">
+        <span class="ilabel">Next step</span>
+        <strong>Sequence content to the presenting-issue calendar</strong> rather than spreading topics evenly. <span class="owner">Diksha</span><span class="owner">Simran</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>Issue share by month</div>
+    <div id="issueChart"></div>
+    <div class="legend">
+      <span><i style="background:var(--teal)"></i> Anxiety</span>
+      <span><i style="background:var(--amber)"></i> ADHD</span>
+      <span><i style="background:var(--violet)"></i> Depression</span>
+      <span style="color:var(--warm-mid)">hover a month for values</span>
+    </div>
+    <p class="panel-note">Monthly cells are 20 to 56 records, so the anxiety trend is large enough and monotonic enough to be real, while smaller month-to-month swings are noise.</p>
+  </div>
+</section>
+
+<!-- ================= ACTIONS ================= -->
+<section class="tabpanel" id="actions" role="tabpanel">
+  <div class="panel">
+    <div class="panel-title"><span class="dot green"></span>The five learnings that should change what we do</div>
+    <div class="insight-card green">
+      <span class="ilabel">Learning 1</span>
+      <strong>Completion is the whole funnel.</strong> An unfinished enquiry converts at 1% in 2026 and converted at 0% across 346 records in 2023. Friction removed from the form pays out at the full downstream rate, which makes form work the highest-leverage thing on the roadmap.
+    </div>
+    <div class="insight-card green">
+      <span class="ilabel">Learning 2</span>
+      <strong>Speed beats persistence.</strong> Same-day contact converts at 71% against 46% the next day, and the drop happens inside 24 hours rather than gradually. Effort belongs in day one, not spread across the booking window.
+    </div>
+    <div class="insight-card green">
+      <span class="ilabel">Learning 3</span>
+      <strong>The best-converting audience is one we barely address.</strong> Children and teens are 29% of enquiries at 85% and 84%, parent-initiated, arriving with the decision made.
+    </div>
+    <div class="insight-card green">
+      <span class="ilabel">Learning 4</span>
+      <strong>Insurance has cost more than any other single factor for three years.</strong> The constraint is known and fixed, so the losses are now preventable rather than structural.
+    </div>
+    <div class="insight-card green">
+      <span class="ilabel">Learning 5</span>
+      <strong>Seasonality is in the problem, not the volume.</strong> Anxiety climbs through summer, ADHD peaks in March, grief concentrates in January. Volume seasonality remains unproven and needs more years.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>Next steps</div>
+    <div class="next-step"><div class="step-num">1</div><div class="step-text">
+      <strong>Get the 2024 and 2025 consultation years from Jessica.</strong> The single input that turns a suggestive pattern into a seasonality model we can pace budget against. Everything else here is already answerable. <span class="owner">Harshit</span></div></div>
+    <div class="next-step"><div class="step-num">2</div><div class="step-text">
+      <strong>Find and dial down what pulls medication management.</strong> Keywords, ad groups and the Psychology Today profile. 34 of 113 arrive via Google and 9 via Psychology Today, so about 50 are addressable. Expect the blended scheduling rate to dip slightly as fit improves. <span class="owner">Rishabh</span><span class="owner">Diksha</span></div></div>
+    <div class="next-step"><div class="step-num">3</div><div class="step-text">
+      <strong>Verify every non-accepted payer is in the negatives and named in the ad copy.</strong> HAP, Blue Cross Complete and Cigna are confirmed exclusions, so enquiries from them are preventable spend. <span class="owner">Rishabh</span></div></div>
+    <div class="next-step"><div class="step-num">4</div><div class="step-text">
+      <strong>Bring a recommendation on Meta lead ads.</strong> 14 enquiries, zero bookings, nine months. That is a decision to make, not a metric to keep watching. <span class="owner">Rishabh</span></div></div>
+    <div class="next-step"><div class="step-num">5</div><div class="step-text">
+      <strong>Take the eligibility-before-enquiry case into the CRM build.</strong> Surfacing insurance earlier is the highest-value change available, and the window is open only while the flow is being built. <span class="owner">Harshit</span></div></div>
+    <div class="next-step"><div class="step-num amber">6</div><div class="step-text">
+      <strong>Sequence content to the presenting-issue calendar.</strong> ADHD ahead of March, anxiety through summer, grief for January. This is the one seasonal signal strong enough to plan against. <span class="owner">Diksha</span><span class="owner">Simran</span></div></div>
+    <div class="next-step"><div class="step-num amber">7</div><div class="step-text">
+      <strong>Build parent-intent keywords as their own set,</strong> separate from the adult sets, once Jessica confirms she wants more of that demand. <span class="owner">Diksha</span></div></div>
+    <div class="next-step"><div class="step-num amber">8</div><div class="step-text">
+      <strong>Plan a December follow-up rota.</strong> 40 of 101 December 2023 enquiries went to no response while rejections fell. Cheapest fix in the dataset and the month is knowable in advance. <span class="owner">Harshit</span></div></div>
+    <div class="next-step"><div class="step-num amber">9</div><div class="step-text">
+      <strong>Check whether ad scheduling pushes spend into windows nobody can answer.</strong> Weekend enquiries convert about 20 points worse across three years. <span class="owner">Rishabh</span></div></div>
+    <div class="next-step"><div class="step-num rust">10</div><div class="step-text">
+      <strong>Fix the source data while the CRM is changing.</strong> Add an intake date rather than a yes or no, stop UTM codes landing in the sex column, and keep one schema. Six 2026 records already carry UTM strings where sex should be. <span class="owner">Harshit</span><span class="owner">Megan</span></div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot rust"></span>Open questions for Jessica</div>
+    <div class="insight-card green">
+      <span class="ilabel">Answered 24 August</span>
+      <strong>TE means testing and evaluation.</strong> Medication management: the practice wants fewer. HAP, Blue Cross Complete and Cigna are known exclusions.
+    </div>
+    <div class="insight-card rust">
+      <span class="ilabel">Still blocking</span>
+      <strong>Can we have the 2024 and 2025 years?</strong> And what changed in November 2023, where individual therapy falls from 67% to 6% in three months as the spreadsheet's structure changes in the same month. Was the form redesigned that year?
+    </div>
+    <div class="insight-card amber">
+      <span class="ilabel">Decision-changing</span>
+      <strong>Children and teens are 29% of enquiries at 85%. Deliberate, and do you want more?</strong> The biggest strategic question left in the data.
+    </div>
+    <div class="insight-card">
+      <span class="ilabel">Worth asking</span>
+      <strong>One in three scheduled patients never completes intake, is that tracked?</strong> Is in-person converting at 82% a capacity effect or a preference one? November 2023 hit 51%, the best month in either dataset, was anything different about staffing? And is there appetite for a Monday-first triage rule on weekend enquiries?
+    </div>
+  </div>
+
+  <div class="flag-card">
+    <div class="flag-icon">&#9873;</div>
+    <div class="flag-text">
+      <strong>Data quality, for anyone re-running this.</strong> The 2023 tab carries two schemas, with an unnamed column inserted in June and reverted in October affecting 433 rows. 71 rows across the weekly tabs are the same person carried through follow-up weeks, so counting rows rather than unique client IDs overstates volume by about 14%. Completeness runs 70 to 72% on DOB, zip, presenting issues and modality; paperwork and intake are sparser. The Source column is absent entirely from the Dec 2025 and Jan 2026 tabs.
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="footer-left">Prepared by Damco Digital &middot; Confidential</div>
+  <div class="footer-right">1,491 enquiry records &middot; 2023 and Dec 2025 to Aug 2026</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(s,r){ return (r||document).querySelector(s); };
+  var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+
+  /* ---------- tabs ---------- */
+  var tabs = $$('nav button');
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      btn.setAttribute('aria-selected','true');
+      $$('.tabpanel').forEach(function(p){ p.classList.remove('active'); });
+      var t = $('#'+btn.dataset.tab);
+      if(t) t.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  /* ---------- chart helpers ---------- */
+  var MAXH = 150;
+
+  // stacked / simple column chart
+  function columns(el, data, opts){
+    opts = opts || {};
+    var max = opts.max || Math.max.apply(null, data.map(function(d){
+      return d.segs.reduce(function(a,s){ return a+s.v; },0);
+    }));
+    var html = '<div class="chart">';
+    data.forEach(function(d){
+      var tot = d.segs.reduce(function(a,s){ return a+s.v; },0);
+      html += '<div class="col" tabindex="0">';
+      html += '<div class="tip">'+d.tip+'</div>';
+      html += '<div class="stack">';
+      d.segs.forEach(function(s,i){
+        var h = max ? (s.v/max)*MAXH : 0;
+        var r = (i===0) ? 'border-radius:4px 4px 0 0;' : '';
+        html += '<div class="seg" style="height:'+h.toFixed(1)+'px;background:'+s.c+';'+r+'"></div>';
+      });
+      html += '</div><div class="cap">'+d.cap+'</div></div>';
+    });
+    return (el.innerHTML = html + '</div>');
+  }
+
+  /* ---------- seasonality ---------- */
+  var SEASON = {
+    '2026': {
+      note:'Jan to Jul are complete months. August is partial, cut off on the 22nd, so it is excluded from the peak and trough read. February is the peak at 88 and January the trough at 35, which is 60% below it.',
+      rows:[
+        {cap:'Jan', n:35, s:12}, {cap:'Feb', n:88, s:34}, {cap:'Mar', n:73, s:40},
+        {cap:'Apr', n:58, s:38}, {cap:'May', n:67, s:44}, {cap:'Jun', n:61, s:37},
+        {cap:'Jul', n:60, s:37}
+      ]
+    },
+    '2023': {
+      note:'April to December only, no Q1. May is the peak at 148 and July the trough at 74. This is the cleaner demand signal of the two years because it predates paid activity.',
+      rows:[
+        {cap:'Apr', n:86, s:37}, {cap:'May', n:148, s:59}, {cap:'Jun', n:117, s:38},
+        {cap:'Jul', n:74, s:30}, {cap:'Aug', n:83, s:33}, {cap:'Sep', n:74, s:23},
+        {cap:'Oct', n:121, s:42}, {cap:'Nov', n:102, s:52}, {cap:'Dec', n:101, s:39}
+      ]
+    }
+  };
+  function drawSeason(yr){
+    var d = SEASON[yr];
+    var data = d.rows.map(function(r){
+      var rate = Math.round(r.s / r.n * 100);
+      return {
+        cap:r.cap,
+        tip:'<b>'+r.cap+' '+yr+'</b><br>'+r.n+' enquiries<br>'+r.s+' scheduled &middot; '+rate+'%',
+        segs:[{v:r.n-r.s,c:'var(--cream-dark)'},{v:r.s,c:'var(--teal)'}]
+      };
+    });
+    // put scheduled at the bottom of the stack
+    data.forEach(function(x){ x.segs.reverse(); });
+    columns($('#seasonChart'), data);
+    $('#seasonNote').textContent = d.note;
+  }
+  $$('.toggle button[data-yr]').forEach(function(b){
+    b.addEventListener('click', function(){
+      $$('.toggle button[data-yr]').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+      b.setAttribute('aria-pressed','true');
+      drawSeason(b.dataset.yr);
+    });
+  });
+  drawSeason('2026');
+
+  /* ---------- 2026 rate curve ---------- */
+  (function(){
+    var rows=[['Jan',35],['Feb',42],['Mar',58],['Apr',69],['May',68],['Jun',66],['Jul',63]];
+    columns($('#rateChart'), rows.map(function(r){
+      var c = r[1] >= 60 ? 'var(--green)' : (r[1] >= 45 ? 'var(--amber)' : 'var(--rust)');
+      return {cap:r[0], tip:'<b>'+r[0]+'</b><br>'+r[1]+'% scheduled', segs:[{v:r[1],c:c}]};
+    }), {max:75});
+  })();
+
+  /* ---------- service mix ---------- */
+  (function(){
+    var M=['Jan','Feb','Mar','Apr','May','Jun','Jul'];
+    var T=[19,40,45,38,46,41,43], MM=[3,19,8,9,9,10,12], TE=[1,5,5,2,2,3,1], NS=[10,20,15,9,10,7,4];
+    columns($('#svcChart'), M.map(function(m,i){
+      return {cap:m,
+        tip:'<b>'+m+'</b> &middot; '+(T[i]+MM[i]+TE[i]+NS[i])+' total<br>Therapy '+T[i]+
+            '<br>Med mgmt '+MM[i]+'<br>Testing '+TE[i]+'<br>Not stated '+NS[i],
+        segs:[{v:NS[i],c:'var(--cream-dark)'},{v:TE[i],c:'var(--violet)'},
+              {v:MM[i],c:'var(--amber)'},{v:T[i],c:'var(--teal)'}]};
+    }));
+  })();
+
+  /* ---------- lag ---------- */
+  (function(){
+    var rows=[['Same day',71,'276 enquiries, 63% of all'],['1 to 3 days',46,'105 enquiries'],
+              ['4 to 7 days',44,'44 enquiries'],['8 to 14 days',38,'10 enquiries']];
+    columns($('#lagChart'), rows.map(function(r){
+      return {cap:r[0].replace(' days','d').replace('Same day','same'),
+        tip:'<b>'+r[0]+'</b><br>'+r[1]+'% scheduled<br>'+r[2],
+        segs:[{v:r[1],c:(r[1]>60?'var(--green)':'var(--amber)')}]};
+    }), {max:80});
+  })();
+
+  /* ---------- age ---------- */
+  (function(){
+    var rows=[['0-12',16.2,85],['13-17',12.5,84],['18-25',19.9,71],['26-35',17.9,72],
+              ['36-45',18.5,75],['46-55',8.5,67],['56-65',5.4,61],['65+',0.9,67]];
+    columns($('#ageChart'), rows.map(function(r){
+      return {cap:r[0],
+        tip:'<b>'+r[0]+'</b><br>'+r[1]+'% of enquiries<br>'+r[2]+'% scheduled',
+        segs:[{v:r[1],c:(r[2]>=80?'var(--green)':'var(--violet)')}]};
+    }), {max:22});
+  })();
+
+  /* ---------- day of week ---------- */
+  (function(){
+    var rows=[['Mon',89,56],['Tue',85,60],['Wed',96,61],['Thu',65,58],
+              ['Fri',64,63],['Sat',17,38],['Sun',26,46]];
+    columns($('#dowChart'), rows.map(function(r){
+      return {cap:r[0],
+        tip:'<b>'+r[0]+'</b><br>'+r[1]+' enquiries<br>'+r[2]+'% scheduled',
+        segs:[{v:r[1],c:(r[2]<50?'var(--rust)':'var(--teal)')}]};
+    }), {max:100});
+  })();
+
+  /* ---------- issue seasonality ---------- */
+  (function(){
+    var M=['Jan','Feb','Mar','Apr','May','Jun','Jul'];
+    var A=[35,43,39,56,53,53,65], D=[25,30,37,44,39,32,35], H=[15,29,37,22,33,32,20];
+    var html='<div class="chart" style="height:200px">';
+    var max=70;
+    M.forEach(function(m,i){
+      html+='<div class="col" tabindex="0"><div class="tip"><b>'+m+'</b><br>Anxiety '+A[i]+
+            '%<br>ADHD '+H[i]+'%<br>Depression '+D[i]+'%</div>'+
+            '<div style="display:flex;align-items:flex-end;gap:2px;width:100%;height:100%;">'+
+            '<div class="seg" style="flex:1;height:'+(A[i]/max*160)+'px;background:var(--teal);border-radius:3px 3px 0 0"></div>'+
+            '<div class="seg" style="flex:1;height:'+(H[i]/max*160)+'px;background:var(--amber);border-radius:3px 3px 0 0"></div>'+
+            '<div class="seg" style="flex:1;height:'+(D[i]/max*160)+'px;background:var(--violet);border-radius:3px 3px 0 0"></div>'+
+            '</div><div class="cap">'+m+'</div></div>';
+    });
+    $('#issueChart').innerHTML = html+'</div>';
+  })();
+
+  /* ---------- gender donut ---------- */
+  (function(){
+    var size=132, r=52, sw=17, c=2*Math.PI*r;
+    var f=72.8, m=27.2;
+    var svg='<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" role="img" aria-label="72.8% female, 27.2% male">'+
+      '<g transform="translate('+size/2+','+size/2+') rotate(-90)">'+
+      '<circle r="'+r+'" fill="none" stroke="var(--cream-dark)" stroke-width="'+sw+'"/>'+
+      '<circle r="'+r+'" fill="none" stroke="var(--pink)" stroke-width="'+sw+'" stroke-linecap="butt" '+
+        'stroke-dasharray="'+(c*f/100).toFixed(2)+' '+c.toFixed(2)+'"/>'+
+      '<circle r="'+r+'" fill="none" stroke="var(--violet)" stroke-width="'+sw+'" stroke-linecap="butt" '+
+        'stroke-dasharray="'+(c*m/100).toFixed(2)+' '+c.toFixed(2)+'" '+
+        'stroke-dashoffset="'+(-c*f/100).toFixed(2)+'"/>'+
+      '</g></svg>'+
+      '<div class="mid"><div class="v">73%</div><div class="l">Female</div></div>';
+    $('#genderDonut').innerHTML = svg;
+  })();
+})();
+</script>
+
+</body>
+</html>
