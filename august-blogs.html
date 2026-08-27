@@ -14,9 +14,9 @@
     --chrome-line:#DDD6CA;
     --accent:#C96849;
     --accent-d:#B14E35;
-    --flag-bg:#FBEFD9;
-    --flag-line:#E4C79A;
-    --flag-ink:#6B4A1C;
+    --flag-bg:#EAF0E6;
+    --flag-line:#BFCFB2;
+    --flag-ink:#3B4A31;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -27,9 +27,9 @@
       --chrome-line:#3D434B;
       --accent:#D97E5F;
       --accent-d:#C96849;
-      --flag-bg:#38312A;
-      --flag-line:#5C4B33;
-      --flag-ink:#E8D3AE;
+      --flag-bg:#2B332A;
+      --flag-line:#44523C;
+      --flag-ink:#CFE0C2;
     }
   }
   :root[data-theme="dark"]{
@@ -40,9 +40,9 @@
     --chrome-line:#3D434B;
     --accent:#D97E5F;
     --accent-d:#C96849;
-    --flag-bg:#38312A;
-    --flag-line:#5C4B33;
-    --flag-ink:#E8D3AE;
+    --flag-bg:#2B332A;
+    --flag-line:#44523C;
+    --flag-ink:#CFE0C2;
   }
 
   *{box-sizing:border-box}
@@ -60,20 +60,18 @@
   .review-head h1{font-family:'Playfair Display','Palatino Linotype',Palatino,Georgia,serif;font-size:clamp(28px,4.5vw,40px);font-weight:600;margin:0 0 6px;text-wrap:balance;line-height:1.15}
   .review-head p.sub{color:var(--chrome-muted);margin:0;font-size:15px;max-width:62ch}
 
-  .ask{
-    max-width:1040px;margin:22px auto 0;padding:0 20px;
-  }
+  .ask{max-width:1040px;margin:22px auto 0;padding:0 20px}
   .ask-card{
     background:var(--flag-bg);border:1px solid var(--flag-line);border-radius:14px;
     padding:20px 24px;color:var(--flag-ink);
   }
   .ask-card h2{
     font-family:'Playfair Display','Palatino Linotype',Palatino,Georgia,serif;
-    font-size:19px;font-weight:600;margin:0 0 8px;color:var(--flag-ink);
+    font-size:19px;font-weight:600;margin:0 0 10px;color:var(--flag-ink);
   }
-  .ask-card p{margin:0 0 10px;font-size:15px;line-height:1.7}
-  .ask-card p:last-child{margin-bottom:0}
-  .ask-card q{font-style:italic}
+  .ask-card ul{margin:0;padding-left:20px}
+  .ask-card li{margin:0 0 9px;font-size:15px;line-height:1.7}
+  .ask-card li:last-child{margin-bottom:0}
 
   .tabs{max-width:1040px;margin:26px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap}
   .tab{
@@ -129,9 +127,7 @@
     padding:10px 18px;border-radius:999px;flex:none;
   }
 
-  .imgslot{
-    background:#F2EDE4;border-bottom:1px solid #E6DFD3;padding:30px 24px;text-align:center;
-  }
+  .imgslot{background:#F2EDE4;border-bottom:1px solid #E6DFD3;padding:30px 24px;text-align:center}
   .imgslot p{margin:0;font-size:13px;color:#8A8175;letter-spacing:.04em}
   .imgslot b{color:#5F574B}
 
@@ -151,9 +147,7 @@
   .article .lede{font-size:18px;color:#33383F}
   .article a.ilink{color:#B14E35;text-decoration:underline;text-underline-offset:2px}
 
-  .cta-block{
-    background:#313B47;color:#EFEAE2;border-radius:14px;padding:30px 28px;margin:40px 0 20px;
-  }
+  .cta-block{background:#313B47;color:#EFEAE2;border-radius:14px;padding:30px 28px;margin:40px 0 20px}
   .cta-block h3{font-family:'Playfair Display','Palatino Linotype',Palatino,Georgia,serif;font-size:22px;margin:0 0 10px;font-weight:600;color:#fff}
   .cta-block p{color:#D9D2C6;font-size:15.5px;margin:0 0 18px;line-height:1.65}
   .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
@@ -163,9 +157,7 @@
     border:1px solid #E6DFD3;border-left:4px solid #C96849;border-radius:8px;
     padding:14px 18px;margin:8px 0 40px;font-size:14px;color:#70695F;line-height:1.6;
   }
-  .site-foot{
-    background:#313B47;color:#B9B2A6;font-size:13px;padding:26px 24px;text-align:center;line-height:1.7;
-  }
+  .site-foot{background:#313B47;color:#B9B2A6;font-size:13px;padding:26px 24px;text-align:center;line-height:1.7}
   .site-foot b{color:#EFEAE2}
 
   .panel{
@@ -182,7 +174,6 @@
   .g-desc{font-size:13.5px;color:var(--chrome-ink);opacity:.85;margin:0;max-width:58ch}
 
   a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
   .page-foot{max-width:1040px;margin:0 auto;padding:0 20px 48px;color:var(--chrome-muted);font-size:12.5px;text-align:center}
 
   @media (max-width:640px){
@@ -200,14 +191,20 @@
 <header class="review-head">
   <p class="eyebrow">Damco Digital &middot; Wellspring Therapeutic Partners</p>
   <h1>August Blog Preview</h1>
-  <p class="sub">For Jessica and Megan. Two posts, shown as they will appear on the Wellspring blog. Read each one and reply to this email with anything you would like changed, or a yes to publish.</p>
+  <p class="sub">Second draft, with your feedback applied. Both posts shown as they will appear on the Wellspring blog. Use the tabs to switch between them.</p>
 </header>
 
 <div class="ask">
   <div class="ask-card">
-    <h2>One thing to confirm before these go live</h2>
-    <p>Both posts close by telling readers what to expect when they get in touch. The exact wording is: <q>We accept most major commercial insurance plans and offer a free consultation with our patient coordinator. You can usually be seen quickly, often within 48 hours, with evening and weekend options available.</q></p>
-    <p>We would rather you see that in context than answer it in the abstract. Is all of it true today, and are you comfortable publishing it? If the 48 hours or the evening and weekend availability is not something you want to commit to in writing, tell us and we will soften it before publish.</p>
+    <h2>What changed since your last read</h2>
+    <ul>
+      <li><b>Every edit you flagged is in,</b> across both posts. The time formats, the closet line, "Type A," the commas around "despite achievements," the "but" join, the quote marks on "headache," the added "that," and the reworked comparison-spiral sentence.</li>
+      <li><b>The early-reinforcement point you made is now the spine of that section in the first post.</b> Pull-ups, high school, friends and appearance, likes on a post, and graduation as where it comes into focus rather than where it starts.</li>
+      <li><b>On the repeated sections: you were right, and it was our error rather than a strategy.</b> The first post's "What actually helps" has been rebuilt from scratch, so the two posts no longer overlap.</li>
+      <li><b>On whether clinical anecdotes help: very much.</b> The approach you described is now in the first post's "What actually helps," written as something our clinicians use, with no session or patient detail in it.</li>
+      <li><b>The 48-hour line stays,</b> per your confirmation. We have also recorded that it holds for therapy only, so it will not appear in anything we write about testing or medication management.</li>
+      <li><b>Still to come:</b> featured images. Two options per post, for you to pick.</li>
+    </ul>
   </div>
 </div>
 
@@ -227,7 +224,7 @@
     <div class="site">
       <div class="site-top">
         <span>Troy &middot; Clinton Township &middot; Online across Michigan</span>
-        <a href="#">(586) 846-4835</a>
+        <a href="tel:5868464835">(586) 846-4835</a>
       </div>
       <div class="site-nav">
         <div class="wordmark">Wellspring<small>Therapeutic Partners</small></div>
@@ -240,13 +237,13 @@
         <a href="https://www.wellspringtherapy.net/contact/" class="nav-cta">Request an Appointment</a>
       </div>
 
-      <div class="imgslot"><p><b>Featured image to follow.</b> Gauri is preparing two options for your pick.</p></div>
+      <div class="imgslot"><p><b>Featured image to follow.</b> Two options coming for your pick.</p></div>
 
       <article class="article">
         <p class="post-meta">Anxiety &middot; Therapy for Women <span>&nbsp;&nbsp;5 min read</span></p>
         <h1>"I'm Fine" Is a Symptom: The Hidden Anxiety Behind High Achievement in Women</h1>
 
-        <p class="lede">At 11:47pm on a Tuesday, a woman is rereading a Slack message she sent nine hours ago. There's nothing wrong with it. She just needs to check, one more time, whether the exclamation point after "sounds good!" came across as annoyed instead of enthusiastic. She'll check it two or three more times before she falls asleep. By tomorrow morning, she'll be the first one to reply in the group chat. Warm and put together. As if none of this happened.</p>
+        <p class="lede">It's 11:47 p.m. on a Tuesday, and a woman is rereading a Slack message she sent nine hours ago. There's nothing wrong with it. She just needs to check, one more time, whether the exclamation point after "sounds good!" came across as annoyed instead of enthusiastic. She'll check it two or three more times before she falls asleep. By tomorrow morning, she'll be the first one to reply in the group chat. Warm and put together. As if none of this happened.</p>
 
         <p>That's the part almost nobody clocks about anxiety in women. It doesn't always look like falling apart. Sometimes it looks exactly like the person everyone assumes has it easiest.</p>
 
@@ -255,22 +252,23 @@
         <p>There's no clinical name for this. Open the DSM and "high-functioning anxiety" isn't in there. No therapist writes that phrase on an intake form. But nearly one in four women experiences an anxiety disorder in a given year, compared with about one in seven men, <a class="ilink" href="https://www.nimh.nih.gov/health/statistics/any-anxiety-disorder">according to NIMH</a>. Talk to enough women and the same story comes up: anxiety symptoms in women that never get flagged as anything, because on the surface they just look like being good at your job.</p>
 
         <h2>What it looks like from the outside</h2>
-        <p>Sometimes it's a closet, reorganized at 1am instead of slept through. Sometimes it's a comment from last Thursday, replayed on the drive home like it just happened, even though whoever said it has probably forgotten. You take on the project nobody else wants. Saying no feels riskier somehow. You check the front door lock twice before you're even out of the driveway.</p>
-        <p>None of that looks like textbook anxiety symptoms in women. It looks like someone who's thorough and detail-oriented. A little intense, maybe, but people rarely mean that as an insult. So you start saying it about yourself too. That's the trick of it. Nobody, including you, thinks to look any closer.</p>
+        <p>Sometimes it's a closet, reorganized at 1 a.m. when your mind, body, or both are keeping you awake. Sometimes it's a comment from last Thursday, replayed on the drive home like it just happened, even though whoever said it has probably forgotten. You take on the project nobody else wants. Saying no feels riskier somehow. You check the front door lock twice before you're even out of the driveway.</p>
+        <p>None of that looks like textbook anxiety symptoms in women. It looks like someone who's thorough. Detail-oriented. Maybe even "Type A." People rarely mean any of that as an insult. So you start saying it about yourself too. That's the trick of it. Nobody, including you, thinks to look any closer.</p>
 
         <h2>What it actually feels like underneath</h2>
         <p>It's rarely one bad day that tips you off. It's closer to a hum that never quite switches off. It shows up on an ordinary Tuesday with nothing obviously wrong. You do the quiet math on whether skipping one more plan will make someone start asking questions. You wonder why none of your accomplishments have made this feeling go away yet. If you're honest, that's a little embarrassing.</p>
-        <p>Doing well and feeling okay were never actually the same thing. The two get treated like they should arrive together automatically. They don't. That gap is exactly where therapy for women with self-doubt despite achievements comes in.</p>
+        <p>Doing well and feeling okay were never actually the same thing. The two get treated like they should arrive together automatically. They don't. That gap is exactly where therapy for women with self-doubt, despite achievements, comes in.</p>
         <p>If any of this sounds familiar, you already know the feeling. The to-do list is finished, but your mind won't power down for the night. Wellspring's earlier piece on <a class="ilink" href="https://www.wellspringtherapy.net/blog/mindfulness-for-anxiety/">mindfulness for busy women</a> goes further into that specific, tired-but-wired state.</p>
 
         <h2>What actually helps</h2>
-        <p>Naming the pattern matters, but it's not the whole answer. A few small, unglamorous habits tend to move the needle before anything else does.</p>
-        <p>Start with the basics your body actually runs on. A real meal, not the granola bar eaten standing up at 3pm. A shower, even on the days you don't feel like it. A consistent bedtime you actually keep. None of this sounds like therapy. It isn't meant to replace it. But when your nervous system has been running on empty for months, these are the first three things worth rebuilding before anything else can stick.</p>
-        <p>From there, the work gets more specific to you, what's actually driving the vigilance, and how to loosen its grip without losing what made you good at your job in the first place. That's the part a therapist helps with. A checklist can't.</p>
+        <p>Naming the pattern matters, but it's not the whole answer. What helps first is smaller and less interesting than most people expect.</p>
+        <p>Begin with what your body actually runs on. A real meal, not the granola bar eaten standing up at 3 p.m. A shower, even on the days you don't feel like it. A bedtime you keep. None of that is therapy and it won't stand in for therapy, but a nervous system running on empty for months won't respond to anything more sophisticated until those are back in place.</p>
+        <p>Then there's the part that keeps going after the lights are off. One technique our clinicians use is simple enough to try tonight. When a task pushes its way into your head, ask whether it's already written down. If it is, you have permission to let it go, because the list is doing its job. If it isn't, and you're nowhere near the list, ask your phone to remind you at a time you know you'll be at your desk. If you genuinely can't remember either way, treat that as a no and set the reminder anyway. What you're building isn't a better system. It's the habit of trusting the one you already have, so your brain can stop rehearsing it at midnight.</p>
+        <p>What's actually driving the vigilance is specific to you, and so is how you loosen its grip without losing what made you good at your job in the first place. That's a conversation, not a checklist.</p>
 
         <h2>Why it's easy to miss, even when it's happening to you</h2>
-        <p>Some of this is cultural. Being dependable gets praised. Being the one who handles things gets praised. Nobody hands out concern to someone who never seems to need it. Some of it is timing. This pattern often starts young, right after life first asks you to hold more than you're used to holding. A first real job. A move to a new city. The years right after graduation count too. That's when the gap between who you thought you'd be and who you actually are can quietly harden. Overcompensating becomes a habit, just to feel steady.</p>
-        <p>It usually takes someone outside the situation to say that out loud. Someone with the kind of distance therapy for women with self-doubt despite achievements provides. You're often too close to it to see it clearly yourself.</p>
+        <p>Some of this is cultural. Being dependable gets praised. Being the one who handles things gets praised. Nobody hands out concern to someone who never seems to need it. Some of it starts much earlier than people realize, quietly reinforced since before you were out of pull-ups. Many women can trace it back to high school, working twice as hard as it looked while parents, friends, and teachers had no idea. The same pattern shows up in making friends, in how you look, and later, in how many likes a post gets. It often comes into full focus right after graduation, at your first real job, or during your first adult move, even when you can't quite name what's happening. That's when the gap between who you thought you'd be and who you actually are can quietly harden. Overcompensating becomes a habit, just to feel steady.</p>
+        <p>It usually takes someone outside the situation to say that out loud. Someone with the kind of distance that therapy for women with self-doubt despite achievements provides. You're often too close to it to see it clearly yourself.</p>
         <p>Sometimes it runs in families without anyone naming it. If you're carrying this pattern as a mother, you might not recognize it in your own teenager, because in you it looks like competence. In them, it looks different: <a class="ilink" href="https://www.wellspringtherapy.net/blog/signs-of-school-anxiety-in-teens">an anxious teen who's perfectionistic instead of visibly falling apart</a>. Underneath, it's the same thing wearing a different disguise.</p>
 
         <h2>Knowing when it's time to talk to someone</h2>
@@ -323,7 +321,7 @@
     <div class="site">
       <div class="site-top">
         <span>Troy &middot; Clinton Township &middot; Online across Michigan</span>
-        <a href="#">(586) 846-4835</a>
+        <a href="tel:5868464835">(586) 846-4835</a>
       </div>
       <div class="site-nav">
         <div class="wordmark">Wellspring<small>Therapeutic Partners</small></div>
@@ -336,7 +334,7 @@
         <a href="https://www.wellspringtherapy.net/contact/" class="nav-cta">Request an Appointment</a>
       </div>
 
-      <div class="imgslot"><p><b>Featured image to follow.</b> Gauri is preparing two options for your pick.</p></div>
+      <div class="imgslot"><p><b>Featured image to follow.</b> Two options coming for your pick.</p></div>
 
       <article class="article">
         <p class="post-meta">Life Transitions &middot; Emerging Adults <span>&nbsp;&nbsp;5 min read</span></p>
@@ -347,7 +345,7 @@
         <p>That gap, the version of her life everyone else sees versus the one she's actually living inside, is usually where feeling stuck in life quietly takes hold. It almost never shows up the way people picture it.</p>
 
         <h2>What feeling stuck actually looks like in your twenties</h2>
-        <p>It's rereading a friend's engagement announcement three or four times. You do the math on whether you should be somewhere similar by now. It's agreeing to a coworker's birthday drinks and dreading it for the entire week leading up. Not because you dislike the coworker. Keeping up appearances for two hours after a long week costs more than people assume it does. Sometimes it's bailing at the last minute with a headache excuse. The truer answer is that you've spent all week performing fine, and you simply ran out of performance by Friday.</p>
+        <p>It's rereading a friend's engagement announcement three or four times. You do the math on whether you should be somewhere similar by now. It's agreeing to a coworker's birthday drinks and dreading it for the entire week leading up, not because you dislike the coworker, but because keeping up appearances for two hours after a long week costs more than people assume it does. Sometimes it's bailing at the last minute with a "headache" excuse. The truer answer is that you've spent all week performing fine, and you simply ran out of performance by Friday.</p>
         <p>To anyone watching, this doesn't look like a crisis. It looks like someone who's a little tired but ultimately okay. That's exactly why the pattern can run for years before anyone, including you, names it as anything more than being busy.</p>
 
         <h2>What makes this decade so disorienting</h2>
@@ -358,22 +356,22 @@
 
         <h2>Why the comparison spiral is so hard to break</h2>
         <p>Social media doesn't help. That's because everyone's only posting the best hour of their week. Scroll at midnight long enough and an ordinary Tuesday starts getting measured against someone else's best day of the month. That comparison was never fair to begin with, and it somehow still manages to feel true every time it happens.</p>
-        <p>A good therapist can help pull apart what's actually bothering you from what a feed you never asked to be shaped by has quietly convinced you should be bothering you. That untangling is really the core of quarter life crisis therapy.</p>
+        <p>A good therapist can help you sort that out. What's actually bothering you, and what's just noise from a feed you never chose to be shaped by. That untangling is really the core of quarter life crisis therapy.</p>
 
         <h2>What actually helps</h2>
-        <p>Naming the pattern helps, but it's not the whole answer. A few small, unglamorous habits tend to matter more than people expect.</p>
+        <p>Knowing what's going on doesn't automatically make it easier to carry. A few small changes tend to help more than a five-year plan ever could.</p>
         <p>Start with the basics. A regular bedtime, even on weekends. A real meal instead of coffee and whatever's left in the fridge. Time away from your phone before you fall asleep, even twenty minutes. None of this sounds like therapy. It isn't meant to replace it. But when you've been running on comparison and adrenaline for months, these are the first things worth rebuilding.</p>
         <p>From there, the work gets more specific: what you're actually comparing yourself to, and why it feels so urgent right now. That's the part a therapist helps you untangle.</p>
 
         <h2>When feeling behind turns into something worth addressing</h2>
-        <p>There's no single moment that flips a rough patch into something worth getting support for. But a handful of signs tend to cluster together. A to-do list that never really shrinks, no matter what gets crossed off it. Sleep that stopped feeling like rest a while back. Saying yes to plans and dreading nearly all of them by the time they arrive. For a lot of people, it also looks like searching symptoms alone at 1am instead of saying any of it out loud to a person. That tends to circle the same worry without ever actually landing anywhere.</p>
-        <p>None of it means something is fundamentally broken. It usually means the strategy that's carried you this far, staying busy, staying ahead, staying composed, has quietly stopped paying off. If this pattern of overachieving through self-doubt sounds familiar, it's worth understanding how <a class="ilink" href="https://www.wellspringtherapy.net/blog/hidden-anxiety-in-high-achieving-women">anxiety often hides behind competence</a>. Feeling stuck in life like this is usually the clearest signal that naming what's actually going on beats managing around it indefinitely.</p>
+        <p>There's no single moment that flips a rough patch into something worth getting support for. But a handful of signs tend to cluster together. A to-do list that never really shrinks, no matter what gets crossed off it. Sleep that stopped feeling like rest a while back. Saying yes to plans and dreading nearly all of them by the time they arrive. For a lot of people, it also looks like searching symptoms alone at 1 a.m. instead of saying any of it out loud to a person. That tends to circle the same worry without ever actually landing anywhere.</p>
+        <p>You haven't done anything wrong. The approach that's gotten you this far, staying busy, staying ahead, staying composed, is just starting to cost more than it's worth. If this pattern of overachieving through self-doubt sounds familiar, it's worth understanding how <a class="ilink" href="https://www.wellspringtherapy.net/blog/hidden-anxiety-in-high-achieving-women">anxiety often hides behind competence</a>. Feeling stuck in life like this is usually the clearest signal that naming what's actually going on beats managing around it indefinitely.</p>
 
         <h2>Therapy for Life Transitions in Troy and Clinton Township, Michigan</h2>
         <p>If you're looking for a life transition therapist in Troy, or you're already searching for therapy for a quarter-life crisis anywhere across Oakland and Macomb County, Wellspring Therapeutic Partners can help.</p>
         <p>We work with women in their twenties and early thirties who look like they've got it together and don't quite feel that way underneath it. Our <a class="ilink" href="https://www.wellspringtherapy.net/therapy-for-women-in-troy-and-clinton-twp/">therapy for women</a> is built around this exact stretch of life. You'll be matched with a clinician trained specifically in this transition, not someone guessing at what you're going through.</p>
         <p>We provide therapy for feeling stuck that Michigan residents can access at our Troy and Clinton Township offices, along with online therapy across the state for anyone whose schedule doesn't leave room for one more commute.</p>
-        <p>We accept most major commercial insurance plans and offer a free consultation with our patient coordinator. You can usually be seen quickly, often within 48 hours, with evening and weekend appointments available. For a lot of women, that first appointment turns into exactly the kind of quarter-life crisis therapy that finally puts language to what's already been sitting there for a while.</p>
+        <p>We accept most major commercial insurance plans and offer a free consultation with our patient coordinator. You can usually be seen quickly, often within 48 hours, with evening and weekend appointments available. That first appointment is often less about fixing what's wrong and more about working out what you actually want your twenties to look like, on your own terms, not the ones you grew up assuming were the only option.</p>
 
         <div class="cta-block">
           <h3>A first conversation is just a conversation.</h3>
