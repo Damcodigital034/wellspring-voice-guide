@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Wellspring Delivery Check-in</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one overview screen, then three channel views (Paid / SEO / Social) opened in place via hash routing; summary before detail everywhere. */
+:root{
+  --bg:#f7f4ec; --surface:#fffdf8; --surface-2:#f1ece0; --line:#e2dbc9; --line-strong:#cfc5ad;
+  --fg:#1e2320; --fg-2:#4f564f; --muted:#7c837a;
+  --teal:#0b8fa3; --rust:#cc4f2b; --violet:#6f4fc0; --green:#2d9150; --amber:#b8860b;
+  --teal-soft:#dff1f3; --rust-soft:#f9e4dc; --violet-soft:#ebe5f8; --green-soft:#e0f1e5; --amber-soft:#f6ecd2;
+  --good:#2d9150; --warn:#b8860b; --bad:#c23b2a;
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radius:14px; --shadow:0 1px 2px rgba(30,35,32,.05),0 6px 18px rgba(30,35,32,.06);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#15181a; --surface:#1d2124; --surface-2:#252a2e; --line:#30373c; --line-strong:#42494f;
+  --fg:#edeae2; --fg-2:#c3c0b7; --muted:#8e948f;
+  --teal:#1f9aa8; --rust:#e0623a; --violet:#9d7fe8; --green:#3fa95f; --amber:#d9a53a;
+  --teal-soft:#15333a; --rust-soft:#3a241c; --violet-soft:#2a2440; --green-soft:#1d3326; --amber-soft:#3a3118;
+  --good:#3fa95f; --warn:#d9a53a; --bad:#e2634f;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.35);
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#15181a; --surface:#1d2124; --surface-2:#252a2e; --line:#30373c; --line-strong:#42494f;
+  --fg:#edeae2; --fg-2:#c3c0b7; --muted:#8e948f;
+  --teal:#1f9aa8; --rust:#e0623a; --violet:#9d7fe8; --green:#3fa95f; --amber:#d9a53a;
+  --teal-soft:#15333a; --rust-soft:#3a241c; --violet-soft:#2a2440; --green-soft:#1d3326; --amber-soft:#3a3118;
+  --good:#3fa95f; --warn:#d9a53a; --bad:#e2634f;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.35);
+  color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 56px;padding-inline:20px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,52px)}
+h2{font-size:clamp(26px,3.4vw,34px)}
+h3{font-size:22px}
+h4{font-size:18px}
+p{margin:0}
+a{color:var(--teal)}
+.eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)} .fg2{color:var(--fg-2)}
+.small{font-size:13px}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:36px;height:36px;border-radius:50%;background:var(--teal);display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:700;font-size:20px}
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg-2);text-decoration:none;font-weight:500;font-size:13.5px}
+.nav a[aria-current="page"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.nav a .dot{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.nav a.paid .dot{background:var(--rust)} .nav a.goal .dot{background:var(--amber)} .nav a.seo .dot{background:var(--green)} .nav a.social .dot{background:var(--violet)}
+.nav a:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* views */
+.view{display:none} .view.active{display:block}
+.section{margin-top:36px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))} .g3{grid-template-columns:repeat(3,minmax(0,1fr))} .g4{grid-template-columns:repeat(4,minmax(0,1fr))} .g6{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:900px){.g3,.g4,.g6{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.g2,.g3,.g4,.g6{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;min-width:0}
+.card.soft{background:var(--surface-2);border-color:transparent}
+.kpi .label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .value{font-family:var(--body);font-size:32px;font-weight:700;letter-spacing:-.01em;line-height:1;margin-top:8px}
+.kpi .sub{font-size:13px;color:var(--fg-2);margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid transparent}
+.pill.good{background:var(--green-soft);color:var(--good)} .pill.warn{background:var(--amber-soft);color:var(--warn)} .pill.bad{background:var(--rust-soft);color:var(--bad)} .pill.neutral{background:var(--surface-2);color:var(--fg-2)}
+.pill.teal{background:var(--teal-soft);color:var(--teal)} .pill.violet{background:var(--violet-soft);color:var(--violet)} .pill.rust{background:var(--rust-soft);color:var(--rust)} .pill.green{background:var(--green-soft);color:var(--green)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:stretch}
+@media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero .lead{font-size:17px;color:var(--fg-2);max-width:62ch;margin-top:14px}
+.score{display:flex;flex-direction:column;gap:12px}
+.score .big{display:flex;align-items:baseline;gap:10px}
+.score .big .n{font-family:var(--body);font-size:60px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.score .big .d{font-size:20px;color:var(--muted)}
+.pips{display:flex;gap:6px}
+.pips span{width:40px;height:10px;border-radius:5px;background:var(--line-strong)}
+.pips span.on{background:var(--teal)}
+.why{border-left:3px solid var(--rust);padding:8px 12px;background:var(--rust-soft);border-radius:0 10px 10px 0;font-size:14px}
+
+/* sentiment meter */
+.meter{display:grid;grid-template-columns:1fr;gap:10px}
+.mrow{display:grid;grid-template-columns:220px 1fr 60px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+@media (max-width:700px){.mrow{grid-template-columns:1fr 60px}.mrow .bar{grid-column:1/-1}}
+.mrow .name{font-weight:600} .mrow .ev{font-size:13px;color:var(--fg-2);margin-top:2px}
+.bar{height:10px;border-radius:5px;background:var(--surface-2);overflow:hidden;position:relative}
+.bar i{display:block;height:100%;border-radius:5px;background:var(--teal)}
+.bar i.v5{background:var(--green)} .bar i.v2{background:var(--amber)}
+.mscore{font-family:var(--body);font-size:20px;font-weight:700;text-align:right}
+
+/* block cards */
+.blocks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.blocks{grid-template-columns:1fr}}
+.block{position:relative;display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:18px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .15s ease}
+.block:hover{transform:translateY(-2px)}
+.block .stripe{position:absolute;inset:0 auto 0 0;width:6px;border-radius:18px 0 0 18px}
+.block.paid .stripe{background:var(--rust)} .block.seo .stripe{background:var(--green)} .block.social .stripe{background:var(--violet)}
+.block h3{font-size:26px}
+.block .stat{display:flex;gap:18px;flex-wrap:wrap}
+.block .stat div b{display:block;font-family:var(--body);font-size:24px;font-weight:700;line-height:1}
+.block .stat div span{font-size:12px;color:var(--muted)}
+.block .open{margin-top:auto;font-weight:600;color:var(--teal)}
+.spark{width:100%;height:46px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface-2);white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tr.total td{font-weight:600;background:var(--surface-2)}
+td.pend{color:var(--muted);font-style:italic}
+
+/* charts */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--body);fill:var(--fg-2);font-size:11px}
+.chart .grid line{stroke:var(--line);stroke-width:1}
+.chart .axis{stroke:var(--line-strong)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--fg-2);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);padding:6px 10px;border-radius:8px;font-size:12.5px;display:none;z-index:9;white-space:nowrap}
+
+/* lists */
+.list{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.item .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff}
+.item .ic.g{background:var(--green)} .item .ic.a{background:var(--amber)} .item .ic.r{background:var(--rust)} .item .ic.t{background:var(--teal)} .item .ic.v{background:var(--violet)}
+.item b{display:block} .item .d{font-size:13.5px;color:var(--fg-2)}
+.steps{counter-reset:s;display:grid;gap:8px}
+.step{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.step::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.step .who{font-size:12.5px;color:var(--muted);white-space:nowrap}
+@media (max-width:560px){.step{grid-template-columns:34px 1fr}.step .who{grid-column:2}}
+
+/* post cards */
+.posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.posts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.posts{grid-template-columns:1fr}}
+.post{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.post .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.post .cap{font-size:13.5px;color:var(--fg-2)}
+.post .kw{font-size:11.5px;color:var(--muted)}
+.defs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:700px){.defs{grid-template-columns:1fr}}
+.def{padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+.def b{display:block;font-size:14px} .def span{font-size:13px;color:var(--fg-2)}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--teal);text-decoration:none;font-weight:600;font-size:13.5px}
+.banner{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:var(--amber-soft);color:var(--fg);font-size:13.5px;border:1px solid transparent}
+.banner b{color:var(--warn)}
+.gmb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.gmb{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.gmb .g{padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+.gmb .g b{display:block;font-family:var(--body);font-size:26px;font-weight:700;line-height:1}
+.gmb .g span{font-size:12.5px;color:var(--fg-2)}
+.delta{font-size:12px;font-weight:600;margin-left:6px}
+.delta.up{color:var(--good)} .delta.down{color:var(--bad)} .delta.flat{color:var(--muted)}
+.mood{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding:22px;border-radius:18px;background:var(--surface-2);overflow:hidden}
+@media (max-width:900px){.mood{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.mood{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px}}
+.tile{position:relative;border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);transition:transform .2s ease;aspect-ratio:4/5;min-width:0;max-width:100%}
+.tile img,.tile video{width:100%;height:100%;object-fit:cover;display:block}
+.tile:nth-child(odd){transform:rotate(-1.6deg)} .tile:nth-child(even){transform:rotate(1.4deg)} .tile:nth-child(3n){transform:rotate(-0.6deg) translateY(10px)} .tile:nth-child(5n){transform:rotate(2deg) translateY(-6px)}
+.tile:hover{transform:rotate(0) scale(1.03);z-index:2}
+.tile .tag{position:absolute;left:8px;bottom:8px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;background:var(--fg);color:var(--bg);opacity:.9}
+.cal{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 18px;border-radius:14px;background:var(--violet-soft);border:1px solid transparent}
+.cal a.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--violet);color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+@media (prefers-reduced-motion:reduce){.tile{transition:none}}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.pgrid{grid-template-columns:1fr}}
+.pcard{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pcard .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.ptitle{font-family:var(--display);font-size:19px;font-weight:600;line-height:1.15}
+.stripwrap{position:relative}
+.strip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:10px}
+.strip::-webkit-scrollbar{display:none}
+.strip img{flex:0 0 100%;scroll-snap-align:start;aspect-ratio:4/5;object-fit:cover;border-radius:10px;max-width:100%}
+.sbtn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:0;background:var(--fg);color:var(--bg);font-size:20px;line-height:1;cursor:pointer;opacity:.85;display:grid;place-items:center}
+.sbtn.prev{left:8px} .sbtn.next{right:8px}
+.sbtn:hover{opacity:1}
+.top3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+@media (max-width:900px){.top3{grid-template-columns:1fr}}
+.t3{position:relative;padding:22px 22px 20px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column;gap:6px}
+.t3::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:5px;border-radius:0 5px 5px 0;background:var(--teal)}
+.t3.rust::before{background:var(--rust)} .t3.green::before{background:var(--green)} .t3.violet::before{background:var(--violet)} .t3.amber::before{background:var(--amber)}
+.t3 .rank{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.t3 .big{font-family:var(--body);font-size:clamp(32px,3.4vw,44px);font-weight:700;letter-spacing:-.02em;line-height:1;margin-top:4px}
+.t3 .big small{font-size:.42em;font-weight:600;color:var(--fg-2);margin-left:6px}
+.t3 .what{font-weight:600;font-size:15px}
+.t3 .vs{font-size:13px;color:var(--fg-2)}
+.t3 .why{border:0;background:transparent;padding:0;margin-top:4px;font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+/* compact overview */
+.hero{grid-template-columns:1fr;gap:14px}
+.hero .card{padding:22px 24px}
+h1{font-size:clamp(30px,3.6vw,40px)}
+.hero .lead{font-size:15px;margin-top:10px;max-width:70ch}
+.csat{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.csat .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.csat .n{font-family:var(--body);font-size:40px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.csat .d{font-size:16px;color:var(--muted);margin-left:-8px}
+.csat .pips span{width:26px;height:8px}
+.csat .why{font-size:13px;padding:6px 10px}
+.csat details{font-size:13px;color:var(--fg-2)}
+.csat summary{cursor:pointer;font-weight:600;color:var(--teal);list-style:none}
+.csat summary::-webkit-details-marker{display:none}
+.csat details[open] summary{margin-bottom:4px}
+.section{margin-top:26px}
+.section-head{margin-bottom:10px}
+h2{font-size:clamp(22px,2.6vw,28px)}
+.top3{gap:12px}
+.t3{padding:16px 18px 14px;gap:4px}
+.t3 .big{font-size:clamp(28px,3vw,36px)}
+.t3 .what{font-size:14px}
+.t3 .vs{font-size:12.5px}
+.t3 .why{font-size:12px;padding-top:6px}
+.mrow{grid-template-columns:170px 1fr 44px;gap:10px;padding:7px 0}
+.mrow .name{font-size:13.5px}
+.mrow .ev{font-size:12px;line-height:1.35}
+.mscore{font-size:19px}
+.bar{height:8px}
+.item{padding:9px 12px;gap:10px}
+.item .ic{width:26px;height:26px;border-radius:8px;font-size:12px}
+.item b{font-size:14px} .item .d{font-size:12.5px}
+.step{padding:8px 12px}
+.block{padding:18px;gap:8px}
+.block h3{font-size:22px}
+.def{padding:10px 12px} .def b{font-size:13.5px} .def span{font-size:12.5px}
+.card{padding:16px 18px}
+.kpi .value{font-size:32px}
+/* charts: bigger text, cleaner */
+.chart text{font-size:12.5px}
+.chart .grid line{stroke-dasharray:2 4}
+.chart .vlabel{font-weight:600;fill:var(--fg)}
+.legend{font-size:13px;gap:18px}
+.legend i{width:14px;height:14px}
+
+/* goal tracker */
+.gl-tank{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin:8px 0 6px}
+.gl-end{text-align:center}
+.gl-end .gl-big{font-family:var(--body);font-size:52px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.gl-end .gl-big small{font-size:16px;color:var(--muted);font-weight:500;margin-left:4px}
+.gl-track{position:relative;height:38px;min-width:280px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line-strong);overflow:hidden}
+.gl-fill{position:absolute;inset:0;width:50%;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:999px;transition:width .6s}
+.gl-fill span{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#fff;font-weight:600;font-size:13px;white-space:nowrap}
+.gl-ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:6px;padding:0 2px}
+.gl-now{font-size:12.5px;color:var(--fg-2);text-align:center;margin-top:10px}
+.gl-paths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.gl-path{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface)}
+.gl-path .gl-name{font-weight:600;display:flex;align-items:center;gap:8px}
+.gl-path .gl-sw{width:12px;height:12px;border-radius:50%}
+.gl-path .gl-when{font-family:var(--body);font-size:28px;font-weight:700;margin:6px 0 2px;letter-spacing:-.01em}
+.gl-path .gl-d{font-size:13px;color:var(--fg-2)}
+.gl-chart{width:100%;height:auto;display:block;margin-top:10px}
+.gl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--fg-2);margin-top:8px}
+.gl-legend span{display:inline-flex;align-items:center;gap:6px}
+.gl-legend i{width:18px;height:3px;border-radius:2px;display:inline-block}
+.gl-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
+.gl-controls label{font-size:12.5px;color:var(--fg-2);display:block}
+.gl-controls input{width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);color:var(--fg);font:inherit}
+@media (max-width:720px){.gl-tank{grid-template-columns:1fr}.gl-paths{grid-template-columns:1fr}.gl-end .gl-big{font-size:42px}}
+
+/* top-10 keyword block */
+.kwtop{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.kwtop{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.kwtop{grid-template-columns:1fr}}
+.kwc{position:relative;padding:16px 18px;border-radius:16px;background:var(--green-soft);border:1px solid transparent;min-width:0}
+.kwc .posn{font-family:var(--body);font-size:40px;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--good)}
+.kwc .posn small{font-size:13px;font-family:var(--body);font-weight:600;color:var(--fg-2);margin-left:6px}
+.kwc .kw{font-weight:600;font-size:15px;margin-top:6px;line-height:1.25}
+.kwc .from{font-size:12.5px;color:var(--fg-2);margin-top:4px}
+.kwnext{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.kwnext span{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface-2);font-size:13px;font-weight:500}
+.kwnext span b{font-family:var(--body);font-size:16px;font-weight:700;color:var(--teal)}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){.block{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">W</div>
+      <div>
+        <div class="eyebrow">Damco Digital · Account dashboard</div>
+        <div style="font-weight:600">Wellspring Therapeutic Partners</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#overview" data-view="overview"><span class="dot"></span>Overview</a>
+      <a href="#paid" class="paid" data-view="paid"><span class="dot"></span>Paid ads</a>
+      <a href="#seo" class="seo" data-view="seo"><span class="dot"></span>SEO</a>
+      <a href="#social" class="social" data-view="social"><span class="dot"></span>Social</a>
+      <a href="#goal" class="goal" data-view="goal"><span class="dot"></span>Goal</a>
+    </nav>
+  </div>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <section class="view" id="view-overview">
+    <div class="hero">
+      <div class="card">
+        <div class="eyebrow">Delivery check-in · 9 October 2026</div>
+        <h1 style="margin-top:8px">Where Wellspring stands going into Q4</h1>
+        <p class="lead">Paid search books more patients for less than in March. SEO has moved from audits to implementation and September is the first month the rankings show it. Social runs on a voice the client wrote, and the October calendar cleared on first sight. One soft spot: a small paid dip this quarter, seasonal plus the client's own system changes, explained in the paid tab and already being worked.</p>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:22px">
+      <div class="section-head"><div><div class="eyebrow">The three numbers that matter</div><h2>Account at a glance</h2></div></div>
+      <div class="top3" style="margin-top:0">
+        <div class="t3"><div class="rank">1 · Client sentiment</div><div class="big num">4.2<small>/ 5</small></div><div class="what">Sentiment meter across six call parameters</div><div class="vs">Collaboration and strategic alignment at 5; responsiveness, approvals and trust at 4; our visible initiative at 3.</div><div class="why">Open item from 9 Oct: confirm in person with Jessica that the seasonal-dip explanation landed, and what takes the rating from 4 to 5.</div></div>
+        <div class="t3 rust"><div class="rank">2 · Cost per lead</div><div class="big num">$78<small>Sep</small></div><div class="what">Down 45% from $141 in February</div><div class="vs">Leads up from 11 to 28 a month (+155%). Q3 76 leads vs Q2 63 (+21%) on similar spend.</div><div class="why">Google Ads platform leads, form + phone, customer 509-316-4652, pulled live.</div></div>
+        <div class="t3 green"><div class="rank">3 · Keywords in top 10</div><div class="big num">24%<small>Sep</small></div><div class="what">4 of 17 tracked keywords, from 0% in February</div><div class="vs">Top 30: 11 of 17 (65%) vs 2 of 9 (22%) in Feb. Average position 29.8 from 55.0.</div><div class="why">Keywords and Ranking Report, month-end positions. Two keywords now sit at position 2.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div><div class="eyebrow">Client sentiment meter</div><h2>How the client behaves with us on calls</h2></div>
+        <span class="pill good">Overall 4.2 / 5</span>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="meter">
+            <div class="mrow"><div><div class="name">Responsiveness</div><div class="ev">Same-call approvals on blog topics (12 Aug), October calendar and landing page (7 Oct). Megan's backlog slows one-off reviews ("it's been very hectic").</div></div><div class="bar"><i style="width:80%"></i></div><div class="mscore num">4</div></div>
+            <div class="mrow"><div><div class="name">Approval friction</div><div class="ev">Cultural page: zero edits. Landing page: one wording change. Blogs: two rounds in Sept, 16 edit requests in Aug (now folded into the blog standard).</div></div><div class="bar"><i style="width:80%"></i></div><div class="mscore num">4</div></div>
+            <div class="mrow"><div><div class="name">Collaboration on calls</div><div class="ev">Brainstorms are two-way: our seed on reposts came back with her shortlist, the mascot concept built on our character work, CRM walkthrough offered, testimonials now flowing.</div></div><div class="bar"><i class="v5" style="width:100%"></i></div><div class="mscore num">5</div></div>
+            <div class="mrow"><div><div class="name">Our initiative, as the client sees it</div><div class="ev">The ideas she credits came from her side first (mascot, reposts, CRM). We need to be seen bringing the fleshed-out idea, not the seed. Scored honestly after the 9 Oct review.</div></div><div class="bar"><i style="width:60%"></i></div><div class="mscore num">3</div></div>
+            <div class="mrow"><div><div class="name">Trust in our reporting</div><div class="ev">Praised the weekly report (5 Aug), backed the paid changes with no pushback (12 Aug). Open: Google Ads walkthrough asked since May, 2026 sheet accuracy.</div></div><div class="bar"><i style="width:80%"></i></div><div class="mscore num">4</div></div>
+            <div class="mrow"><div><div class="name">Strategic alignment</div><div class="ev">Jessica wrote the social brand guide herself and set the KPI guardrail: saves, shares, website visits. "Not trying to go viral." "I like to be first."</div></div><div class="bar"><i class="v5" style="width:100%"></i></div><div class="mscore num">5</div></div>
+                      </div>
+          <p class="note">Scoring: 1 to 5 per parameter from the call signals logged after every sync (moms/*/feedback.md). Re-scored 9 Oct after the internal review: initiative split from collaboration. Client-side constraints (no one on camera, no in-house content time, no spend rise for about three months) are tracked in the brief, not scored here. Re-score monthly; the QBR version uses the same rows.</p>
+        </div>
+        <div class="grid" style="gap:14px;align-content:start">
+          <div class="card">
+            <div class="eyebrow">KPIs the client actually tracks</div>
+            <div class="defs" style="margin-top:10px">
+              <div class="def"><b>Paid</b><span>Google Ads leads (form + phone), booked consultations, booking rate, cost per enquiry</span></div>
+              <div class="def"><b>SEO</b><span>Top-10 local keywords, organic traffic, AI citations and AI sessions</span></div>
+              <div class="def"><b>Social</b><span>Saves, shares, website visits, DMs. Not comments, not reach, not followers</span></div>
+              <div class="def"><b>Operations</b><span>Weekly leads all sources, reasons not scheduled, insurance fit</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="eyebrow">Watch list</div>
+            <div class="list" style="margin-top:10px">
+              <div class="item"><div class="ic r">!</div><div><b>Did the dip explanation land?</b><div class="d">Jessica rated us 4 of 5 by email and has not replied since. Ask in person on 14 Oct: are we on the same page on the seasonal dip, and what takes it to 5.</div></div></div>
+              <div class="item"><div class="ic a">!</div><div><b>QBR date is floating</b><div class="d">21 Oct is off (Jessica unavailable). Megan confirms availability, we send slots by Fri 10 Oct. Internal reviews 13 Oct (Proneeta) and 16 Oct (Nitya) hold.</div></div></div>
+              <div class="item"><div class="ic a">!</div><div><b>Ads walkthrough for Megan</b><div class="d">Requested since May, asked again 12 Aug. Still not scheduled.</div></div></div>
+              <div class="item"><div class="ic a">!</div><div><b>New patient system teething</b><div class="d">Live 1 Oct; reminders omit office addresses; expect "a good couple months" of kinks. Lead logging will be noisy.</div></div></div>
+              <div class="item"><div class="ic t">i</div><div><b>Never answered</b><div class="d">Target monthly lead number and somatic therapy status. Carry into the QBR.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Channels</div><h2>Three blocks, open each for the full picture</h2></div></div>
+      <div class="blocks">
+        <a class="block paid" href="#paid"><span class="stripe"></span>
+          <div class="eyebrow">Paid ads · Feb to Oct 2026</div><h3>Steady engine, cheaper bookings</h3>
+          <div class="stat"><div><b class="num">173</b><span>platform leads Feb to Sep</span></div><div><b class="num">52%</b><span>Google booking rate, Jul to Aug</span></div></div>
+          <svg class="spark" id="spark-paid" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="open">Open paid ads →</div>
+        </a>
+        <a class="block seo" href="#seo"><span class="stripe"></span>
+          <div class="eyebrow">SEO · Feb to Dec 2026</div><h3>From audits to implementation</h3>
+          <div class="stat"><div><b class="num">24%</b><span>keywords in top 10 (Sep, from 0%)</span></div><div><b class="num">321</b><span>organic contact actions, Sep</span></div></div>
+          <svg class="spark" id="spark-seo" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="open">Open SEO →</div>
+        </a>
+        <a class="block social" href="#social"><span class="stripe"></span>
+          <div class="eyebrow">Social · Jul to Nov 2026</div><h3>A voice the client wrote</h3>
+          <div class="stat"><div><b class="num">12</b><span>October posts, 3 pillars</span></div><div><b class="num">3</b><span>Highlights launching 13 Oct</span></div></div>
+          <svg class="spark" id="spark-social" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="open">Open social →</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Next 30 days</div><h2>What we are doing next</h2></div></div>
+      <div class="steps">
+        <div class="step"><div><b>Lock the QBR date</b> and run the internal chain: Proneeta 13 Oct, Nitya 16 Oct, one deck.</div><div class="who">Harshit · 10 Oct</div></div>
+        <div class="step"><div><b>Landing page live for Megan</b> with the "patient care coordinator" wording, then the 14 to 15 day click test if the vendor form cannot change.</div><div class="who">Rishabh · 9 Oct</div></div>
+        <div class="step"><div><b>SEO KPI table</b>: baseline plus Oct, Nov, Dec targets for top-10 keywords, organic traffic, DA, backlinks; GMB blog posts; noindex fix.</div><div class="who">Ashish · 8 to 12 Oct</div></div>
+        <div class="step"><div><b>October creatives to the client, November calendar to the client</b> (internal close 10 Oct, client send 15 Oct), Highlights live.</div><div class="who">Edward, Arunima, Bhavika · 8 to 15 Oct</div></div>
+        <div class="step"><div><b>Q4 budget plan</b> that leans into the October to November rebound, plus remarketing to the 400+ visitor pool.</div><div class="who">Rishabh · QBR</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAID ===================== -->
+  <section class="view" id="view-paid">
+    <a class="back" href="#overview">← Overview</a>
+    <div class="section" style="margin-top:14px">
+      <div class="section-head">
+        <div><div class="eyebrow">Paid ads · Google Ads customer 509-316-4652</div><h2>Lead engine, February to October 2026</h2></div>
+        <span class="pill rust">Source: Google Ads API (live, 9 Oct) + consultation sheet</span>
+      </div>
+      <div class="top3" style="margin-top:0;margin-bottom:18px">
+        <div class="t3 rust"><div class="rank">1 · Leads</div><div class="big num">28<small>Sep</small></div><div class="what">Up from 11 in February (+155%)</div><div class="vs">Q3 76 vs Q2 63 (+21%). September is the best month of the year.</div><div class="why">Form submissions + tracked phone calls, Google Ads platform.</div></div>
+        <div class="t3 rust"><div class="rank">2 · Cost per lead</div><div class="big num">$78<small>Sep</small></div><div class="what">Down 45% from $141 in February</div><div class="vs">Q3 $89 vs Q2 $98. March benchmark $98. Spend flat at about $2.1K a month.</div><div class="why">Same budget, more patients: DSA and call-only did the work.</div></div>
+        <div class="t3 rust"><div class="rank">3 · Booking rate</div><div class="big num">52%<small>Jul to Aug</small></div><div class="what">Up from 21% in February</div><div class="vs">102 bookings from 238 Google leads logged Feb to Aug (43%). Q3 target 55%.</div><div class="why">Phone leads book at 52%, forms at 30%; the landing page and form work target the form leg.</div></div>
+      </div>
+      <div class="grid g6">
+        <div class="card kpi"><div class="label">Spend Feb to Sep</div><div class="value num">$16.6K</div><div class="sub">avg $2,078 / month</div></div>
+        <div class="card kpi"><div class="label">Platform leads</div><div class="value num">173</div><div class="sub">form 82 · phone 91</div></div>
+        <div class="card kpi"><div class="label">Cost per lead</div><div class="value num">$96</div><div class="sub">Feb $141 → Sep $78</div></div>
+        <div class="card kpi"><div class="label">Google leads in CRM</div><div class="value num">238</div><div class="sub">Feb to Aug, sheet-logged</div></div>
+        <div class="card kpi"><div class="label">Booked from Google</div><div class="value num">102</div><div class="sub">43% booking rate Feb to Aug</div></div>
+        <div class="card kpi"><div class="label">Cost per booking</div><div class="value num">$141</div><div class="sub">Feb to Aug · Mar benchmark $165</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">KPI definitions</div><h3>What we count, so the numbers stay comparable</h3></div></div>
+      <div class="defs">
+        <div class="def"><b>Google Ads lead (platform)</b><span>A "Schedule a Consultation" form conversion or a tracked phone-call click, as recorded by Google Ads. Shown separately, totalled as Google Ads leads.</span></div>
+        <div class="def"><b>Google lead in CRM</b><span>A row in the consultation sheet classified to the Google bucket (explicit Google Ads, organic phone call, or "heard about us" mentioning Google or search).</span></div>
+        <div class="def"><b>Booked (scheduled)</b><span>"Did they schedule" = Yes in the sheet. Booking rate = booked ÷ Google leads in CRM.</span></div>
+        <div class="def"><b>Cost per lead / per booking</b><span>Spend ÷ platform leads; spend ÷ booked consultations from the Google bucket.</span></div>
+        <div class="def"><b>Attribution gap</b><span>Platform leads minus Google leads logged in the sheet. Tracks logging discipline, not campaign quality.</span></div>
+        <div class="def"><b>Benchmark</b><span>March 2026 (DSA and call-only launch month): $2,147 spend, 22 leads, $97.60 CPL, 50% booking rate, $165 per booking.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="grid g2">
+        <div class="card">
+          <div class="eyebrow">Platform leads by month</div><h4 style="margin-top:4px">Form and phone, Google Ads</h4>
+          <svg class="chart" id="c-leads" viewBox="0 0 560 260" role="img" aria-label="Monthly Google Ads leads, form and phone, February to September 2026"></svg>
+          <div class="legend"><span><i style="background:var(--teal)"></i>Phone call</span><span><i style="background:var(--rust)"></i>Form</span></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Cost per lead by month</div><h4 style="margin-top:4px">Spend ÷ platform leads</h4>
+          <svg class="chart" id="c-cpl" viewBox="0 0 560 260" role="img" aria-label="Monthly cost per lead, February to September 2026"></svg>
+          <div class="legend"><span><i style="background:var(--rust)"></i>Cost per lead</span><span><i style="background:var(--line-strong)"></i>March benchmark $98</span></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Google leads in the CRM</div><h4 style="margin-top:4px">Logged leads and booked consultations</h4>
+          <svg class="chart" id="c-crm" viewBox="0 0 560 260" role="img" aria-label="Google-bucket leads logged in the consultation sheet and booked, February to August 2026"></svg>
+          <div class="legend"><span><i style="background:var(--teal)"></i>Google leads logged</span><span><i style="background:var(--green)"></i>Booked</span></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Booking rate</div><h4 style="margin-top:4px">Booked ÷ Google leads logged</h4>
+          <svg class="chart" id="c-rate" viewBox="0 0 560 260" role="img" aria-label="Google booking rate by month, February to August 2026"></svg>
+          <div class="legend"><span><i style="background:var(--green)"></i>Booking rate</span><span><i style="background:var(--line-strong)"></i>Q3 target 55%</span></div>
+        </div>
+      </div>
+      <p class="note">September CRM figures are not shown: the sheet export in the room ends 22 August and the 2026 sheet is flagged unreliable since the CRM switch (decision O-020). Rishabh verifies the weekly numbers against the sheet before the QBR.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Month by month</div><h3>The full table</h3></div></div>
+      <div class="tbl"><table id="t-paid"></table></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">The dip, explained</div><h3>What softened in Q3 and what did not</h3></div></div>
+      <div class="grid g3">
+        <div class="card"><span class="pill good">Held</span><h4 style="margin-top:10px">Platform leads and cost</h4><p class="fg2 small" style="margin-top:6px">Q3 delivered 76 platform leads against 63 in Q2 on a similar spend, so cost per lead fell from $98 to $89. September was the best month of the year at 28 leads.</p></div>
+        <div class="card"><span class="pill warn">Softened</span><h4 style="margin-top:10px">Logged leads and August bookings</h4><p class="fg2 small" style="margin-top:6px">Google leads logged in the sheet averaged 31 a month in Q2 and 26 in July and August. The booking rate fell from 62% in July to 42% in August with the same volume, a handling problem rather than a traffic one.</p></div>
+        <div class="card"><span class="pill rust">Why</span><h4 style="margin-top:10px">Seasonality plus system change</h4><p class="fg2 small" style="margin-top:6px">Both the 2023 and 2024 archives dip from June to September and rebound 35 to 45% in October. On top of that, the CRM switched in August and the new patient system went live 1 October, so logging and follow-up were disrupted.</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="grid g2">
+        <div>
+          <div class="section-head"><div><div class="eyebrow">Work done · Apr to Oct</div><h3>What we shipped on paid</h3></div></div>
+          <div class="list">
+            <div class="item"><div class="ic g">✓</div><div><b>DSA and call-only campaigns (March)</b><div class="d">Automated search at $2.17 to $3.00 per click; phone leads book at 52% vs 30% for forms.</div></div></div>
+            <div class="item"><div class="ic g">✓</div><div><b>Meta retired, budget concentrated on intent</b><div class="d">Q1 Meta drove volume with zero bookings. Q2 onward is Google only; paid leads up 24% in Q2.</div></div></div>
+            <div class="item"><div class="ic g">✓</div><div><b>Negatives and eligibility filters</b><div class="d">Medicaid, HAP, Molina and out-of-area negatives; "for adults" on medication management copy.</div></div></div>
+            <div class="item"><div class="ic g">✓</div><div><b>Accepted insurances in ad headlines (30 Sep)</b><div class="d">Aetna, Priority Health, McLaren names carry near-zero search volume, so they went into headlines rather than bids.</div></div></div>
+            <div class="item"><div class="ic g">✓</div><div><b>Ads landing page (approved 7 Oct)</b><div class="d">Sticky Request an Appointment, mobile first, who we are, testimonials, insurances, office addresses. One wording change from Megan.</div></div></div>
+            <div class="item"><div class="ic g">✓</div><div><b>Cultural landing page (approved, zero edits)</b><div class="d">South Asian page with Rhea and Diluckshi, ad-only, ready for its $500 test month.</div></div></div>
+            <div class="item"><div class="ic t">i</div><div><b>Reporting stack</b><div class="d">Weekly hosted reports, 40-week lead intelligence dashboard, 2023 to 2024 baseline analysis, monthly Ads report template.</div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-head"><div><div class="eyebrow">Next steps · paid</div><h3>Q4 moves</h3></div></div>
+          <div class="steps">
+            <div class="step"><div>Send Megan the landing page link with the "patient care coordinator" line and first-name testimonials.</div><div class="who">Rishabh · 9 Oct</div></div>
+            <div class="step"><div>Give Megan examples of the form changes we want for the vendor; if no, run the 14 to 15 day click test.</div><div class="who">Rishabh · 9 Oct</div></div>
+            <div class="step"><div>Weekly report names the 28 Sep to 2 Oct budget pull-back and the expected recovery.</div><div class="who">Rishabh · 13 Oct</div></div>
+            <div class="step"><div>Q4 budget plan: lean into Oct and Nov, Monday to Wednesday weighting, location bids on Clinton Township and Macomb zips.</div><div class="who">Rishabh · QBR</div></div>
+            <div class="step"><div>Remarketing to the warm pool and the cultural page test month, scaled to provider capacity.</div><div class="who">Rishabh · Q4</div></div>
+            <div class="step"><div>Two-quarter targets and the month-by-month table for the QBR deck.</div><div class="who">Rishabh · 12 Oct</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SEO ===================== -->
+  <section class="view" id="view-seo">
+    <a class="back" href="#overview">← Overview</a>
+    <div class="section" style="margin-top:14px">
+      <div class="section-head">
+        <div><div class="eyebrow">SEO and AI visibility · wellspringtherapy.net</div><h2>From medication management to therapy, February to December 2026</h2></div>
+        <span class="pill green">Live: GA4 property 358253653 + Search Console (domain) + ranking report</span>
+      </div>
+      <div class="top3" style="margin-top:0;margin-bottom:18px">
+        <div class="t3 green"><div class="rank">1 · Keywords in top 10</div><div class="big num">24%<small>4 of 17</small></div><div class="what">From 0% in February; top 30 from 22% to 65%</div><div class="vs">Average position 29.8 in Sep from 55.0 in Feb. Trauma therapy Troy and Clinton Township both at position 2.</div><div class="why">Month-end positions, Keywords and Ranking Report.</div></div>
+        <div class="t3 green"><div class="rank">2 · Organic contact actions</div><div class="big num">321<small>Sep</small></div><div class="what">Up 74% from 185 in February</div><div class="vs">Organic sessions 542 in Sep vs 773 in Feb (-30%, seasonal and post-June tracking dip), so each organic visit now converts about 2.5x more often.</div><div class="why">GA4 key events on organic search sessions.</div></div>
+        <div class="t3 green"><div class="rank">3 · AI referral sessions</div><div class="big num">11<small>Sep</small></div><div class="what">Up from 5 in February (+120%)</div><div class="vs">ChatGPT 11 in Sep (best month). GA4 now classifies an "AI Assistant" channel: 5, 4, 5, 11 for Jun to Sep.</div><div class="why">Visits where the session source is ChatGPT, Perplexity or Gemini.</div></div>
+      </div>
+      <div class="section" style="margin-top:0">
+        <div class="section-head"><div><div class="eyebrow">What our work moved · September</div><h3>Agency-driven keywords: therapy for women, adult, young adult, ADHD, anxiety</h3></div><span class="pill good" id="kw-top10-pill"></span></div>
+        <div class="kwtop" id="kw-top10-block"></div>
+        <div class="section-head" style="margin-top:16px;margin-bottom:0"><div><div class="eyebrow">Next to push into the top 10 · positions 11 to 30</div></div></div>
+        <div class="kwnext" id="kw-next-block"></div>
+        <div class="section-head" style="margin-top:16px;margin-bottom:0"><div><div class="eyebrow">Legacy strength · trauma</div></div></div>
+        <div class="kwnext" id="kw-legacy-block"></div>
+        <p class="note">Trauma keywords rank on the practice's historical reputation (a former well-known trauma therapist), not on this year's work, and trauma is not the core audience. Shown last on purpose: the client should read what the engagement moved first.</p>
+      </div>
+      <div class="grid g6">
+        <div class="card kpi"><div class="label">Organic sessions · Sep</div><div class="value num">542</div><div class="sub">Q3 1,547 vs Q2 1,300</div></div>
+        <div class="card kpi"><div class="label">Search impressions · Sep</div><div class="value num">26.8K</div><div class="sub">peak 70.3K in May</div></div>
+        <div class="card kpi"><div class="label">Avg position · Sep</div><div class="value num">29.8</div><div class="sub">tracked set, from 66.7 in Mar</div></div>
+        <div class="card kpi"><div class="label">AI citations</div><div class="value num">21</div><div class="sub">ChatGPT, AI Overview, Gemini · target 30+</div></div>
+        <div class="card kpi"><div class="label">Organic CTR · Sep</div><div class="value num">1.23%</div><div class="sub">from 0.50% in May</div></div>
+        <div class="card kpi"><div class="label">Top 30 · Sep</div><div class="value num">11 / 17</div><div class="sub">4 in top 10 · all 17 in top 100</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">KPI definitions</div><h3>The five numbers SEO is held to</h3></div></div>
+      <div class="defs">
+        <div class="def"><b>Top-10 local keywords</b><span>Average position across the 13 tracked keywords (adult, teen, ADHD, anxiety, women, life transitions, Troy and Clinton Township modifiers). Count of keywords in positions 1 to 10.</span></div>
+        <div class="def"><b>Organic traffic</b><span>GA4 organic search sessions per month, with direct and AI-referral sessions tracked beside it.</span></div>
+        <div class="def"><b>Organic CTR</b><span>Search Console clicks ÷ impressions. The Q2 gap was the click, not the impression.</span></div>
+        <div class="def"><b>AI visibility</b><span>AI citations (Semrush) and AI-referral sessions (GA4). Which prompts Wellspring surfaces for on ChatGPT, Claude, Perplexity and Gemini.</span></div>
+        <div class="def"><b>Authority</b><span>Domain authority and referring domains, built from free, barter and paid placements side by side.</span></div>
+        <div class="def"><b>Organic leads</b><span>Consultation-sheet rows where the source is External and the "heard about us" answer mentions Google or search.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="banner" style="background:var(--green-soft)"><b style="color:var(--good)">Live data:</b><span>Traffic is pulled from the Wellspring GA4 property and Search Console domain property (connected 9 Oct), keyword positions from the Keywords and Ranking Report. October figures are month to date (1 to 8 Oct). GA4 recorded a tracking dip in June (732 total sessions vs about 1,600 in neighbouring months), so June reads low across every channel.</span></div>
+    </div>
+
+    <div class="section">
+      <div class="grid g2">
+        <div class="card">
+          <div class="eyebrow">Traffic by month · Feb to Sep (Oct to date)</div><h4 style="margin-top:4px">Organic, direct and AI sessions</h4>
+          <svg class="chart" id="c-traffic" viewBox="0 0 560 260" role="img" aria-label="Monthly organic, direct and AI sessions, February to December 2026"></svg>
+          <div class="legend"><span><i style="background:var(--green)"></i>Organic</span><span><i style="background:var(--teal)"></i>Direct</span><span><i style="background:var(--violet)"></i>AI referral</span></div>
+          <p class="note" id="traffic-note"></p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Keyword rankings · Jan to Sep</div><h4 style="margin-top:4px">How many tracked keywords sit in the top 10, 30 and 100</h4>
+          <svg class="chart" id="c-rank" viewBox="0 0 560 260" role="img" aria-label="Tracked keywords in the top 10, top 30 and top 100 by month, January to September 2026"></svg>
+          <div class="legend"><span><i style="background:var(--green)"></i>Top 10</span><span><i style="background:var(--teal)"></i>Top 30</span><span><i style="background:var(--violet)"></i>Top 100</span></div>
+          <p class="note">17 keywords tracked from March (9 from January). September is the breakout month: average position of the set fell from 40.0 to 29.8 and 11 keywords improved month on month, 1 slipped, 5 held.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="grid g2">
+        <div class="card">
+          <div class="eyebrow">Google Business Profile · Troy · September 2026</div><h4 style="margin-top:4px">61 interactions, calls doubled</h4>
+          <div class="gmb" style="margin-top:12px">
+            <div class="g"><b class="num">8</b><span>calls<span class="delta up">+100%</span></span></div>
+            <div class="g"><b class="num">23</b><span>website visits<span class="delta up">+64%</span></span></div>
+            <div class="g"><b class="num">30</b><span>direction requests<span class="delta down">-61%</span></span></div>
+            <div class="g"><b class="num">342</b><span>profile views<span class="delta up">+37%</span></span></div>
+            <div class="g"><b class="num">38</b><span>searches<span class="delta up">+8%</span></span></div>
+            <div class="g"><b class="num">0</b><span>chat clicks<span class="delta flat">no change</span></span></div>
+          </div>
+          <div class="tbl" style="margin-top:12px"><table><thead><tr><th>Top search terms</th><th class="n">Searches</th></tr></thead><tbody><tr><td>wellspring</td><td class="n">22</td></tr><tr><td>wellspring therapy</td><td class="n">16</td></tr><tr><td>(586) 846-7890 (phone lookup)</td><td class="n">&lt;15</td></tr></tbody></table></div>
+          <p class="note">Interactions = calls + bookings + website visits + direction requests, vs August. Branded searches dominate, so the profile works as the front door for people who already know the name. The directions drop lines up with the new patient system not sending office addresses in reminders. Clinton Township profile: add when the snapshot is in.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Search Console · monthly, live</div><h4 style="margin-top:4px">Clicks, impressions, CTR and position</h4>
+          <div class="tbl" style="margin-top:12px"><table id="t-gsc"></table></div>
+          <p class="note">Impressions peaked in May on broad grief queries ("grief counseling near me": 6,306 impressions in Sep at position 36), then narrowed; clicks held near 330 to 400 a month and CTR recovered to 1.23%. September win: the stress-and-relationships blog ranks #1 for "how does stress affect relationships family and friends".</p>
+          <div class="grid g3" style="margin-top:12px">
+            <div class="kpi"><div class="label">Domain authority</div><div class="value num">10</div><div class="sub">target set by the KPI table</div></div>
+            <div class="kpi"><div class="label">Spam score</div><div class="value num">1%</div><div class="sub">clean profile</div></div>
+            <div class="kpi"><div class="label">Oct / Nov plan</div><div class="value num">47</div><div class="sub">keywords with Top 30 or Top 50 targets</div></div>
+          </div>
+          <p class="note">The Oct to Nov plan in the workbook sets a target per keyword: 5 high priority (grief counseling Troy, trauma therapy Michigan, cognitive reframing, grief counseling near me), 14 medium, 20 low, 8 deferred to Q1. Impressions grew while CTR fell, which is why title and meta rewrites lead Q4.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Tracked keywords</div><h3>Position by keyword, first tracked month to September</h3></div></div>
+      <div class="tbl"><table id="t-kw"></table></div>
+      <p class="note">"Not in 100" shown as 100+. Two Clinton Township keywords are tracked twice in the workbook (one row per office location) and are kept as reported.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Work done · April to October</div><h3>The last six months on SEO</h3></div></div>
+      <div class="grid g2">
+        <div class="list">
+          <div class="item"><div class="ic r">✕</div><div><b>Reddit karma building: paused</b><div class="d">Strategy approved 22 Apr, ADHD questions added, account set up with Megan's recovery phone in July, first two questions drafted. The account was then blocked, so the warm-up never ran. Quora never started. Parked until a clean account path exists.</div></div></div>
+          <div class="item"><div class="ic g">✓</div><div><b>Backlink creation</b><div class="d">Free and barter placements through Q2 and Q3, plus guest blog and directory submissions. Strategy widened 25 Aug to paid, high-DA placements running alongside (C-035). Backlink list delivered 10 Sep.</div></div></div>
+          <div class="item"><div class="ic g">✓</div><div><b>GMB optimisation</b><div class="d">Troy and Clinton Township profiles optimised in Q2, both eligible for the local pack. Weekly native micro-copy calendar. Open: blog posts to both profiles (Ashish, overdue since 25 Sep).</div></div></div>
+          <div class="item"><div class="ic g">✓</div><div><b>On-page fixes</b><div class="d">Title and meta rewrites on core service pages, LocalBusiness and FAQ schema, sitemap schema, site speed and mobile fixes, front-end Core Web Vitals via WP Lifeline. In progress: noindexed blogs re-indexed, server-side TTFB.</div></div></div>
+        </div>
+        <div class="list">
+          <div class="item"><div class="ic g">✓</div><div><b>Website content alignment</b><div class="d">Pivot from medication management to therapy (29 Apr). Voice guide, blog standard and QA checklist. Eight blogs since June: graduation (2), AI vs therapist, teen back-to-school, anxiety in women, feeling stuck in your twenties, stress and relationships, worried about someone. October: adult ADHD, Michigan winters.</div></div></div>
+          <div class="item"><div class="ic a">→</div><div><b>Adult therapy page onboarding</b><div class="d">Confirmed 19 May (C-010). Structure built, keyword baseline set, round-one review done; highest-volume cluster at about 420 searches a month. Teen therapy page queued as page two. Publish waits on Megan's review (24 to 48 hour window) and WP access.</div></div></div>
+          <div class="item"><div class="ic g">✓</div><div><b>AI search surface</b><div class="d">21 AI citations with no paid push, five AI sessions in Q2 from zero. Blogs republished as native LinkedIn articles so a second crawlable surface carries the same keywords.</div></div></div>
+          <div class="item"><div class="ic a">→</div><div><b>Governance</b><div class="d">Monthly SEO dashboard, written Sep to Nov roadmap, and a rule that a roadmap is a deliverable in its own right (O-019). Ashish now implements Diksha's plan; no re-audits.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Next steps · SEO</div><h3>October to December</h3></div></div>
+      <div class="steps">
+        <div class="step"><div>KPI table with baseline and Oct, Nov, Dec targets: top-10 average position, organic traffic growth, DA, backlinks.</div><div class="who">Ashish · 8 Oct</div></div>
+        <div class="step"><div>Blogs posted to both GMB profiles; noindexed blogs fixed or handed to Manish.</div><div class="who">Ashish · 8 Oct</div></div>
+        <div class="step"><div>AI-visibility tool comparison (3 to 5 tools): which prompts we surface for, top 10 prompts in our space, which competitors appear.</div><div class="who">Ashish · 12 Oct</div></div>
+        <div class="step"><div>Adult therapy page to Megan for review, then teen therapy page as cluster two.</div><div class="who">Arunima, Diksha · Oct</div></div>
+        <div class="step"><div>October blogs (adult ADHD, Michigan winters) live and on LinkedIn; SEO section for the QBR deck.</div><div class="who">Arunima, Edward, Ashish · 12 Oct</div></div>
+        <div class="step"><div>CTR fix on the high-impression blogs (communication post: 50,748 impressions, 31 clicks).</div><div class="who">Diksha · Q4</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SOCIAL ===================== -->
+  <section class="view" id="view-social">
+    <a class="back" href="#overview">← Overview</a>
+    <div class="section" style="margin-top:14px">
+      <div class="section-head">
+        <div><div class="eyebrow">Social · Instagram first, Facebook and LinkedIn alongside</div><h2>A calendar process the client now trusts</h2></div>
+        <span class="pill violet">Planable, upgraded tier · design-first review</span>
+      </div>
+      <div class="top3" style="margin-top:0;margin-bottom:18px">
+        <div class="t3 violet"><div class="rank">1 · Calendar approval</div><div class="big num">12<small>of 12</small></div><div class="what">October posts cleared on first sight</div><div class="vs">July: full rework before send. August: 9 of 12 approved, 3 held. September: 9 of 9. October: "looks good at first glance".</div><div class="why">The client sentiment curve on calendars, month by month.</div></div>
+        <div class="t3 violet"><div class="rank">2 · Content system</div><div class="big num">3<small>pillars</small></div><div class="what">Reframe, Humour with insight, Real life recognised</div><div class="vs">Built on Jessica's own brand guide. Every post labelled and gated by the cheat sheet; KPIs are saves, shares and website visits.</div><div class="why">A voice the client wrote, so approvals stopped being a negotiation.</div></div>
+        <div class="t3 violet"><div class="rank">3 · Beyond the grid</div><div class="big num">3<small>Highlights</small></div><div class="what">Ask us anything, Humans of Wellspring, About and locations</div><div class="vs">Live 13 Oct. Plus repost-one, comment-one per post, blogs as LinkedIn articles, mascot in scoping.</div><div class="why">Turns the profile from a broadcast feed into a front door with answers.</div></div>
+      </div>
+      <div class="grid g4">
+        <div class="card kpi"><div class="label">October posts</div><div class="value num">12</div><div class="sub">9 carousels · 2 videos · 1 static</div></div>
+        <div class="card kpi"><div class="label">September posts</div><div class="value num">9</div><div class="sub">statics and 4-slide carousels</div></div>
+        <div class="card kpi"><div class="label">Pillar mix · Oct</div><div class="value num">7 / 3 / 2</div><div class="sub">Reframe · Humour · Real life</div></div>
+        <div class="card kpi"><div class="label">Highlights</div><div class="value num">3</div><div class="sub">launch 13 Oct, expand on traction</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="grid g2">
+        <div class="card">
+          <div class="eyebrow">KPIs</div><h4 style="margin-top:4px">What we measure, and what we deliberately do not</h4>
+          <div class="defs" style="margin-top:12px">
+            <div class="def"><b>Saves</b><span>The post was worth keeping. Primary signal for Mirror and Reframe content.</span></div>
+            <div class="def"><b>Shares</b><span>Sent to a friend or a story. Primary signal for Humour posts.</span></div>
+            <div class="def"><b>Website visits and DMs</b><span>The soft CTA worked. A private message is the most natural version of reaching out.</span></div>
+            <div class="def"><b>Not tracked as goals</b><span>Comments, reach, follower count, virality. Jessica: "we're not trying to go viral, that honestly sounds like a nightmare."</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Pillars</div><h4 style="margin-top:4px">Three labels on every post in Planable</h4>
+          <div class="list" style="margin-top:12px">
+            <div class="item"><div class="ic t">R</div><div><b>The Reframe</b><div class="d">Simplifies a piece of psychology so something shifts: "I didn't know that about myself."</div></div></div>
+            <div class="item"><div class="ic v">H</div><div><b>Humour with insight</b><div class="d">Dry, Gen Z-native, insight disguised as a joke. Earns shares. The humour gate: someone on the team laughed out loud.</div></div></div>
+            <div class="item"><div class="ic r">L</div><div><b>Real life, recognised</b><div class="d">The exact weird thing anxiety does at 2am. Recognition before advice: "that's exactly it."</div></div></div>
+          </div>
+          <p class="note">Underneath: Jessica's brand guide (3 Jul), "a friend who happens to have a therapy degree." Mix target 40% Mirror, 30% Reframe, 20% Chaotic, 10% Nudge. Soft CTA formula with (586) 846-4835 and Clinton Township or Troy, never "reach out today".</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">How the client sentiment on calendars improved</div><h3>The process behind "looks good at first glance"</h3></div></div>
+      <div class="grid g4">
+        <div class="card soft"><span class="pill neutral">July</span><h4 style="margin-top:10px">Rework before send</h4><p class="small fg2" style="margin-top:6px">Proneeta's review set five principles: one brand element (the heart), bigger text and shorter captions, story-arc captions, imagery by content not format, tighter style. Client saw the reworked set.</p></div>
+        <div class="card soft"><span class="pill neutral">August</span><h4 style="margin-top:10px">Built to the brand guide</h4><p class="small fg2" style="margin-top:6px">Jessica wrote the guide; every post pillar-labelled and run through the cheat sheet. 9 of 12 approved and verified, 3 held for her input, flagged posts replaced with back-to-school parent content.</p></div>
+        <div class="card soft"><span class="pill neutral">September</span><h4 style="margin-top:10px">Design-first review</h4><p class="small fg2" style="margin-top:6px">Designs sent for feedback instead of live copy walkthroughs; both agreed on 2 Sep. Megan's example posts adopted as "adapt, do not reinvent".</p></div>
+        <div class="card soft"><span class="pill good">October</span><h4 style="margin-top:10px">Cleared on first sight</h4><p class="small fg2" style="margin-top:6px">Mixed-tone test calendar, 12 posts, keyword-tagged captions. Tonality gets settled after the engagement read, not before.</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="cal">
+        <div><div class="eyebrow">Latest social calendar · October 2026</div><div style="font-weight:600;margin-top:4px">Client-facing web deck on GitHub Pages: cover, 12 posts with captions, hashtags and keyword lines, reels playing inline.</div><div class="small muted" style="margin-top:4px">damcodigital034.github.io/wellspring-voice-guide/october-calendar/</div></div>
+        <a class="btn" href="https://damcodigital034.github.io/wellspring-voice-guide/october-calendar/" target="_blank" rel="noopener">Open the October calendar</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Highlights</div><h3>Three to launch, built as a service layer</h3></div></div>
+      <div class="grid g3">
+        <div class="card"><span class="pill teal">1 · Ask us anything</span><h4 style="margin-top:10px">Seed questions approved</h4><p class="small fg2" style="margin-top:6px">What happens in the first session, how fast can I get in, how insurance works, how to pick a therapist, how often will I go. Full sticker range, not only the question box.</p></div>
+        <div class="card"><span class="pill violet">2 · Humans of Wellspring</span><h4 style="margin-top:10px">Clinician cards</h4><p class="small fg2" style="margin-top:6px">Headshots are in hand (17 therapists). No one on camera, so cards and copy carry the face of the practice.</p></div>
+        <div class="card"><span class="pill rust">3 · About and locations</span><h4 style="margin-top:10px">Three bullets, benefit-led</h4><p class="small fg2" style="margin-top:6px">No wait list, no cold intake forms, a real conversation within 48 hours. Cover reads Wellspring Therapeutic Partners; wording softer than "get started".</p></div>
+      </div>
+      <p class="note">Copy revision from Arunima due 9 Oct; covers and story designs from Bhavika 13 Oct. Each highlight serves an objective the way the pillars do; expand after traction.</p>
+    </div>
+
+    <div class="section">
+      <div class="grid g2">
+        <div>
+          <div class="section-head"><div><div class="eyebrow">Also in motion</div><h3>Beyond the grid</h3></div></div>
+          <div class="list">
+            <div class="item"><div class="ic g">✓</div><div><b>Engagement cadence</b><div class="d">Per post: repost one, comment on one. Reposts on a client-vetted shortlist (first candidate Dan Harris); client picks profiles by 14 Oct.</div></div></div>
+            <div class="item"><div class="ic g">✓</div><div><b>Blogs as native LinkedIn articles</b><div class="d">Full text with banner, so AI engines crawl a second surface.</div></div></div>
+            <div class="item"><div class="ic a">→</div><div><b>Mascot with Jamie</b><div class="d">Client-originated. Scope document is the deliverable: not anime, not a likeness of any therapist, Wellspring owns the IP. October was the earliest appearance; still in scoping.</div></div></div>
+            <div class="item"><div class="ic a">→</div><div><b>Reels only with real people</b><div class="d">Stock reels read as artificial; paused until a human face is available.</div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-head"><div><div class="eyebrow">Next steps · social</div><h3>October and November</h3></div></div>
+          <div class="steps">
+            <div class="step"><div>October posts with creatives to Jessica and Megan.</div><div class="who">Harshit, Edward · 8 Oct</div></div>
+            <div class="step"><div>Highlights copy revision, then covers and story designs; first three highlights live.</div><div class="who">Arunima 9 Oct · Bhavika 13 Oct</div></div>
+            <div class="step"><div>November calendar: internal close 10 Oct, to the client 15 Oct.</div><div class="who">Edward, Arunima, Bhavika</div></div>
+            <div class="step"><div>Engagement shortlist decision chased when Jessica is back; highlights update to the client.</div><div class="who">Harshit · 14 Oct</div></div>
+            <div class="step"><div>Monthly social report on saves, shares and website visits; read October engagement, then settle tonality with Nitya.</div><div class="who">Edward, Harshit · end Oct</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GOAL ===================== -->
+  <section class="view" id="view-goal">
+    <a class="back" href="#overview">← Overview</a>
+    <div class="section" style="margin-top:14px">
+      <div class="section-head">
+        <div><div class="eyebrow">Goal tracker · consultations</div><h2>Booked consultations: where we are, where double is</h2><div class="small muted" style="margin-top:6px">Google channel, consultations booked per month. October 2026 to October 2027. Jessica's target: double consultations in a year.</div></div>
+        <span class="pill" id="gl-status">Baseline set</span>
+      </div>
+      <div class="card">
+        <div class="gl-tank">
+          <div class="gl-end"><div class="eyebrow">Now · Oct 2026</div><div class="gl-big num" id="gl-now">15<small>a month</small></div><div class="small muted">Jun to Aug average, consultation sheet</div></div>
+          <div>
+            <div class="gl-track"><div class="gl-fill" id="gl-fill"><span id="gl-fill-label">50% of the goal</span></div></div>
+            <div class="gl-ticks"><span>Oct 2026</span><span>Jan</span><span>Apr</span><span>Jul</span><span>Oct 2027</span></div>
+            <div class="gl-now" id="gl-now-line"></div>
+          </div>
+          <div class="gl-end"><div class="eyebrow">Goal · Oct 2027</div><div class="gl-big num" id="gl-goal">30<small>a month</small></div><div class="small muted">Double the current run rate</div></div>
+        </div>
+        <div class="gl-paths" id="gl-paths"></div>
+        <svg class="gl-chart" id="gl-chart" viewBox="0 0 900 320" role="img" aria-label="Booked consultations per month under three spend paths, October 2026 to October 2027, against the doubled target"></svg>
+        <div class="gl-legend">
+          <span><i style="background:var(--muted)"></i>Actuals Feb to Aug 2026</span>
+          <span><i style="background:var(--teal)"></i>Hold spend</span>
+          <span><i style="background:var(--amber)"></i>+50% from January</span>
+          <span><i style="background:var(--green)"></i>Double from January</span>
+          <span><i style="border-top:2px dashed var(--rust);height:0"></i>Goal line</span>
+        </div>
+        <div class="gl-controls">
+          <label>Base monthly spend ($)<input type="number" id="gl-spend" value="2200" step="100"></label>
+          <label>Google leads per month at base spend<input type="number" id="gl-leads" value="36" step="1"></label>
+          <label>Booking rate now (%)<input type="number" id="gl-rate0" value="43" step="1"></label>
+          <label>Booking rate target (%)<input type="number" id="gl-rate1" value="55" step="1"></label>
+          <label>Target rate reached by (month 1 to 12)<input type="number" id="gl-ramp" value="6" min="1" max="12"></label>
+          <label>Spend lift starts (month 1 to 12)<input type="number" id="gl-lift" value="4" min="1" max="12"></label>
+        </div>
+        <p class="note"><b>How it is built.</b> Leads per month scale with spend at the Feb to Aug efficiency (238 Google leads on $14.4K, about 36 a month at $2.2K). Booked = leads x booking rate; the rate climbs from 43% (Feb to Aug) to the 55% Q3 target as the call-first landing page and the two-day consultation window bed in. Spend holds for three months (CRM costs), so every lift path starts in January 2027. Baseline is the Google channel from the consultation sheet (weeks to 22 Aug); swap to all-source consultations once Megan's 2026 sheet refresh lands. Edit the inputs live in a review; nothing here is a commitment.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Prepared by Damco Digital · Internal delivery check-in · 9 October 2026, updated 12 October</span>
+    <span>Sources: Google Ads API (customer 5093164652), consultation sheet to 22 Aug, Q2 QBR, control room decisions and call logs</span>
+  </footer>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+/* ---------- DATA ---------- */
+// Google Ads API, customer 5093164652, pulled 9 Oct 2026. Oct is month-to-date (1 to 8 Oct).
+const ADS = [
+  {m:'Feb', spend:1548, clicks:396, impr:7513,  form:10, phone:1,  ctr:5.27, cpc:3.91},
+  {m:'Mar', spend:2147, clicks:520, impr:8016,  form:17, phone:6.3, ctr:6.49, cpc:4.13},
+  {m:'Apr', spend:1720, clicks:648, impr:9558,  form:7,  phone:6.7, ctr:6.78, cpc:2.65},
+  {m:'May', spend:2024, clicks:482, impr:7797,  form:14, phone:12, ctr:6.18, cpc:4.20},
+  {m:'Jun', spend:2430, clicks:478, impr:9137,  form:5,  phone:18, ctr:5.23, cpc:5.08},
+  {m:'Jul', spend:2402, clicks:453, impr:8543,  form:3,  phone:22, ctr:5.30, cpc:5.30},
+  {m:'Aug', spend:2156, clicks:519, impr:9973,  form:10, phone:13, ctr:5.20, cpc:4.15},
+  {m:'Sep', spend:2193, clicks:520, impr:9367,  form:16, phone:12, ctr:5.55, cpc:4.22},
+  {m:'Oct*',spend:482,  clicks:134, impr:1971,  form:4,  phone:4,  ctr:6.80, cpc:3.59, partial:true},
+];
+// Consultation sheet, Google bucket (lead intelligence dashboard, weeks to 22 Aug 2026).
+const CRM = [
+  {m:'Feb', leads:42, booked:9},
+  {m:'Mar', leads:51, booked:20},
+  {m:'Apr', leads:24, booked:11},
+  {m:'May', leads:36, booked:18},
+  {m:'Jun', leads:33, booked:17},
+  {m:'Jul', leads:26, booked:16},
+  {m:'Aug', leads:26, booked:11},
+];
+// SEO monthly series. null = pending Harshit's GA4 / GSC export. Fill and republish.
+const SEO_DATA = {
+  // GA4 property 358253653, sessions by default channel group; AI = sessions whose source is chatgpt.com, perplexity or gemini. Oct = 1 to 8 Oct.
+  months:['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct*'],
+  organic:[773,622,581,497,222,546,459,542,183],
+  direct: [510,648,462,521,254,422,663,478,180],
+  ai:     [5,5,9,8,6,6,5,11,0],
+  paid:   [299,419,407,391,214,396,435,454,140],
+  organicKeyEvents:[185,159,174,132,113,374,392,321,45],
+  gsc:[
+    {m:'Feb',clicks:501,impr:40806,ctr:1.23,pos:11.3},{m:'Mar',clicks:404,impr:43381,ctr:0.93,pos:7.8},{m:'Apr',clicks:397,impr:53356,ctr:0.74,pos:9.1},{m:'May',clicks:353,impr:70335,ctr:0.50,pos:11.7},{m:'Jun',clicks:391,impr:63857,ctr:0.61,pos:9.7},{m:'Jul',clicks:399,impr:38949,ctr:1.02,pos:12.0},{m:'Aug',clicks:326,impr:35081,ctr:0.93,pos:20.1},{m:'Sep',clicks:330,impr:26815,ctr:1.23,pos:18.3}],
+  anchors:'June is a GA4 tracking dip (732 total sessions). Organic contact actions (GA4 key events on organic sessions): Feb 185, Mar 159, Apr 174, May 132, Jun 113, Jul 374, Aug 392, Sep 321.',
+  keywords_legacy:[
+    {k:'therapist near me Troy Michigan', vol:120, page:'Adult therapy', start:null, now:null},
+    {k:'therapist in Troy MI', vol:90, page:'Adult therapy', start:null, now:null},
+    {k:'anxiety therapist Troy MI', vol:80, page:'Anxiety (planned)', start:null, now:null},
+    {k:'depression therapy Clinton Township', vol:60, page:'Adult therapy', start:null, now:null},
+    {k:'teen therapist Troy MI', vol:50, page:'Teen therapy (queued)', start:null, now:null},
+    {k:'ADHD therapist Troy MI', vol:50, page:'ADHD (Oct blog)', start:null, now:null},
+    {k:'adult therapist Clinton Township', vol:40, page:'Adult therapy', start:null, now:null},
+    {k:'therapist for young adults Troy MI', vol:40, page:'Life transitions', start:null, now:null},
+    {k:'teen therapy Clinton Township Michigan', vol:35, page:'Teen therapy (queued)', start:null, now:null},
+    {k:'life transitions therapist Troy Michigan', vol:30, page:'Life transitions', start:null, now:null},
+    {k:'ADHD therapy Clinton Township Michigan', vol:30, page:'ADHD (Oct blog)', start:null, now:null},
+    {k:'therapy for women Troy MI', vol:30, page:'Therapy for Women (live)', start:null, now:null},
+    {k:'adolescent therapy Macomb County', vol:25, page:'Teen therapy (queued)', start:null, now:null},
+  ]
+};
+// Keywords and Ranking Report (SEO folder), month-end positions Jan to Sep 2026. 101 = not in top 100.
+const RANKS = [
+  {k:'anxiety therapy troy', vol:40, r:[101,101,101,67,64,51,50,49,29]},
+  {k:'Therapists in Troy', vol:30, r:[101,101,101,101,101,101,101,101,65]},
+  {k:'Trauma therapy Clinton Township', vol:20, r:[7,18,15,12,10,8,6,5,2]},
+  {k:'cognitive behavioral therapy (CBT) near me', vol:10, r:[101,101,101,101,101,101,101,101,79]},
+  {k:'Trauma therapy Troy MI', vol:null, r:[8,12,11,9,8,7,6,4,2]},
+  {k:'Counselling services in Clinton Township', vol:null, r:[57,98,92,89,86,72,49,45,15]},
+  {k:'Therapist in Clinton Township', vol:null, r:[48,101,101,78,74,65,63,62,15]},
+  {k:'Counselling services in Clinton Township (2)', vol:null, r:[22,92,89,78,73,71,49,47,16]},
+  {k:'Therapist in Clinton Township (2)', vol:null, r:[50,101,101,88,84,75,73,70,15]},
+  {k:'therapist near me Troy Michigan', vol:null, r:[null,null,68,49,44,35,28,38,66]},
+  {k:'therapist in Troy MI', vol:30, r:[null,null,101,101,101,64,60,57,50]},
+  {k:'adult therapist Clinton Township', vol:null, r:[null,null,68,43,42,38,101,101,8]},
+  {k:'therapist for young adults Troy MI', vol:null, r:[null,null,101,101,101,74,66,34,14]},
+  {k:'ADHD therapist Troy MI', vol:70, r:[null,null,76,45,44,43,101,101,17]},
+  {k:'ADHD therapy Clinton Township Michigan', vol:null, r:[null,null,92,57,52,44,101,101,67]},
+  {k:'depression therapy Clinton Township', vol:40, r:[null,null,89,65,63,59,101,39,45]},
+  {k:'therapy for women Troy MI', vol:null, r:[null,null,101,101,101,55,33,30,2]},
+];
+const RANK_MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'];
+const RANK_STATS = RANK_MONTHS.map((m,i)=>{ const v=RANKS.map(k=>k.r[i]).filter(x=>x!=null); const ranked=v.filter(x=>x<=100); return {m, tracked:v.length, top10:v.filter(x=>x<=10).length, top30:v.filter(x=>x<=30).length, top100:ranked.length, avg:ranked.length?+(ranked.reduce((a,b)=>a+b,0)/ranked.length).toFixed(1):null}; });
+const OCT_POSTS = [
+  {n:1,p:'Reframe',f:'Carousel · 3',cap:'The dramatic moments get all the attention. But most of healing happens in the parts no one\'s watching.',kw:'healing journey Michigan, cognitive reframing'},
+  {n:2,p:'Humour',f:'Carousel · 4',cap:'Unpopular opinions about healing, said with love. Feel free to disagree in the comments. We can take it.',kw:'boundaries, therapy in Michigan'},
+  {n:3,p:'Reframe',f:'Carousel · 5',cap:'Sometimes what you\'re actually grieving isn\'t the person, it\'s the habit, the attention, or the version of them that only existed in your head.',kw:'grief counseling near me, breakup grief'},
+  {n:4,p:'Humour',f:'Carousel · 5',cap:'None of this is a contradiction. It\'s just being a person.',kw:'overthinking, mental health Michigan'},
+  {n:5,p:'Real life',f:'Carousel · 6',cap:'We don\'t actually believe in picking numbers for signs. But we do believe you already know which one you needed today.',kw:'you are not alone, Detroit therapist'},
+  {n:6,p:'Reframe',f:'Carousel · 5',cap:'When nothing you try seems to be working, we\'re just a call away. 586-846-4835.',kw:'therapist Troy MI, online therapy Michigan'},
+  {n:7,p:'Reframe',f:'Video',cap:'Healing isn\'t a reading list. It\'s what you actually do the next time it\'s hard.',kw:'trauma therapy Michigan'},
+  {n:8,p:'Real life',f:'Carousel · 5',cap:'For the days that start loud in your head before they even start.',kw:'anxiety therapist Michigan'},
+  {n:9,p:'Humour',f:'Carousel · 6',cap:'None of these have jump scares. They just hit at 2am, for no reason, every time.',kw:'grief waves coping, grief counseling Michigan'},
+  {n:10,p:'Reframe',f:'Video',cap:'Sometimes the feeling was never the issue. It\'s what we were taught to believe about the feeling.',kw:'reframing thoughts, trauma healing'},
+  {n:11,p:'Reframe',f:'Static',cap:'Not a straight line. Not even close. Some days full, some days barely there, and it still counts as moving forward.',kw:'healing journey Michigan'},
+  {n:12,p:'Reframe',f:'Carousel · 5',cap:'Some thoughts don\'t need fixing. They just need a little distance so they stop feeling like facts.',kw:'reframing negative thoughts'},
+];
+
+/* ---------- HELPERS ---------- */
+const $ = s => document.querySelector(s);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => n.toLocaleString('en-US');
+const money = n => '$' + Math.round(n).toLocaleString('en-US');
+const tip = $('#tip');
+function showTip(e, html){ tip.innerHTML = html; tip.style.display='block'; moveTip(e); }
+function moveTip(e){ const x=e.clientX+12, y=e.clientY-34; tip.style.left=Math.min(x, window.innerWidth-tip.offsetWidth-8)+'px'; tip.style.top=Math.max(8,y)+'px'; }
+function hideTip(){ tip.style.display='none'; }
+function svgEl(tag, attrs){ const el=document.createElementNS('http://www.w3.org/2000/svg',tag); for(const k in attrs) el.setAttribute(k, attrs[k]); return el; }
+function frame(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); const W=560,H=270,P={l:46,r:14,t:22,b:30}; return {svg,W,H,P,iw:W-P.l-P.r,ih:H-P.t-P.b}; }
+function yTicks(max, n){ const step=niceStep(max/n); const t=[]; for(let v=0; v<=max+1e-9; v+=step) t.push(+v.toFixed(6)); return {ticks:t, top:t[t.length-1]}; }
+function niceStep(x){ const p=Math.pow(10,Math.floor(Math.log10(x))); const r=x/p; return (r<1.5?1:r<3.5?2:r<7.5?5:10)*p; }
+function grid(f, top, ticks, fmtY){ const g=svgEl('g',{class:'grid'}); ticks.forEach(v=>{ const y=f.P.t+f.ih-(v/top)*f.ih; g.appendChild(svgEl('line',{x1:f.P.l,x2:f.W-f.P.r,y1:y,y2:y})); const t=svgEl('text',{x:f.P.l-6,y:y+4,'text-anchor':'end'}); t.textContent=fmtY(v); g.appendChild(t); }); f.svg.appendChild(g); f.svg.appendChild(svgEl('line',{class:'axis',x1:f.P.l,x2:f.W-f.P.r,y1:f.P.t+f.ih,y2:f.P.t+f.ih})); }
+function xLabels(f, labels){ const n=labels.length, bw=f.iw/n; labels.forEach((l,i)=>{ const t=svgEl('text',{x:f.P.l+bw*i+bw/2,y:f.H-10,'text-anchor':'middle'}); t.textContent=l; f.svg.appendChild(t); }); }
+function hover(el, html){ el.addEventListener('mousemove', e=>{ showTip(e, html); }); el.addEventListener('mouseleave', hideTip); }
+
+function stackedBars(svg, labels, series, colors, fmtY, tipFn){
+  const f=frame(svg); const totals=labels.map((_,i)=>series.reduce((a,s)=>a+(s[i]||0),0));
+  const {ticks,top}=yTicks(Math.max(...totals)*1.15, 3); grid(f,top,ticks,fmtY); xLabels(f,labels);
+  const n=labels.length, bw=f.iw/n, w=Math.min(bw*0.56, 40);
+  labels.forEach((l,i)=>{ let y0=f.P.t+f.ih; const x=f.P.l+bw*i+(bw-w)/2; const g=svgEl('g',{});
+    series.forEach((s,si)=>{ const v=s[i]||0; if(!v) return; const h=(v/top)*f.ih; y0-=h; const r=svgEl('rect',{x,y:y0+ (si<series.length-1?0:0),width:w,height:Math.max(0,h-(si>0?2:0)),fill:colors[si],rx:si===series.length-1?4:0}); g.appendChild(r); });
+    const t=svgEl('text',{x:x+w/2,y:y0-7,'text-anchor':'middle',class:'vlabel'}); t.textContent=fmtY(totals[i]); g.appendChild(t);
+    const hit=svgEl('rect',{x:f.P.l+bw*i,y:f.P.t,width:bw,height:f.ih,fill:'transparent'}); g.appendChild(hit); hover(g, tipFn(i)); f.svg.appendChild(g); });
+}
+function groupedBars(svg, labels, series, colors, fmtY, tipFn){
+  const f=frame(svg); const mx=Math.max(...series.flat().filter(v=>v!=null));
+  const {ticks,top}=yTicks(mx*1.2,3); grid(f,top,ticks,fmtY); xLabels(f,labels);
+  const n=labels.length, bw=f.iw/n, gw=Math.min(bw*0.7,60), w=(gw-3)/series.length;
+  labels.forEach((l,i)=>{ const g=svgEl('g',{}); const x0=f.P.l+bw*i+(bw-gw)/2;
+    series.forEach((s,si)=>{ const v=s[i]; if(v==null) return; const h=(v/top)*f.ih; g.appendChild(svgEl('rect',{x:x0+si*(w+3),y:f.P.t+f.ih-h,width:w,height:h,fill:colors[si],rx:4})); const t=svgEl('text',{x:x0+si*(w+3)+w/2,y:f.P.t+f.ih-h-6,'text-anchor':'middle',class:'vlabel'}); t.textContent=v; g.appendChild(t); });
+    const hit=svgEl('rect',{x:f.P.l+bw*i,y:f.P.t,width:bw,height:f.ih,fill:'transparent'}); g.appendChild(hit); hover(g,tipFn(i)); f.svg.appendChild(g); });
+}
+function lines(svg, labels, series, colors, fmtY, tipFn, opts={}){
+  const f=frame(svg); const vals=series.flat().filter(v=>v!=null); const hasData=vals.length>0;
+  const mx=hasData?Math.max(...vals, opts.ref||0):(opts.emptyMax||100); const {ticks,top}=yTicks(mx*1.2,3); grid(f,top,ticks,fmtY); xLabels(f,labels);
+  const n=labels.length, bw=f.iw/n; const X=i=>f.P.l+bw*i+bw/2, Y=v=>f.P.t+f.ih-(v/top)*f.ih;
+  if(opts.ref){ f.svg.appendChild(svgEl('line',{x1:f.P.l,x2:f.W-f.P.r,y1:Y(opts.ref),y2:Y(opts.ref),stroke:css('--line-strong'),'stroke-dasharray':'4 4','stroke-width':1.5})); const t=svgEl('text',{x:f.W-f.P.r,y:Y(opts.ref)-5,'text-anchor':'end'}); t.textContent=opts.refLabel||''; f.svg.appendChild(t); }
+  if(!hasData){ const t=svgEl('text',{x:f.P.l+f.iw/2,y:f.P.t+f.ih/2,'text-anchor':'middle','font-size':'13'}); t.textContent='Awaiting monthly export'; f.svg.appendChild(t); }
+  series.forEach((s,si)=>{ let d='', started=false; s.forEach((v,i)=>{ if(v==null){started=false;return;} d+=(started?' L':' M')+X(i)+' '+Y(v); started=true; });
+    if(d) f.svg.appendChild(svgEl('path',{d,fill:'none',stroke:colors[si],'stroke-width':2.5,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    const lastIdx=(()=>{let k=-1; s.forEach((v,i)=>{ if(v!=null) k=i; }); return k;})(); const firstIdx=s.findIndex(v=>v!=null);
+    s.forEach((v,i)=>{ if(v==null) return; const isEnd=(i===lastIdx||i===firstIdx); f.svg.appendChild(svgEl('circle',{cx:X(i),cy:Y(v),r:isEnd?5:3.5,fill:colors[si],stroke:css('--surface'),'stroke-width':2})); const showLabel = opts.label===true || (opts.label!==false && series.length===1) || (series.length>1 && isEnd); if(showLabel){ const t=svgEl('text',{x:X(i),y:Y(v)-10,'text-anchor':'middle',class:series.length===1?'vlabel':''}); t.textContent=fmtY(v); f.svg.appendChild(t);} });
+  });
+  labels.forEach((l,i)=>{ const hit=svgEl('rect',{x:f.P.l+bw*i,y:f.P.t,width:bw,height:f.ih,fill:'transparent'}); hover(hit,tipFn(i)); f.svg.appendChild(hit); });
+}
+function spark(svg, vals, color){ while(svg.firstChild) svg.removeChild(svg.firstChild); const v=vals.filter(x=>x!=null); if(!v.length){ return; } const W=300,H=46,mx=Math.max(...v),mn=Math.min(...v); const X=i=>8+(W-16)*i/(vals.length-1), Y=x=>H-6-(H-14)*((x-mn)/((mx-mn)||1)); let d=''; vals.forEach((x,i)=>{ if(x==null) return; d+=(d?' L':'M')+X(i)+' '+Y(x); }); const area=d+' L'+X(vals.length-1)+' '+(H-2)+' L'+X(0)+' '+(H-2)+' Z'; svg.appendChild(svgEl('path',{d:area,fill:color,opacity:.12})); svg.appendChild(svgEl('path',{d,fill:'none',stroke:color,'stroke-width':2})); const last=vals.length-1; svg.appendChild(svgEl('circle',{cx:X(last),cy:Y(vals[last]),r:3.5,fill:color})); }
+
+/* ---------- RENDER ---------- */
+function render(){
+  const teal=css('--teal'), rust=css('--rust'), green=css('--green'), violet=css('--violet');
+  const full=ADS.filter(a=>!a.partial);
+  const labels=full.map(a=>a.m);
+  // paid charts
+  stackedBars($('#c-leads'), labels, [full.map(a=>Math.round(a.phone)), full.map(a=>a.form)], [teal,rust], v=>String(Math.round(v)), i=>`<b>${full[i].m}</b> · ${Math.round(full[i].phone+full[i].form)} leads<br>phone ${Math.round(full[i].phone)} · form ${full[i].form} · spend ${money(full[i].spend)}`);
+  const cpl=full.map(a=>Math.round(a.spend/(a.form+a.phone)));
+  lines($('#c-cpl'), labels, [cpl], [rust], v=>'$'+Math.round(v), i=>`<b>${full[i].m}</b> · ${money(cpl[i])} per lead`, {ref:98, refLabel:'Mar benchmark', label:true});
+  groupedBars($('#c-crm'), CRM.map(c=>c.m), [CRM.map(c=>c.leads), CRM.map(c=>c.booked)], [teal,green], v=>String(v), i=>`<b>${CRM[i].m}</b> · ${CRM[i].leads} logged, ${CRM[i].booked} booked (${Math.round(CRM[i].booked/CRM[i].leads*100)}%)`);
+  const rate=CRM.map(c=>Math.round(c.booked/c.leads*100));
+  lines($('#c-rate'), CRM.map(c=>c.m), [rate], [green], v=>Math.round(v)+'%', i=>`<b>${CRM[i].m}</b> · ${rate[i]}% booked`, {ref:55, refLabel:'Q3 target 55%', label:true});
+  // paid table
+  let rows='<thead><tr><th>Month</th><th class="n">Spend</th><th class="n">Clicks</th><th class="n">Impr.</th><th class="n">CTR</th><th class="n">CPC</th><th class="n">Form</th><th class="n">Phone</th><th class="n">Leads</th><th class="n">CPL</th><th class="n">CRM Google leads</th><th class="n">Booked</th><th class="n">Rate</th></tr></thead><tbody>';
+  let T={spend:0,clicks:0,impr:0,form:0,phone:0,leads:0,booked:0};
+  ADS.forEach(a=>{ const c=CRM.find(x=>x.m===a.m); const L=a.form+a.phone; if(!a.partial){T.spend+=a.spend;T.clicks+=a.clicks;T.impr+=a.impr;T.form+=a.form;T.phone+=a.phone;} if(c){T.leads+=c.leads;T.booked+=c.booked;}
+    rows+=`<tr><td>${a.m}${a.partial?' <span class="muted small">(1 to 8 Oct)</span>':''}</td><td class="n">${money(a.spend)}</td><td class="n">${fmt(a.clicks)}</td><td class="n">${fmt(a.impr)}</td><td class="n">${a.ctr.toFixed(2)}%</td><td class="n">$${a.cpc.toFixed(2)}</td><td class="n">${a.form}</td><td class="n">${Math.round(a.phone)}</td><td class="n"><b>${Math.round(L)}</b></td><td class="n">${money(a.spend/L)}</td>${c?`<td class="n">${c.leads}</td><td class="n">${c.booked}</td><td class="n">${Math.round(c.booked/c.leads*100)}%</td>`:'<td class="n pend">pending</td><td class="n pend">pending</td><td class="n pend">pending</td>'}</tr>`; });
+  const TL=T.form+T.phone;
+  rows+=`<tr class="total"><td>Feb to Sep</td><td class="n">${money(T.spend)}</td><td class="n">${fmt(T.clicks)}</td><td class="n">${fmt(T.impr)}</td><td class="n">${(T.clicks/T.impr*100).toFixed(2)}%</td><td class="n">$${(T.spend/T.clicks).toFixed(2)}</td><td class="n">${T.form}</td><td class="n">${Math.round(T.phone)}</td><td class="n">${Math.round(TL)}</td><td class="n">${money(T.spend/TL)}</td><td class="n">${T.leads}</td><td class="n">${T.booked}</td><td class="n">${Math.round(T.booked/T.leads*100)}%</td></tr></tbody>`;
+  $('#t-paid').innerHTML=rows;
+  // seo
+  lines($('#c-traffic'), SEO_DATA.months, [SEO_DATA.organic, SEO_DATA.direct, SEO_DATA.ai], [green,teal,violet], v=>fmt(Math.round(v)), i=>{ const o=SEO_DATA.organic[i],d=SEO_DATA.direct[i],a=SEO_DATA.ai[i]; return `<b>${SEO_DATA.months[i]}</b> · organic ${o??'–'} · direct ${d??'–'} · AI ${a??'–'}`; }, {emptyMax:1000});
+  $('#traffic-note').textContent=SEO_DATA.anchors;
+  let g='<thead><tr><th>Month</th><th class="n">Clicks</th><th class="n">Impressions</th><th class="n">CTR</th><th class="n">Avg position</th></tr></thead><tbody>';
+  SEO_DATA.gsc.forEach(r=>{ g+=`<tr><td>${r.m}</td><td class="n">${fmt(r.clicks)}</td><td class="n">${fmt(r.impr)}</td><td class="n">${r.ctr.toFixed(2)}%</td><td class="n">${r.pos.toFixed(1)}</td></tr>`; });
+  const GT=SEO_DATA.gsc.reduce((a,r)=>({c:a.c+r.clicks,i:a.i+r.impr}),{c:0,i:0});
+  g+=`<tr class="total"><td>Feb to Sep</td><td class="n">${fmt(GT.c)}</td><td class="n">${fmt(GT.i)}</td><td class="n">${(GT.c/GT.i*100).toFixed(2)}%</td><td class="n">–</td></tr></tbody>`;
+  $('#t-gsc').innerHTML=g;
+  lines($('#c-rank'), RANK_MONTHS, [RANK_STATS.map(r=>r.top10), RANK_STATS.map(r=>r.top30), RANK_STATS.map(r=>r.top100)], [green,teal,violet], v=>String(Math.round(v)), i=>{ const r=RANK_STATS[i]; return `<b>${r.m}</b> · top 10: ${r.top10} · top 30: ${r.top30} · top 100: ${r.top100} of ${r.tracked}<br>avg position ${r.avg}`; }, {label:false});
+  const pos=x=>x==null?'<span class="pend">–</span>':x>100?'100+':x;
+  let kw='<thead><tr><th>Keyword</th><th class="n">Est. vol</th><th class="n">First tracked</th><th class="n">Jun</th><th class="n">Aug</th><th class="n">Sep</th><th class="n">Move (Aug to Sep)</th><th>Top 10</th></tr></thead><tbody>';
+  RANKS.slice().sort((a,b)=>(a.r[8]??999)-(b.r[8]??999)).forEach(k=>{ const first=k.r.find(x=>x!=null); const aug=k.r[7], sep=k.r[8]; const mv=(aug==null||sep==null)?null:aug-sep; const mvTxt=mv==null?'–':mv>0?`<span class="pill good">up ${mv}</span>`:mv<0?`<span class="pill bad">down ${-mv}</span>`:'<span class="pill neutral">held</span>';
+    kw+=`<tr><td>${k.k}</td><td class="n">${k.vol??'–'}</td><td class="n">${pos(first)}</td><td class="n">${pos(k.r[5])}</td><td class="n">${pos(aug)}</td><td class="n"><b>${pos(sep)}</b></td><td class="n">${mvTxt}</td><td>${sep!=null&&sep<=10?'<span class="pill good">yes</span>':sep!=null&&sep<=30?'<span class="pill teal">top 30</span>':'<span class="pill neutral">no</span>'}</td></tr>`; });
+  kw+='</tbody>'; $('#t-kw').innerHTML=kw;
+  const isLegacy=k=>/trauma/i.test(k.k);
+  const agencyTop=RANKS.filter(k=>!isLegacy(k)&&k.r[8]!=null&&k.r[8]<=10).sort((a,b)=>a.r[8]-b.r[8]);
+  const nextIn=RANKS.filter(k=>!isLegacy(k)&&k.r[8]!=null&&k.r[8]>10&&k.r[8]<=30).sort((a,b)=>a.r[8]-b.r[8]);
+  const legacy=RANKS.filter(isLegacy).sort((a,b)=>a.r[8]-b.r[8]);
+  const inTopAll=RANKS.filter(k=>k.r[8]!=null&&k.r[8]<=10).length;
+  $('#kw-top10-pill').textContent=inTopAll+' of '+RANKS.length+' in the top 10 · '+agencyTop.length+' from this year\'s work';
+  // agency-driven: top-10 movers as cards, plus the two biggest climbers still outside the top 10
+  const climbers=nextIn.map(k=>({k,gain:(k.r[7]??101)-(k.r[8]??101)})).sort((a,b)=>b.gain-a.gain).slice(0,2).map(x=>x.k);
+  const cards=[...agencyTop,...climbers];
+  $('#kw-top10-block').innerHTML=cards.map(k=>{ const first=k.r.find(x=>x!=null); const fromTxt=first>100?'not in top 100 at first tracking':'position '+first+' at first tracking'; return `<div class="kwc"><div class="posn">#${k.r[8]}<small>Aug: ${k.r[7]>100?'100+':k.r[7]}</small></div><div class="kw">${k.k.replace(' (2)','')}</div><div class="from">${fromTxt}${k.vol?' · ~'+k.vol+' searches/mo':''}</div></div>`; }).join('');
+  $('#kw-next-block').innerHTML=nextIn.filter(k=>!climbers.includes(k)).map(k=>`<span><b>#${k.r[8]}</b>${k.k.replace(' (2)','')}</span>`).join('');
+  $('#kw-legacy-block').innerHTML=legacy.map(k=>`<span><b>#${k.r[8]}</b>${k.k} <span class="muted small">(from ${k.r[0]})</span></span>`).join('');
+  // social posts
+  const pc={'Reframe':'teal','Humour':'violet','Real life':'rust'};
+  if($('#oct-posts')) $('#oct-posts').innerHTML=OCT_POSTS.map(p=>`<div class="post"><div class="top"><span class="pill ${pc[p.p]}">${p.p}</span><span class="small muted">Post ${p.n} · ${p.f}</span></div><div class="cap">${p.cap}</div><div class="kw">${p.kw}</div></div>`).join('');
+  // sparklines
+  spark($('#spark-paid'), full.map(a=>a.form+a.phone), rust);
+  spark($('#spark-seo'), RANK_STATS.map(r=>r.top30), green); // keywords in top 30, Jan to Sep
+  spark($('#spark-social'), [12,9,9,12], violet); // posts per calendar: Jul 12, Aug 9 approved, Sep 9, Oct 12
+}
+/* ---------- GOAL TRACKER ---------- */
+(function(){
+  const M=['Oct 26','Nov','Dec','Jan 27','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct 27'];
+  const A=[{m:'Feb',v:9},{m:'Mar',v:20},{m:'Apr',v:11},{m:'May',v:18},{m:'Jun',v:17},{m:'Jul',v:16},{m:'Aug',v:11}];
+  const q=s=>document.querySelector(s);
+  const cv=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  function model(){
+    const spend=+q('#gl-spend').value, leads=+q('#gl-leads').value, r0=+q('#gl-rate0').value/100, r1=+q('#gl-rate1').value/100;
+    const ramp=Math.max(1,+q('#gl-ramp').value), lift=Math.max(1,+q('#gl-lift').value);
+    const base=Math.round(leads*r0), goal=base*2;
+    const paths=[
+      {name:'Hold spend',col:cv('--teal'),mult:1,at:99,d:'$'+spend.toLocaleString()+' a month throughout. Growth comes only from booking rate.'},
+      {name:'+50% from January',col:cv('--amber'),mult:1.5,at:lift,d:'$'+Math.round(spend*1.5).toLocaleString()+' a month from month '+lift+'.'},
+      {name:'Double from January',col:cv('--green'),mult:2,at:lift,d:'$'+Math.round(spend*2).toLocaleString()+' a month from month '+lift+'.'},
+    ];
+    paths.forEach(p=>{
+      p.series=M.map((_,i)=>{ const rate=i>=ramp?r1:r0+(r1-r0)*(i/ramp); return leads*(i>=p.at?p.mult:1)*rate; });
+      p.hit=p.series.findIndex(v=>Math.round(v)>=goal); p.end=Math.round(p.series[12]);
+    });
+    return {base,goal,paths};
+  }
+  function draw(){
+    if(!q('#gl-chart')) return;
+    const {base,goal,paths}=model();
+    q('#gl-now').innerHTML=base+'<small>a month</small>'; q('#gl-goal').innerHTML=goal+'<small>a month</small>';
+    const pct=Math.round(base/goal*100); q('#gl-fill').style.width=pct+'%'; q('#gl-fill-label').textContent=pct+'% of the goal';
+    q('#gl-now-line').textContent=base+' booked a month now. '+(goal-base)+' more a month closes the gap.';
+    q('#gl-paths').innerHTML=paths.map(p=>'<div class="gl-path"><div class="gl-name"><span class="gl-sw" style="background:'+p.col+'"></span>'+p.name+'</div><div class="gl-when num">'+(p.hit<0?p.end+' / mo':M[p.hit])+'</div><div class="gl-d">'+(p.hit<0?'Reaches '+p.end+' a month by Oct 2027, short of '+goal+'.':'Crosses '+goal+' a month in '+M[p.hit]+'; ends the year at '+p.end+'.')+'</div><div class="gl-d muted" style="margin-top:4px">'+p.d+'</div></div>').join('');
+    const first=paths.find(p=>p.hit>=0);
+    q('#gl-status').textContent=first?('Double is reachable by '+M[first.hit]+' on the "'+first.name+'" path'):'No path reaches double in 12 months at these inputs';
+    q('#gl-status').className='pill '+(first?'good':'warn');
+    const svg=q('#gl-chart'); const W=900,H=320,L=60,R=20,T=24,B=44; const n=A.length+M.length;
+    const maxY=Math.max(goal*1.25,...paths.map(p=>Math.max(...p.series)))*1.05;
+    const x=i=>L+(W-L-R)*(i/(n-1)), y=v=>T+(H-T-B)*(1-v/maxY);
+    const line=cv('--line'), strong=cv('--line-strong'), muted=cv('--muted'), rust=cv('--rust');
+    let o='';
+    for(let v=0;v<=maxY;v+=10){ o+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+line+'"/><text x="'+(L-8)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="'+muted+'">'+v+'</text>'; }
+    const dv=(x(A.length-1)+x(A.length))/2;
+    o+='<line x1="'+dv+'" x2="'+dv+'" y1="'+T+'" y2="'+(H-B)+'" stroke="'+strong+'" stroke-dasharray="3 4"/><text x="'+(dv+6)+'" y="'+(T+12)+'" font-size="11" fill="'+muted+'">projection</text>';
+    o+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(goal)+'" y2="'+y(goal)+'" stroke="'+rust+'" stroke-width="2" stroke-dasharray="6 5"/><text x="'+(W-R)+'" y="'+(y(goal)-6)+'" text-anchor="end" font-size="12" font-weight="600" fill="'+rust+'">Goal '+goal+' a month</text>';
+    o+='<polyline points="'+A.map((a,i)=>x(i)+','+y(a.v)).join(' ')+'" fill="none" stroke="'+muted+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    A.forEach((a,i)=>{ o+='<circle cx="'+x(i)+'" cy="'+y(a.v)+'" r="3.5" fill="'+muted+'"/><text x="'+x(i)+'" y="'+(H-B+18)+'" text-anchor="middle" font-size="11" fill="'+muted+'">'+a.m+'</text>'; });
+    paths.slice().reverse().forEach(p=>{
+      const pts=[x(A.length-1)+','+y(base)].concat(p.series.map((v,i)=>x(A.length+i)+','+y(v))).join(' ');
+      o+='<polyline points="'+pts+'" fill="none" stroke="'+p.col+'" stroke-width="2.5" stroke-linejoin="round"/><text x="'+(W-R-4)+'" y="'+(y(p.series[12])+4)+'" text-anchor="end" font-size="11.5" font-weight="600" fill="'+p.col+'">'+Math.round(p.series[12])+'</text>';
+    });
+    M.forEach((m,i)=>{ if(i%3===0||i===12) o+='<text x="'+x(A.length+i)+'" y="'+(H-B+18)+'" text-anchor="middle" font-size="11" fill="'+muted+'">'+m+'</text>'; });
+    svg.innerHTML=o;
+  }
+  document.querySelectorAll('.gl-controls input').forEach(i=>i.addEventListener('input',draw));
+  const mq2=window.matchMedia('(prefers-color-scheme: dark)'); mq2.addEventListener && mq2.addEventListener('change',draw);
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  draw();
+})();
+
+/* ---------- ROUTING ---------- */
+const VIEWS=['overview','paid','seo','social','goal'];
+function route(){ let h=(location.hash||'#overview').replace('#',''); if(!VIEWS.includes(h)) h='overview'; VIEWS.forEach(v=>{ $('#view-'+v).classList.toggle('active', v===h); }); document.querySelectorAll('.nav a').forEach(a=>{ if(a.dataset.view===h) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); window.scrollTo({top:0}); }
+window.addEventListener('hashchange', route);
+const mq=window.matchMedia('(prefers-color-scheme: dark)'); mq.addEventListener && mq.addEventListener('change', render);
+new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+document.querySelectorAll('.stripwrap').forEach(w=>{ const st=w.querySelector('.strip'); const step=()=>st.clientWidth+8; w.querySelector('.prev').addEventListener('click',()=>st.scrollBy({left:-step(),behavior:'smooth'})); w.querySelector('.next').addEventListener('click',()=>st.scrollBy({left:step(),behavior:'smooth'})); });
+render(); route();
+</script>
+
+</body>
+</html>
