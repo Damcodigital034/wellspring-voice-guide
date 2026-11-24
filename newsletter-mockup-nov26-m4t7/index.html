@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<meta charset="utf-8">
+<title>Wellspring Newsletter Mock-Up</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<style>
+/* Layout: the newsletter at its real 600px width on the left, a short numbered list of what changed on the right; stacks on a phone. Single light look on purpose: it mirrors the newsletter's own colors. */
+:root{
+  --page:#EFE9E1; --ink:#2A323C; --muted:#5E6672; --navy:#313B47;
+  --banner:#F0B795; --body:#FCF3ED; --card:#FFFFFF; --terra:#C96849; --button:#CB7458; --line:#E7D9CC;
+  --text:Arial,Helvetica,sans-serif; --display:Georgia,Palatino,'Times New Roman',serif;
+}
+body{background:var(--page);color:var(--ink);font-family:var(--text);font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-block:2rem 3rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{margin-bottom:1.5rem}
+.top .k{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:700}
+.top h1{font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,3.5vw,2.1rem);line-height:1.2;margin:.3rem 0 .4rem;color:var(--navy);text-wrap:balance}
+.top p{margin:0;color:var(--muted);max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,600px) minmax(0,1fr);gap:2rem;align-items:start}
+.mail{background:var(--body);min-width:0;box-shadow:0 1px 0 var(--line),0 12px 30px rgba(49,59,71,.12)}
+.inbox{background:var(--card);padding:.8rem 1.1rem;border-bottom:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+.inbox b{display:block;color:var(--ink);font-size:.98rem}
+.banner{background:var(--banner);padding:1.1rem 1.4rem;font-family:var(--display);color:var(--navy);font-size:1.15rem;letter-spacing:.02em}
+.banner small{display:block;font-family:var(--text);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase}
+.sec{padding:1.2rem 1.4rem;position:relative}
+.sec + .sec{border-top:3px dotted var(--navy);margin:0 1.4rem;padding-left:0;padding-right:0}
+.sec h2{font-size:1.25rem;line-height:1.2;margin:0 0 .6rem;color:var(--ink);padding-right:2rem}
+.sec h2.lead{font-size:1rem}
+.sec p{margin:0 0 .7rem}
+.sec p:last-child{margin-bottom:0}
+.sec ul{margin:.2rem 0 0;padding-left:1.15rem}
+.sec li{margin-bottom:.5rem}
+.sec a{color:var(--terra)}
+.sec a:focus-visible,.btn:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.post{background:var(--card);border:1px solid var(--line);padding:.9rem 1rem;margin-top:.6rem}
+.post b{display:block;font-family:var(--display);font-weight:400;font-size:1.05rem;line-height:1.3;color:var(--navy)}
+.post span{display:block;color:var(--muted);font-size:.9rem;margin:.25rem 0 .4rem}
+.post a{font-weight:700;text-decoration:none}
+.btn{display:block;background:var(--button);color:#FFFFFF;font-family:var(--display);font-weight:700;font-size:1rem;text-align:center;text-decoration:none;padding:.7rem 1rem;margin-top:.9rem}
+.sec a.btn{color:#FFFFFF}
+.call{text-align:center;font-size:.92rem;margin-top:.6rem}
+.foot{background:var(--terra);color:#1F1410;text-align:center;font-size:.82rem;padding:1.1rem 1.4rem;line-height:1.6}
+.foot a{color:#1F1410}
+.mark{position:absolute;right:0;top:1.15rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--navy);color:#FFFFFF;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.sec:first-of-type .mark{right:1.4rem}
+aside{min-width:0}
+aside h3{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);margin:0 0 .8rem}
+aside ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.9rem}
+aside li{display:flex;gap:.7rem;align-items:flex-start}
+aside li span{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--navy);color:#FFFFFF;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+aside li b{display:block;color:var(--navy)}
+aside li p{margin:.1rem 0 0;color:var(--muted);font-size:.92rem}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="k">Wellspring Therapeutic Partners</div>
+    <h1>Your July newsletter, refined</h1>
+    <p>Same issue, same voice. The numbers mark what changed.</p>
+  </div>
+
+  <div class="grid">
+    <div class="mail">
+      <div class="inbox"><b>When Summer Scrambles Your Routine: Finding Your Steady Confidence</b>That inner critic that didn't take the summer off? Let's talk.</div>
+      <div class="banner"><small>Wellspring</small>Therapeutic Partners</div>
+
+      <div class="sec">
+        <span class="mark" aria-label="Change 1">1</span>
+        <h2 class="lead">The Best of Summer Is Still Ahead</h2>
+        <p>Hi <em>Megan</em>,</p>
+        <p>The evenings are staying long and golden lately, the pace has shifted just enough to notice, and there's something about eating dinner outside that makes the whole day feel worth it.</p>
+        <p>July can also swap one kind of hard for another. The structure that quietly kept you afloat all spring is gone. The kids are home, the calendar looks nothing like it did in May, and that little voice asking <em>am I doing enough, am I enough</em> did not take the summer off.</p>
+        <p>This month we're sitting with <strong>confidence</strong>: trusting yourself again, making a decision without three days of second guessing, and no longer feeling like you're running just to keep up.</p>
+      </div>
+
+      <div class="sec">
+        <h2>🤔 Did You Know?</h2>
+        <p>Self-doubt gets louder when your routine disappears. Your brain relies on predictable patterns to feel safe, so when summer scrambles your schedule, the inner critic gets more airtime than usual.</p>
+        <ul>
+          <li><strong>Make a decision and let it stick.</strong> Pick the restaurant, send the text, choose the activity, then don't look back.</li>
+          <li><strong>Notice what you actually handled today.</strong> Lunch got figured out, the hard conversation happened, things kept moving. That counts more than it feels like it does.</li>
+          <li><strong>Talk to yourself like someone you're rooting for.</strong> You'd never tell a friend she's falling apart because she had a hard Tuesday.</li>
+        </ul>
+      </div>
+
+      <div class="sec">
+        <span class="mark" aria-label="Change 2">2</span>
+        <h2>📖 From the Blog</h2>
+        <div class="post">
+          <b>Mindfulness for Busy Women: Reducing Anxiety Without Adding More to Your Plate</b>
+          <span>Short moments of awareness that fit into a full day.</span>
+          <a href="https://www.wellspringtherapy.net/blog/mindfulness-for-anxiety/?utm_source=newsletter&utm_medium=email&utm_campaign=2026-07-confidence&utm_content=blog-1">Read the post →</a>
+        </div>
+        <div class="post">
+          <b>Who You Thought You'd Be vs. Who You Are Now: Navigating Life After Graduation</b>
+          <span>For the gap between the plan and where life actually is.</span>
+          <a href="https://www.wellspringtherapy.net/blog/identity-life-after-graduation?utm_source=newsletter&utm_medium=email&utm_campaign=2026-07-confidence&utm_content=blog-2">Read the post →</a>
+        </div>
+      </div>
+
+      <div class="sec">
+        <span class="mark" aria-label="Change 3">3</span>
+        <h2>🍓 Local Spotlight: A Farmers Market Is Exactly What You Need</h2>
+        <p>A big jar of honey. A bunch of sunflowers. A peach you eat in the parking lot. No agenda, no notifications, just you and some produce for an hour.</p>
+        <ul>
+          <li><a href="https://easternmarket.org/"><strong>Eastern Market</strong></a> (Detroit): loud, colorful, impossible to leave empty handed</li>
+          <li><a href="https://www.downtownrochestermi.com/farmers-market"><strong>Rochester Farmers Market</strong></a>: downtown Rochester at its best</li>
+          <li><a href="https://packardprovinggrounds.org/farmersmarket/"><strong>Packard Proving Grounds Market</strong></a> (Shelby Township): cool space, great energy</li>
+          <li><a href="https://www.newbaltimorefarmersmarket.com/"><strong>New Baltimore Farmers Market</strong></a>: slower pace, in the best way</li>
+        </ul>
+      </div>
+
+      <div class="sec">
+        <span class="mark" aria-label="Change 4">4</span>
+        <h2>Ready to Explore Support?</h2>
+        <p>When fall arrives and life speeds back up, you'll want to meet it a little steadier and a little clearer.</p>
+        <p>That happens when you give some attention to the thing that's been tugging at you: the relationship that needs a real conversation, the kid who needs someone in their corner, the version of you that's been running on fumes and calling it fine.</p>
+        <a class="btn" href="https://www.wellspringtherapy.net/?utm_source=newsletter&utm_medium=email&utm_campaign=2026-07-confidence&utm_content=button">Start Your Conversation</a>
+        <p class="call">Or call <strong>(586) 846-4835</strong>. Offices in Clinton Township and Troy.</p>
+      </div>
+
+      <div class="sec">
+        <span class="mark" aria-label="Change 5">5</span>
+        <p><strong>On Instagram:</strong> a few minutes of this every week. Come find us there.</p>
+        <p><strong>Know someone who could use this?</strong> Forward this email to them.</p>
+      </div>
+
+      <div class="foot">
+        <em>Copyright © 2026 Wellspring Therapeutic Partners. All rights reserved.</em><br>
+        1719 W. Big Beaver Rd., Troy, MI 48084<br>
+        42815 Garfield Rd. #210, Clinton Township, MI 48038<br>
+        <strong>(586) 846-4835</strong><br>
+        Want to change how you receive these emails? You can unsubscribe from this list.
+      </div>
+    </div>
+
+    <aside>
+      <h3>What changed</h3>
+      <ol>
+        <li><span>1</span><div><b>Shorter opening</b><p>Your July wording, trimmed so the theme arrives in three short paragraphs.</p></div></li>
+        <li><span>2</span><div><b>A blog section</b><p>Two posts from your site that match the month's theme. Each link is tracked, so we can show how many visits each issue sends to each post.</p></div></li>
+        <li><span>3</span><div><b>Cleaner links</b><p>Market names carry the links, in place of full web addresses.</p></div></li>
+        <li><span>4</span><div><b>One clear next step</b><p>The button, with the phone number and both offices beside it. Every link in the issue is tracked.</p></div></li>
+        <li><span>5</span><div><b>Two small additions</b><p>A line pointing to Instagram and a line inviting readers to forward the issue.</p></div></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+</body>
+</html>
