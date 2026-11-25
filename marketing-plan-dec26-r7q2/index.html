@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Wellspring Marketing Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@500;600&display=swap">
+<style>
+/* Layout: navy hero with the Wellspring badge, a sticky pill menu that tracks the section in view, then one message per section in a 1040px column. Wellspring's own palette: navy, terracotta, peach, cream. */
+:root{
+  --bg:#FBF7F2; --card:#FFFFFF; --ink:#2B333D; --muted:#667080; --line:#E7DED3;
+  --navy:#313B47; --on-navy:#FBF7F2; --terra:#B4553A; --on-terra:#FFFFFF; --peach:#FDE6D7; --sand:#F3ECE3;
+  --s1:#56606E; --s2:#7A6A5E; --s3:#A8643F; --s4:#B4553A;
+  --mail-banner:#F0B795; --mail-body:#FCF3ED; --mail-ink:#2A323C; --mail-btn:#CB7458;
+  --nav-bg:rgba(251,247,242,.92); --shadow:0 10px 30px rgba(49,59,71,.10);
+  --serif:'Playfair Display',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans',-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1E242C; --card:#272F39; --ink:#F1ECE4; --muted:#A9B1BC; --line:#3A4450;
+    --navy:#161B21; --on-navy:#F1ECE4; --terra:#E08A66; --on-terra:#1E242C; --peach:#4A3229; --sand:#2C343F;
+    --s1:#6F7C8C; --s2:#9A8777; --s3:#C98558; --s4:#E08A66;
+    --nav-bg:rgba(30,36,44,.92); --shadow:0 10px 30px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1E242C; --card:#272F39; --ink:#F1ECE4; --muted:#A9B1BC; --line:#3A4450;
+  --navy:#161B21; --on-navy:#F1ECE4; --terra:#E08A66; --on-terra:#1E242C; --peach:#4A3229; --sand:#2C343F;
+  --s1:#6F7C8C; --s2:#9A8777; --s3:#C98558; --s4:#E08A66;
+  --nav-bg:rgba(30,36,44,.92); --shadow:0 10px 30px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* hero */
+.band{background:var(--navy);color:var(--on-navy);margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 2.5rem);padding-bottom:2.75rem;position:relative;overflow:hidden}
+.band::after{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(201,104,73,.35),rgba(201,104,73,0) 70%);pointer-events:none}
+.hero{display:flex;gap:1.5rem;align-items:center;position:relative;z-index:1}
+.badge{flex:none;width:96px;height:96px;border-radius:50%;background:#FFFFFF;box-shadow:0 0 0 4px rgba(255,255,255,.18)}
+.badge img{display:block;width:100%;height:100%;border-radius:50%}
+.brand{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.15;margin:.4rem 0 .5rem;text-wrap:balance}
+.band p{margin:0;opacity:.85;max-width:60ch}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.chip{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;padding:.3rem .75rem;border-radius:999px;background:rgba(255,255,255,.12);color:var(--on-navy)}
+.chip b{font-weight:700}
+
+/* menu */
+.menu{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--nav-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.menu .wrap{display:flex;gap:.4rem;overflow-x:auto;padding-block:.6rem;scrollbar-width:none}
+.menu .wrap::-webkit-scrollbar{display:none}
+.menu a{flex:none;display:inline-flex;align-items:center;gap:.35rem;text-decoration:none;color:var(--ink);font-size:.85rem;font-weight:500;padding:.38rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
+.menu a svg{width:.95rem;height:.95rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.menu a:hover{border-color:var(--terra);color:var(--terra)}
+.menu a.on{background:var(--terra);border-color:var(--terra);color:var(--on-terra)}
+.menu a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+section{padding-block:2.75rem;border-bottom:1px solid var(--line);scroll-margin-top:4.2rem}
+section:last-of-type{border-bottom:0}
+.eyebrow{display:flex;align-items:center;gap:.5rem;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);font-weight:700}
+.eyebrow .ic{margin:0;width:1.9rem;height:1.9rem;background:var(--peach);color:var(--terra)}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.2;margin:.5rem 0 1.5rem;max-width:30ch;text-wrap:balance}
+.hint{color:var(--muted);font-size:.88rem;margin:1rem 0 0}
+
+/* icons */
+.ic{display:inline-flex;align-items:center;justify-content:center;flex:none;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--sand);color:var(--navy);vertical-align:middle;margin-right:.4rem}
+.ic svg{width:1rem;height:1rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ic.g{background:linear-gradient(#FFFFFF,#FFFFFF) padding-box,conic-gradient(#EA4335 0 25%,#FBBC05 0 50%,#34A853 0 75%,#4285F4 0) border-box;border:3px solid transparent;color:#4285F4;font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:.85rem;line-height:1}
+.ic.ig{background:linear-gradient(45deg,#F9CE34,#EE2A7B,#6228D7);color:#FFFFFF}
+.ic.on{background:rgba(255,255,255,.22);color:#FFFFFF}
+.ic.t{background:var(--peach);color:var(--terra)}
+.ics{display:flex;gap:.1rem;margin-bottom:.5rem}
+.ics .ic{width:2.2rem;height:2.2rem;margin-right:.3rem}
+.ics .ic svg{width:1.2rem;height:1.2rem}
+
+/* cards shared */
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;min-width:0}
+.lift{transition:transform .15s,box-shadow .15s}
+@media (hover:hover){.lift:hover{transform:translateY(-2px);box-shadow:var(--shadow)}}
+@media (prefers-reduced-motion:reduce){.lift{transition:none}.lift:hover{transform:none}}
+
+/* recommendation */
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem}
+.rec{padding:1.1rem 1.2rem;position:relative}
+.rec .rn{position:absolute;right:1rem;top:.8rem;font-family:var(--serif);font-size:1.8rem;color:var(--line);line-height:1}
+.rec b{display:block;font-family:var(--serif);font-weight:600;font-size:1.12rem;line-height:1.25;margin:.2rem 0 .4rem}
+.rec p{margin:0 0 .6rem;font-size:.93rem}
+.rec i{display:block;font-style:normal;font-size:.85rem;color:var(--muted);padding-top:.6rem;border-top:1px dashed var(--line)}
+
+/* competitors */
+.comps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.75rem}
+.compc{padding:1rem 1.1rem}
+.compc.hl{border-color:var(--terra)}
+.clogo{display:block;height:56px;width:auto;max-width:100%;background:#FFFFFF;border-radius:8px;padding:4px;border:1px solid var(--line)}
+.compc b{display:block;font-size:.98rem;line-height:1.3;margin:.7rem 0 .3rem}
+.compc p{margin:0 0 .5rem;font-size:.88rem;color:var(--muted)}
+.compc i{display:block;font-style:normal;font-size:.85rem;color:var(--terra);font-weight:700}
+.takes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem;margin-top:1rem}
+.take{border-left:3px solid var(--terra);padding:.2rem 0 .2rem .9rem;min-width:0}
+.take b{display:block}
+.take span{color:var(--muted);font-size:.9rem}
+
+/* ladder */
+.ladder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+.rungs{display:flex;flex-direction:column;align-items:center;gap:.15rem;min-width:0}
+.rung{width:var(--w);border:0;border-radius:10px;padding:.8rem 1rem;color:#FFFFFF;font-family:var(--sans);text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.75rem;opacity:.72}
+.rung b{display:inline-flex;align-items:center;font-size:1.05rem}
+.rung span.sub{font-size:.82rem;opacity:.9;text-align:right}
+.rung[aria-pressed="true"]{opacity:1;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--ink)}
+.rung:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.r1{--w:100%;background:var(--s1)} .r2{--w:90%;background:var(--s2)} .r3{--w:80%;background:var(--s3)} .r4{--w:70%;background:var(--s4)}
+.down{color:var(--terra);font-size:1.1rem;line-height:1}
+.goalbox{width:60%;min-width:200px;background:var(--peach);border-radius:10px;padding:.8rem 1rem;text-align:center}
+.goalbox b{display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.15rem}
+.goalbox span{font-size:.85rem;color:var(--muted)}
+.detail{padding:1.2rem 1.3rem}
+.detail .stage{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);font-weight:700}
+.detail h3{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.25;margin:.2rem 0 .8rem}
+.detail dt{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:.8rem}
+.detail dd{margin:.15rem 0 0}
+.detail dl{margin:0}
+.detail .next{margin-top:1rem;padding-top:.8rem;border-top:1px dashed var(--line);font-size:.92rem}
+.detail .next b{color:var(--terra)}
+
+/* flow */
+.flowchart{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,.9fr);gap:.5rem;align-items:start}
+.fcol{display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.fcol h4{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 .15rem}
+.node{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.5rem .65rem;font-size:.9rem;line-height:1.3}
+.node small{display:block;color:var(--muted);font-size:.78rem;margin-top:.15rem}
+.node.end{background:var(--terra);color:var(--on-terra);border-color:transparent;font-family:var(--serif);font-size:1.05rem;text-align:center;padding:1rem .65rem}
+.node.end .ic{margin:0 auto .4rem;display:flex}
+.node.end small{color:var(--on-terra);opacity:.9;font-family:var(--sans)}
+.farrow{color:var(--terra);font-size:1.5rem;align-self:center}
+.node.x{cursor:default;position:relative;padding-right:1.6rem}
+.node.x::after{content:"+";position:absolute;right:.6rem;top:.45rem;color:var(--terra);font-weight:700}
+.node.x .more{display:none;margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--line);font-size:.84rem;line-height:1.4;color:var(--ink)}
+.node.x:hover,.node.x:focus,.node.x:focus-within{border-color:var(--terra);box-shadow:var(--shadow)}
+.node.x:hover .more,.node.x:focus .more,.node.x:focus-within .more{display:block}
+.node.x:hover::after,.node.x:focus::after,.node.x:focus-within::after{content:"";}
+.node.x:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.mini{margin-top:.5rem;background:var(--sand);border-radius:6px;padding:.5rem;font-size:.74rem;line-height:1.3;color:var(--ink)}
+.mini .cap{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.mini .row{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:.3rem .45rem;margin-top:.25rem}
+.mini .row.go{background:var(--terra);color:var(--on-terra);border-color:transparent;text-align:center;font-weight:700}
+.mini .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25rem}
+.mini .tile{aspect-ratio:4/5;max-width:100%;background:var(--navy);color:var(--on-navy);border-radius:4px;display:flex;align-items:flex-end;padding:.25rem;font-family:var(--serif);font-size:.62rem;line-height:1.15}
+.mini .url{color:var(--muted);font-size:.66rem}
+.mini .ttl{color:var(--terra);font-weight:700}
+.mini .opt{display:flex;gap:.25rem;margin-top:.25rem}
+.mini .opt span{flex:1;background:var(--card);border:1px solid var(--line);border-radius:999px;text-align:center;padding:.2rem}
+.shot{display:block;width:100%;max-width:100%;height:auto;border-radius:5px;border:1px solid var(--line);cursor:zoom-in;margin-top:.25rem}
+.shot:focus-visible{outline:2px solid var(--terra);outline-offset:2px}
+dialog.big{border:0;border-radius:12px;padding:.75rem;background:var(--card);color:var(--ink);max-width:min(92vw,720px);max-height:92vh}
+dialog.big:not([open]){display:none!important}
+dialog.big[open]{display:block;position:fixed;inset:0;margin:auto;height:fit-content;z-index:50}
+dialog.big::backdrop{background:rgba(22,27,33,.7)}
+dialog.big img{display:block;max-width:100%;max-height:80vh;height:auto;margin:0 auto;border-radius:6px}
+dialog.big p{margin:.6rem 0 0;font-size:.9rem;text-align:center}
+dialog.big button{display:block;margin:.6rem auto 0;background:var(--terra);color:var(--on-terra);border:0;border-radius:8px;padding:.45rem 1rem;font-family:var(--sans);font-weight:700;cursor:pointer}
+
+/* months */
+.months{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.month{overflow:hidden}
+.month header{background:var(--navy);color:var(--on-navy);padding:.85rem 1rem;display:flex;align-items:center;gap:.6rem}
+.month header b{font-family:var(--serif);font-size:1.3rem;font-weight:600;display:block;line-height:1.1}
+.month header span{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.month ul{list-style:none;margin:0;padding:.9rem 1rem 1rem;display:flex;flex-direction:column;gap:.65rem}
+.month li{font-size:.92rem;line-height:1.4}
+.tag{display:inline-block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:.1rem .45rem;border-radius:4px;color:#FFFFFF;margin-bottom:.2rem}
+.t1{background:var(--s1)} .t2{background:var(--s2)} .t3{background:var(--s3)} .t4{background:var(--s4)} .t0{background:var(--navy)}
+.month li span.txt{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:.75rem 1.25rem;margin-bottom:1rem;font-size:.85rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:3px}
+
+/* themes */
+.themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.theme{padding:1.1rem 1.2rem}
+.theme .mo{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);font-weight:700}
+.theme h3{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.25;margin:.2rem 0 .8rem}
+.theme .piece{display:flex;gap:.55rem;align-items:flex-start;font-size:.9rem;line-height:1.35;padding:.55rem 0;border-top:1px dashed var(--line)}
+.theme .piece .ic{margin:0;width:1.6rem;height:1.6rem}
+.theme .piece .ic svg{width:.9rem;height:.9rem}
+.split{display:flex;height:14px;border-radius:999px;overflow:hidden;margin:1.25rem 0 .5rem}
+.split span{display:block}
+.split .a{background:var(--terra);width:25%}
+.split .b{background:var(--sand);width:75%}
+.splitkey{display:flex;justify-content:space-between;gap:1rem;font-size:.88rem;color:var(--muted)}
+.splitkey b{color:var(--ink)}
+
+/* newsletter */
+.nl{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:1.75rem;align-items:center}
+.mail{background:var(--mail-body);color:var(--mail-ink);border-radius:10px;overflow:hidden;border:1px solid var(--line);font-family:Arial,Helvetica,sans-serif;font-size:.85rem;min-width:0;box-shadow:var(--shadow)}
+.mail .mtop{display:flex;justify-content:space-between;background:#313B47;color:#FBF7F2;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.4rem .9rem}
+.mail .mb{background:var(--mail-banner);padding:.6rem .9rem;font-family:Georgia,serif;font-size:.95rem}
+.mail .mi{padding:.8rem .9rem}
+.mail h4{margin:0 0 .5rem;font-size:1rem}
+.mail .spot{background:#C96849;color:#FFFFFF;border-radius:8px;padding:.7rem .8rem}
+.mail .spot h4{font-family:Georgia,serif;font-weight:400;font-size:1.05rem;margin:0 0 .4rem}
+.mail .sline{display:flex;justify-content:space-between;gap:.6rem;align-items:center;font-weight:700;font-size:.8rem;line-height:1.3;padding:.3rem 0}
+.mail .sline i{flex:none;font-style:normal;font-size:.68rem;border:1px solid #FFFFFF;border-radius:5px;padding:.15rem .4rem;text-transform:uppercase}
+.mail .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem;margin-top:.5rem}
+.mail .post{background:#FFFFFF;border:1px solid #E7D9CC;padding:.6rem .7rem;margin-top:.45rem}
+.mail .cards .post{margin-top:0}
+.mail .post b{display:block;font-family:Georgia,serif;font-weight:400;line-height:1.3}
+.mail .post span{display:block;color:#5E6672;font-size:.78rem;margin:.25rem 0}
+.mail .post i{font-style:normal;color:#B4553A;font-weight:700;font-size:.8rem}
+.mail .mh{margin:.8rem 0 0}
+.mail .mbtn{display:block;background:var(--mail-btn);color:#FFFFFF;text-align:center;font-family:Georgia,serif;font-weight:700;padding:.5rem;margin-top:.7rem}
+.nl p{margin:0 0 .8rem;max-width:44ch}
+.borrow{list-style:none;margin:0 0 1.2rem;padding:0;display:flex;flex-direction:column;gap:.5rem;font-size:.93rem;color:var(--muted)}
+.borrow li{display:flex;align-items:center;gap:.5rem}
+.borrow .ic{margin:0;width:1.6rem;height:1.6rem}
+.borrow .ic svg{width:.9rem;height:.9rem}
+.borrow b{color:var(--ink);margin-right:.3rem}
+.btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--terra);color:var(--on-terra);text-decoration:none;font-weight:700;padding:.65rem 1.1rem;border-radius:999px}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* scoreboard */
+.score{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.75rem}
+.kpi{padding:1rem 1.1rem}
+.kpi .lab{display:flex;align-items:center;font-size:.9rem;font-weight:500}
+.kpi .nums{display:flex;align-items:baseline;gap:.5rem;margin:.5rem 0 .5rem;font-variant-numeric:tabular-nums}
+.kpi .from{font-size:1.15rem;color:var(--muted)}
+.kpi .arr{color:var(--terra)}
+.kpi .to{font-family:var(--serif);font-size:1.9rem;line-height:1;font-weight:600}
+.bar{height:8px;border-radius:999px;background:var(--sand);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--terra);border-radius:999px}
+.kpi small{display:block;color:var(--muted);font-size:.78rem;margin-top:.5rem}
+.kpi.pending .to{font-size:1.05rem;font-family:var(--sans);font-weight:500}
+.subh{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:1.75rem 0 .6rem}
+.subh.first{margin-top:0}
+
+/* add-ons */
+.adds{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:.75rem}
+.add{padding:1rem 1.1rem}
+.add .top{display:flex;justify-content:space-between;align-items:center}
+.add b{display:block;font-family:var(--serif);font-weight:600;font-size:1.1rem;margin:.5rem 0 .4rem}
+.add dl{margin:0;font-size:.92rem}
+.add dt{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);font-weight:700;margin-top:.5rem}
+.add dd{margin:.1rem 0 0}
+
+/* heard */
+.heard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem}
+.quote{padding:1.2rem 1.2rem 1rem;position:relative}
+.quote::before{content:"\201C";position:absolute;right:.9rem;top:-.2rem;font-family:var(--serif);font-size:4rem;line-height:1;color:var(--peach)}
+.quote .ic{margin-bottom:.6rem}
+.quote q{display:block;font-family:var(--serif);font-size:1.15rem;line-height:1.35;quotes:none;position:relative}
+.quote p{margin:0;font-family:var(--serif);font-size:1.15rem;line-height:1.35}
+.quote small{display:block;margin-top:.7rem;color:var(--muted);font-size:.82rem}
+
+/* today */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem}
+.stat{padding:1rem 1.1rem}
+.stat .num{display:block;font-family:var(--serif);font-size:2rem;font-weight:600;line-height:1.05;font-variant-numeric:tabular-nums;margin:.5rem 0 .3rem}
+.stat .num.w{font-size:1.35rem}
+.stat span.l{display:block;font-size:.9rem}
+.stat small{display:block;color:var(--muted);font-size:.78rem;margin-top:.35rem}
+.h3{display:flex;align-items:center;font-family:var(--serif);font-weight:600;font-size:1.2rem;margin:2rem 0 .9rem}
+.opening{margin-top:1rem;background:var(--peach);border-radius:12px;padding:1rem 1.2rem;display:flex;gap:.75rem;align-items:center}
+.opening .ic{margin:0;background:var(--card);color:var(--terra)}
+.opening b{font-family:var(--serif);font-size:1.1rem}
+
+/* goal */
+.goalwrap{background:var(--navy);color:var(--on-navy);border-radius:16px;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+.goalwrap::after{content:"";position:absolute;left:-90px;bottom:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,104,73,.35),rgba(201,104,73,0) 70%);pointer-events:none}
+.big{display:flex;justify-content:center;align-items:baseline;gap:1rem;font-family:var(--serif);font-variant-numeric:tabular-nums;position:relative}
+.big .a{font-size:clamp(2.4rem,7vw,3.6rem);opacity:.6}
+.big .arr{font-size:clamp(1.6rem,4vw,2.4rem);color:#E08A66}
+.big .b{font-size:clamp(3.4rem,10vw,5.2rem);font-weight:600;line-height:1}
+.goalwrap p{margin:.6rem auto 0;max-width:46ch;opacity:.9;position:relative}
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:1.75rem auto 0;max-width:620px;position:relative}
+.road::before{content:"";position:absolute;left:16.6%;right:16.6%;top:.55rem;height:2px;background:rgba(255,255,255,.3)}
+.road div{position:relative;font-size:.85rem;opacity:.9}
+.road i{display:block;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--on-navy);margin:0 auto .5rem}
+.road div.now i{background:#E08A66;box-shadow:0 0 0 4px rgba(224,138,102,.3)}
+.road b{display:block;font-family:var(--serif);font-size:1.2rem}
+
+.flowh{display:flex;align-items:center;font-family:var(--serif);font-weight:600;font-size:1.2rem;margin:2.5rem 0 1rem}
+.need{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.75rem}
+.ask{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem}
+.ask .when{align-self:flex-start;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--terra);background:var(--peach);border-radius:999px;padding:.15rem .6rem}
+.ask b{font-family:var(--serif);font-weight:600;font-size:1.08rem;line-height:1.3}
+.ask span{font-size:.9rem;color:var(--muted)}
+
+/* questions */
+ol.qs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.75rem;counter-reset:q}
+ol.qs li{counter-increment:q;padding:1rem 1.1rem 1rem 3.2rem;position:relative}
+ol.qs li::before{content:counter(q);position:absolute;left:1.1rem;top:.85rem;font-family:var(--serif);font-size:1.5rem;color:var(--terra)}
+footer{padding-block:1.5rem 2.5rem;color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:.6rem}
+footer img{width:28px;height:28px;border-radius:50%;background:#FFFFFF}
+
+@media (max-width:860px){
+  .ladder,.months,.nl,.themes{grid-template-columns:minmax(0,1fr)}
+  .flowchart{grid-template-columns:minmax(0,1fr)}
+  .farrow{transform:rotate(90deg);justify-self:center}
+}
+@media (max-width:520px){
+  .hero{flex-direction:column;align-items:flex-start;gap:1rem}
+  .badge{width:72px;height:72px}
+}
+@media (prefers-reduced-motion:no-preference){.rung{transition:opacity .15s}}
+</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></symbol>
+  <symbol id="i-ai" viewBox="0 0 24 24"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M18.5 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.6" cy="7.4" r=".6"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></symbol>
+  <symbol id="i-ads" viewBox="0 0 24 24"><path d="M4 10v4h3l7 4V6l-7 4z"/><path d="M17 9.5a3.5 3.5 0 010 5"/></symbol>
+  <symbol id="i-web" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M6.5 6.6h.01M9 6.6h.01"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4M9 15l2 2 4-4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6-5.6 6-10.5A6 6 0 006 10.5C6 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 4l2.4 5 5.6.8-4 3.9.9 5.5L12 16.6 7.1 19.2l.9-5.5-4-3.9 5.6-.8z"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.8 14.6c2.3.1 4 1.4 4.7 4.4"/></symbol>
+  <symbol id="i-stairs" viewBox="0 0 24 24"><path d="M3 20h5v-4h5v-4h5V8h3"/><path d="M17 4h4v4"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><rect x="3" y="4" width="6" height="5" rx="1.5"/><rect x="15" y="15" width="6" height="5" rx="1.5"/><path d="M6 9v4a3 3 0 003 3h6"/><path d="M13 14l2 2-2 2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 4l9 4.5-9 4.5-9-4.5z"/><path d="M3 13l9 4.5 9-4.5"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 00-5.3 5.3L4 17l3 3 5.2-5.2a4 4 0 005.3-5.3l-2.5 2.5-2.5-.5-.5-2.5z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></symbol>
+</svg>
+
+<div class="band"><div class="wrap">
+  <div class="hero">
+    <div class="badge"><img src="wellspring-2027-plan-assets/wellspring-logo.png" alt="Wellspring Therapeutic Partners logo"></div>
+    <div>
+      <div class="brand">Wellspring Therapeutic Partners</div>
+      <h1>Marketing Plan: December to February</h1>
+      <p>What you told us, where things stand, and how we get to more booked consultations by the end of February.</p>
+      <div class="chips">
+        <span class="chip"><b>3</b> months</span>
+        <span class="chip"><b>4</b> steps</span>
+        <span class="chip"><b>3</b> monthly themes</span>
+        <span class="chip"><b>1</b> goal: booked consultations</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<nav class="menu" aria-label="Sections"><div class="wrap">
+  <a href="#heard"><svg><use href="#i-heart"/></svg>What we heard</a>
+  <a href="#today"><svg><use href="#i-chart"/></svg>Where you are</a>
+  <a href="#goal"><svg><use href="#i-target"/></svg>The goal</a>
+  <a href="#plan"><svg><use href="#i-compass"/></svg>Our plan</a>
+  <a href="#steps"><svg><use href="#i-stairs"/></svg>How it works</a>
+  <a href="#themes"><svg><use href="#i-layers"/></svg>What it looks like</a>
+  <a href="#newsletter"><svg><use href="#i-mail"/></svg>Newsletter</a>
+  <a href="#months"><svg><use href="#i-cal"/></svg>Month by month</a>
+  <a href="#targets"><svg><use href="#i-chart"/></svg>How we will know</a>
+  <a href="#addons"><svg><use href="#i-plus"/></svg>Going further</a>
+  <a href="#questions"><svg><use href="#i-help"/></svg>Your part</a>
+</div></nav>
+
+<div class="wrap">
+
+<section id="heard">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-heart"/></svg></span>What we heard from you</div>
+  <h2>You want more people booking, and content that sounds like Wellspring.</h2>
+  <div class="heard">
+    <div class="quote card"><span class="ic t"><svg><use href="#i-target"/></svg></span><q>Double consultations in a year.</q><small>Your goal for the practice</small></div>
+    <div class="quote card"><span class="ic ig"><svg><use href="#i-ig"/></svg></span><q>More natural, authentic, and relatable.</q><small>You, on the December posts</small></div>
+    <div class="quote card"><span class="ic t"><svg><use href="#i-doc"/></svg></span><q>Something practical they can implement in their everyday lives.</q><small>You, on what readers should take from each blog</small></div>
+    <div class="quote card"><span class="ic t"><svg><use href="#i-mail"/></svg></span><p>The newsletter is coming back, and you want to see the visits it brings.</p><small>From our call on November 18</small></div>
+  </div>
+</section>
+
+<section id="today">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-chart"/></svg></span>Where things stand</div>
+  <h2>Most bookings come through Google. The other channels are not sending people yet.</h2>
+  <div class="stats">
+    <div class="stat card"><span class="ic g">G</span><span class="num">15</span><span class="l">booked consultations a month from Google</span><small>June to August 2026 average</small></div>
+    <div class="stat card"><span class="ic t"><svg><use href="#i-cal"/></svg></span><span class="num">47%</span><span class="l">of Google leads book a consultation</span><small>Q3 2026</small></div>
+    <div class="stat card"><span class="ic t"><svg><use href="#i-search"/></svg></span><span class="num">377</span><span class="l">clicks from search every four weeks</span><small>October 14 to November 10, 2026</small></div>
+    <div class="stat card"><span class="ic ig"><svg><use href="#i-ig"/></svg></span><span class="num">61</span><span class="l">Instagram followers, one link to the homepage</span><small>Today</small></div>
+    <div class="stat card"><span class="ic t"><svg><use href="#i-mail"/></svg></span><span class="num w">Restarting</span><span class="l">newsletter, with no tracking yet</span><small>Today</small></div>
+  </div>
+  <h3 class="h3"><span class="ic t"><svg><use href="#i-users"/></svg></span>Practices nearby, and one you shared</h3>
+  <div class="comps">
+    <div class="compc card lift"><img class="clogo" src="wellspring-2027-plan-assets/logo-macomb.png" alt="Macomb Therapy Group logo"><b>Macomb Therapy Group</b><p>Found through directories. 171 followers on Instagram.</p><i>Borrow: local events, shared on social</i></div>
+    <div class="compc card lift"><img class="clogo" src="wellspring-2027-plan-assets/logo-helios.png" alt="Helios Psychiatry and Counseling logo"><b>Helios Psychiatry</b><p>Found through directories. No social account.</p><i>Borrow: a page for each treatment</i></div>
+    <div class="compc card lift"><img class="clogo" src="wellspring-2027-plan-assets/logo-rcbm.png" alt="Rochester Center for Behavioral Medicine logo"><b>Rochester Center for Behavioral Medicine</b><p>Leads with its blog and founder. 436 followers.</p><i>Borrow: "meet the team" posts</i></div>
+    <div class="compc card lift hl"><img class="clogo" src="wellspring-2027-plan-assets/logo-tcc.png" alt="The Cognitive Corner logo"><b>The Cognitive Corner</b><p>Your reference, in Calgary. Leads with reels. 30,500 followers.</p><i>Borrow: every link leads to one first step</i></div>
+  </div>
+  <div class="opening"><span class="ic"><svg><use href="#i-star"/></svg></span><div><b>The opening for Wellspring:</b> no practice nearby turns a post into a booking, and people posts get the most engagement.</div></div>
+</section>
+
+<section id="goal">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-target"/></svg></span>The goal</div>
+  <h2>One number for the next three months.</h2>
+  <div class="goalwrap">
+    <div class="big"><span class="a">15</span><span class="arr">&rarr;</span><span class="b">20</span></div>
+    <p>booked consultations a month by the end of February, with more of them coming from search, social and the newsletter.</p>
+    <div class="road">
+      <div class="now"><i></i><b>15</b>Today</div>
+      <div><i></i><b>20</b>February 2027</div>
+      <div><i></i><b>30</b>On the way to doubling</div>
+    </div>
+  </div>
+</section>
+
+<section id="plan">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-compass"/></svg></span>Our recommendation</div>
+  <h2>Four moves to get there.</h2>
+  <div class="recs">
+    <div class="rec card lift"><span class="rn">1</span><div class="ics"><span class="ic g">G</span><span class="ic t"><svg><use href="#i-ai"/></svg></span></div><b>Get found in search and AI</b><p>Fix the site, add local pages and answer the questions people ask.</p><i>Why: people look for a therapist on Google first, and more now ask an AI assistant.</i></div>
+    <div class="rec card lift"><span class="rn">2</span><div class="ics"><span class="ic ig"><svg><use href="#i-ig"/></svg></span></div><b>Make Instagram a route to the website</b><p>Pinned posts, a link in bio, and a clear next step on every post.</p><i>Why: people check the profile before they call, and today it does not say what Wellspring is.</i></div>
+    <div class="rec card lift"><span class="rn">3</span><div class="ics"><span class="ic t"><svg><use href="#i-doc"/></svg></span><span class="ic t"><svg><use href="#i-mail"/></svg></span></div><b>Put the blog and newsletter to work</b><p>Every blog shared further, a newsletter that carries it, every link tracked.</p><i>Why: the content exists; it needs a way to reach people and a number to show for it.</i></div>
+    <div class="rec card lift"><span class="rn">4</span><div class="ics"><span class="ic g">G</span><span class="ic t"><svg><use href="#i-ads"/></svg></span></div><b>Keep Google Ads converting</b><p>Test ads by need, keep the budget on the days and hours that book.</p><i>Why: ads bring most consultations today, and that must hold while the rest grows.</i></div>
+  </div>
+</section>
+
+<section id="steps">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-stairs"/></svg></span>How it comes together</div>
+  <h2>Four steps carry a person from a search to a booked consultation.</h2>
+  <div class="ladder">
+    <div class="rungs">
+      <button class="rung r1" type="button" id="rung-1" data-panel="p1" aria-pressed="true"><b><span class="ic on"><svg><use href="#i-search"/></svg></span>1. Awareness</b><span class="sub">Search and AI</span></button>
+      <span class="down" aria-hidden="true">&darr;</span>
+      <button class="rung r2" type="button" id="rung-2" data-panel="p2" aria-pressed="false"><b><span class="ic on"><svg><use href="#i-ig"/></svg></span>2. Consideration</b><span class="sub">Social</span></button>
+      <span class="down" aria-hidden="true">&darr;</span>
+      <button class="rung r3" type="button" id="rung-3" data-panel="p3" aria-pressed="false"><b><span class="ic on"><svg><use href="#i-mail"/></svg></span>3. Engagement</b><span class="sub">Blog and newsletter</span></button>
+      <span class="down" aria-hidden="true">&darr;</span>
+      <button class="rung r4" type="button" id="rung-4" data-panel="p4" aria-pressed="false"><b><span class="ic on"><svg><use href="#i-web"/></svg></span>4. Conversion</b><span class="sub">Website and Google Ads</span></button>
+      <span class="down" aria-hidden="true">&darr;</span>
+      <div class="goalbox"><b><span class="ic t"><svg><use href="#i-cal"/></svg></span>Consultation booked</b><span>The main KPI</span></div>
+    </div>
+    <div>
+      <div class="detail card" id="p1">
+        <span class="stage">Step 1 · Awareness</span>
+        <h3>People find Wellspring when they search for help.</h3>
+        <dl><dt>What we do</dt><dd>Fix broken pages, build local pages, add the questions people ask, list accepted insurers, keep the Google Business Profile active.</dd>
+        <dt>How we measure</dt><dd>Organic clicks, keywords in the top 10.</dd></dl>
+        <div class="next"><b>Leads to step 2:</b> a new visitor looks Wellspring up on Instagram before calling.</div>
+      </div>
+      <div class="detail card" id="p2" hidden>
+        <span class="stage">Step 2 · Consideration</span>
+        <h3>People check who Wellspring is before they call.</h3>
+        <dl><dt>What we do</dt><dd>Three pinned posts, about a third of posts on what Wellspring stands for, relatable posts, a link in bio to the consultation form. Every post ends by saying who Wellspring is and what to do next.</dd>
+        <dt>How we measure</dt><dd>Website visits from Instagram, saves and shares, followers.</dd></dl>
+        <div class="next"><b>Leads to step 3:</b> they follow, save a post or join the newsletter, and keep hearing from Wellspring.</div>
+      </div>
+      <div class="detail card" id="p3" hidden>
+        <span class="stage">Step 3 · Engagement</span>
+        <h3>People keep hearing from Wellspring until they are ready.</h3>
+        <dl><dt>What we do</dt><dd>A newsletter that carries the blog, one theme a month across posts, blog and newsletter, stories every week.</dd>
+        <dt>How we measure</dt><dd>Visits per newsletter issue, visits per blog by source.</dd></dl>
+        <div class="next"><b>Leads to step 4:</b> each blog and each issue sends the reader back to the website.</div>
+      </div>
+      <div class="detail card" id="p4" hidden>
+        <span class="stage">Step 4 · Conversion</span>
+        <h3>A website visit becomes a booked consultation.</h3>
+        <dl><dt>What we do</dt><dd>A clear way to book on every page, ads that land on a matching page, bids weighted to the days and hours that book.</dd>
+        <dt>How we measure</dt><dd>Booking rate, booked consultations a month.</dd></dl>
+        <div class="next"><b>The goal:</b> more booked consultations, from more sources than Google Ads alone.</div>
+      </div>
+      <p class="hint">Select a step to see what we do there and how it is measured.</p>
+    </div>
+  </div>
+  <h3 class="flowh"><span class="ic t"><svg><use href="#i-flow"/></svg></span>How the pieces link: every piece sends people to the website</h3>
+  <div class="flowchart">
+    <div class="fcol">
+      <h4>What we make</h4>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-doc"/></svg></span>Blog posts
+        <div class="more">Two posts a month. Each one answers a question people type into Google, and links to the matching service and the consultation form.
+          <div class="mini"><span class="cap">Example</span><div class="row"><span class="ttl">Mindfulness for Busy Women</span><br>...small moments of awareness that fit a full day. <u>See our therapy for women</u></div></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic ig"><svg><use href="#i-ig"/></svg></span>Social posts and stories
+        <div class="more">Relatable posts keep going. About one in three shows the practice itself. Each week a story asks a quick question.
+          <div class="mini"><span class="cap">Story poll</span><div class="row">What gets harder in December?</div><div class="opt"><span>Sleep</span><span>Saying no</span></div></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-star"/></svg></span>Pinned posts<small>Who we are, services, how to book</small>
+        <div class="more">Three posts stay at the top of the profile, so a first-time visitor sees what Wellspring is before anything else.
+          <div class="mini"><span class="cap">Top of the profile</span><div class="tiles"><div class="tile">Who we are</div><div class="tile">Our services</div><div class="tile">How to book</div></div></div>
+          <div class="mini"><span class="cap">The reference you shared</span><img class="shot" tabindex="0" src="wellspring-2027-plan-assets/reference-post.jpg" alt="A therapy practice's post that walks a new visitor through three steps: browse therapist profiles, take a matching quiz, book a free consultation" data-cap="The reference post from the Instagram group: three clear steps for a new visitor."></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-ads"/></svg></span>Ads
+        <div class="more">Search ads grouped by what the person needs: therapy, ADHD, child and teen. Each group gets its own wording.
+          <div class="mini"><span class="cap">A live ad today</span><div class="row"><span class="url">Sponsored · wellspringtherapy.net/therapist/troy</span><br><span class="ttl">Child &amp; Teen Therapy Near You | Therapy That Fits Your Life</span><br>Now welcoming Aetna, Priority Health &amp; McLaren members. Therapy in Troy &amp; Clinton Twp, MI.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="farrow" aria-hidden="true">&rarr;</div>
+    <div class="fcol">
+      <h4>Where people meet it</h4>
+      <div class="node x" tabindex="0"><span class="ic g">G</span><span class="ic t"><svg><use href="#i-ai"/></svg></span>Google and AI search
+        <div class="more">Wellspring shows up when someone searches for a therapist nearby or asks an AI assistant a question the site answers.
+          <div class="mini"><span class="cap">How Wellspring appears today</span><img class="shot" tabindex="0" src="wellspring-2027-plan-assets/gbp-panel.jpg" alt="Google's AI Overview panel for Wellspring Therapeutic Partners, with photos of the offices, call and website buttons and a short description" data-cap="Google's AI Overview for Wellspring today. The profile, services list and posts feed what it says."></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic ig"><svg><use href="#i-ig"/></svg></span>Instagram<small>Link in bio</small>
+        <div class="more">One link on the profile opens three choices, so the next step is always one tap away.
+          <div class="mini"><span class="cap">The profile today: one link, to the homepage</span><img class="shot" tabindex="0" src="wellspring-2027-plan-assets/instagram-today.jpg" alt="The Wellspring Instagram profile: 160 posts, 61 followers, a bio and a single link to the website homepage" data-cap="The profile today: 61 followers, one link to the homepage, no pinned posts."></div>
+          <div class="mini"><span class="cap">What the link becomes</span><div class="row go">Book a consultation</div><div class="row">Our services</div><div class="row">Meet the team</div></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-mail"/></svg></span>Newsletter<small>Carries the blog</small>
+        <div class="more">Each issue features two posts from the site. Every link is tracked, so we see the visits each issue brings.
+          <div class="mini"><span class="cap">In each issue</span><div class="row">From the Blog<br><span class="ttl">Read the post →</span></div></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic g">G</span>Google Ads
+        <div class="more">Ads run harder on the days and hours when people book, and ease off when they only browse.
+          <div class="mini"><span class="cap">Budget by day</span><div class="opt"><span>Mon</span><span><b>Wed</b></span><span><b>Thu</b></span><span>Sat</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="farrow" aria-hidden="true">&rarr;</div>
+    <div class="fcol">
+      <h4>Where they land</h4>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-pin"/></svg></span>Local and service pages
+        <div class="more">A page for Clinton Township and a page for Troy. Each says who the therapists are, what is treated, which insurance is accepted and how to book.
+          <div class="mini"><span class="cap">Local page</span><div class="row"><b>Therapy in Clinton Township</b><br>Therapists · Services · Insurance · FAQs</div><div class="row go">Book a consultation</div></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-doc"/></svg></span>Blog pages<small>Linked to services</small>
+        <div class="more">Every post ends with a link to the service it relates to and to the consultation form, so a reader has somewhere to go next.
+          <div class="mini"><span class="cap">End of a post</span><div class="row">Related: <u>Therapy for teens</u></div><div class="row go">Book a consultation</div></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-web"/></svg></span>Ads landing page
+        <div class="more">One page built for people arriving from an ad: the phone number first, a short form second.
+          <div class="mini"><span class="cap">Live today</span><img class="shot" tabindex="0" src="wellspring-2027-plan-assets/ads-landing-page.jpg" alt="The live Wellspring ads landing page: the headline Therapy with someone easy to talk to, a Request an Appointment button and a Call button" data-cap="The live ads landing page: request an appointment or call, with insurance and hours up front."></div>
+        </div>
+      </div>
+      <div class="node x" tabindex="0"><span class="ic t"><svg><use href="#i-cal"/></svg></span>Consultation form
+        <div class="more">Every route ends here. We record where each person came from, so we know which channel booked the consultation.
+          <div class="mini"><span class="cap">What we record</span><div class="opt"><span>Search</span><span>Social</span><span>Email</span><span>Ads</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="farrow" aria-hidden="true">&rarr;</div>
+    <div class="fcol">
+      <div class="node end"><span class="ic on"><svg><use href="#i-heart"/></svg></span>Consultation booked<small>Tracked by source</small></div>
+    </div>
+  </div>
+  <p class="hint">Hover over any box, or tap it, to see what happens there. Select a screenshot to enlarge it.</p>
+  <dialog class="big" id="big"><img id="big-img" src="" alt=""><p id="big-cap"></p><button type="button" id="big-close">Close</button></dialog>
+</section>
+
+<section id="themes">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-layers"/></svg></span>What it looks like</div>
+  <h2>One theme a month, two or three posts each, built on posts you already have.</h2>
+  <div class="themes">
+    <div class="theme card lift">
+      <span class="mo">December</span>
+      <h3>Getting through the holidays</h3>
+      <div class="piece"><span class="ic ig"><svg><use href="#i-ig"/></svg></span><span>"Holiday moments that take a little more out of you" and "Things you're allowed to say at the holiday table"</span></div>
+      <div class="piece"><span class="ic t"><svg><use href="#i-doc"/></svg></span><span>The winter and holidays blog, which we are revising now with your feedback</span></div>
+      <div class="piece"><span class="ic t"><svg><use href="#i-mail"/></svg></span><span>December issue leads with the blog</span></div>
+    </div>
+    <div class="theme card lift">
+      <span class="mo">January</span>
+      <h3>The quiet stretch after the holidays</h3>
+      <div class="piece"><span class="ic ig"><svg><use href="#i-ig"/></svg></span><span>Built on "Struggling doesn't always look like a breakdown", the post you liked, with one new post beside it</span></div>
+      <div class="piece"><span class="ic t"><svg><use href="#i-doc"/></svg></span><span>"I'm Fine" Is a Symptom, already live</span></div>
+      <div class="piece"><span class="ic t"><svg><use href="#i-mail"/></svg></span><span>January issue leads with the blog</span></div>
+    </div>
+    <div class="theme card lift">
+      <span class="mo">February</span>
+      <h3>Relationships under stress</h3>
+      <div class="piece"><span class="ic ig"><svg><use href="#i-ig"/></svg></span><span>Built on the November breakup post, with one new post on talking when you are both stressed</span></div>
+      <div class="piece"><span class="ic t"><svg><use href="#i-doc"/></svg></span><span>How to Communicate in a Relationship When You're Both Stressed, already live</span></div>
+      <div class="piece"><span class="ic t"><svg><use href="#i-mail"/></svg></span><span>February issue leads with the blog</span></div>
+    </div>
+  </div>
+  <div class="split" aria-hidden="true"><span class="a"></span><span class="b"></span></div>
+  <div class="splitkey"><span><b>Two or three posts</b> carry the theme</span><span>The other nine or ten stay free for <b>relatable posts, Wellspring itself and your ideas</b></span></div>
+</section>
+
+<section id="newsletter">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-mail"/></svg></span>Newsletter</div>
+  <h2>The newsletter becomes a route to the blog.</h2>
+  <div class="nl">
+    <div class="mail">
+      <div class="mtop"><span>Sample issue</span><span>2-minute read</span></div>
+      <div class="mb">Wellspring Therapeutic Partners</div>
+      <div class="mi">
+        <div class="spot">
+          <h4>Spotlight of the month</h4>
+          <div class="sline"><span>Not every struggling student looks like they're struggling</span><i>Read more</i></div>
+          <div class="sline"><span>How to communicate in a relationship when you're both stressed</span><i>Read more</i></div>
+        </div>
+        <div class="cards">
+          <div class="post"><b>Everyone Seems Ahead: The Quiet Anxiety of Feeling Stuck in Your Twenties</b><span>Why feeling behind is so common, and what helps.</span><i>Read the post →</i></div>
+          <div class="post"><b>"I'm Fine" Is a Symptom</b><span>How anxiety hides behind getting everything done.</span><i>Read the post →</i></div>
+        </div>
+        <h4 class="mh">What's new at Wellspring</h4>
+        <div class="post"><span>In network with Aetna, Priority Health and McLaren. Evening appointments available.</span></div>
+        <span class="mbtn">Start Your Conversation</span>
+      </div>
+    </div>
+    <div>
+      <p>Each issue is a two-minute read that sends people to the blog and the website. Every link is tracked, so each issue shows the visits it brings.</p>
+      <ol class="borrow">
+        <li><span class="ic t"><svg><use href="#i-clock"/></svg></span><span><b>Read time up top</b>so people know it is quick.</span></li>
+        <li><span class="ic t"><svg><use href="#i-star"/></svg></span><span><b>A spotlight</b>with the two posts that matter most this month.</span></li>
+        <li><span class="ic t"><svg><use href="#i-doc"/></svg></span><span><b>Blog cards</b>with one line and one link each.</span></li>
+        <li><span class="ic t"><svg><use href="#i-heart"/></svg></span><span><b>What's new at the practice</b>in one short block.</span></li>
+        <li><span class="ic t"><svg><use href="#i-link"/></svg></span><span><b>One button</b>to start a conversation.</span></li>
+      </ol>
+      <a class="btn" href="https://damcodigital034.github.io/wellspring-voice-guide/newsletter-mockup-nov26-m4t7/">Open your July issue, refined &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section id="months">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-cal"/></svg></span>Month by month</div>
+  <h2>Set up in December, build in January, grow and review in February.</h2>
+  <div class="legend">
+    <span><i style="background:var(--s1)"></i>Awareness</span>
+    <span><i style="background:var(--s2)"></i>Consideration</span>
+    <span><i style="background:var(--s3)"></i>Engagement</span>
+    <span><i style="background:var(--s4)"></i>Conversion</span>
+  </div>
+  <div class="months">
+    <div class="month card">
+      <header><span class="ic on"><svg><use href="#i-tool"/></svg></span><div><span>Set up</span><b>December</b></div></header>
+      <ul>
+        <li><span class="tag t1">Awareness</span><span class="txt">Fix the 12 broken pages and point every version of the homepage to one address.</span></li>
+        <li><span class="tag t1">Awareness</span><span class="txt">Refresh the blogs that lost traffic; fill in services on the Google Business Profile.</span></li>
+        <li><span class="tag t1">Awareness</span><span class="txt">List the questions people ask AI assistants about therapy nearby, and where Wellspring appears today.</span></li>
+        <li><span class="tag t2">Consideration</span><span class="txt">Three pinned posts and the link in bio go live.</span></li>
+        <li><span class="tag t2">Consideration</span><span class="txt">Every post ends with who Wellspring is and one next step, written into the story.</span></li>
+        <li><span class="tag t3">Engagement</span><span class="txt">Newsletter restarts with a blog section and tracked links.</span></li>
+        <li><span class="tag t3">Engagement</span><span class="txt">Theme: getting through the holidays.</span></li>
+        <li><span class="tag t4">Conversion</span><span class="txt">Test separate ad groups for ADHD and for child and teen therapy.</span></li>
+        <li><span class="tag t0">All steps</span><span class="txt">Record the starting numbers for social and newsletter.</span></li>
+      </ul>
+    </div>
+    <div class="month card">
+      <header><span class="ic on"><svg><use href="#i-layers"/></svg></span><div><span>Build</span><b>January</b></div></header>
+      <ul>
+        <li><span class="tag t1">Awareness</span><span class="txt">Local pages for Clinton Township and Troy; questions people ask added to service pages.</span></li>
+        <li><span class="tag t1">Awareness</span><span class="txt">Directory listings where people look for therapists.</span></li>
+        <li><span class="tag t2">Consideration</span><span class="txt">About a third of posts show what Wellspring stands for.</span></li>
+        <li><span class="tag t3">Engagement</span><span class="txt">Theme: the quiet stretch after the holidays.</span></li>
+        <li><span class="tag t3">Engagement</span><span class="txt">Stories every week: polls, quizzes and shares.</span></li>
+        <li><span class="tag t4">Conversion</span><span class="txt">Decide on separate landing pages from the December test.</span></li>
+      </ul>
+    </div>
+    <div class="month card">
+      <header><span class="ic on"><svg><use href="#i-chart"/></svg></span><div><span>Grow and review</span><b>February</b></div></header>
+      <ul>
+        <li><span class="tag t1">Awareness</span><span class="txt">Insurance page live.</span></li>
+        <li><span class="tag t2">Consideration</span><span class="txt">More of the posts that sent people to the website in January.</span></li>
+        <li><span class="tag t3">Engagement</span><span class="txt">Theme: relationships under stress; third tracked newsletter issue.</span></li>
+        <li><span class="tag t4">Conversion</span><span class="txt">Booking rate reviewed by source.</span></li>
+        <li><span class="tag t0">All steps</span><span class="txt">Three-month review against the targets, and a decision on what to add.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="targets">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-chart"/></svg></span>How we will know</div>
+  <h2>Every number we will report on, from today to the end of February.</h2>
+
+  <div class="subh first">The main KPI</div>
+  <div class="score">
+    <div class="kpi card"><div class="lab"><span class="ic t"><svg><use href="#i-cal"/></svg></span>Booked consultations from Google, a month</div><div class="nums"><span class="from">15</span><span class="arr">&rarr;</span><span class="to">20</span></div><div class="bar"><i style="width:75%"></i></div><small>Baseline: June to August 2026 average. On the road to 30 a month by October 2027.</small></div>
+    <div class="kpi card"><div class="lab"><span class="ic t"><svg><use href="#i-chart"/></svg></span>Google booking rate</div><div class="nums"><span class="from">47%</span><span class="arr">&rarr;</span><span class="to">55%</span></div><div class="bar"><i style="width:85%"></i></div><small>Baseline: Q3 2026.</small></div>
+  </div>
+
+  <div class="subh">Awareness: search</div>
+  <div class="score">
+    <div class="kpi card"><div class="lab"><span class="ic g">G</span>Organic clicks, per 28 days</div><div class="nums"><span class="from">377</span><span class="arr">&rarr;</span><span class="to">500</span></div><div class="bar"><i style="width:75%"></i></div><small>Baseline: October 14 to November 10, 2026.</small></div>
+    <div class="kpi card"><div class="lab"><span class="ic t"><svg><use href="#i-search"/></svg></span>Tracked keywords in the top 10</div><div class="nums"><span class="from">4</span><span class="arr">&rarr;</span><span class="to">8</span></div><div class="bar"><i style="width:50%"></i></div><small>Of 17 tracked keywords. Baseline: September 2026.</small></div>
+    <div class="kpi card"><div class="lab"><span class="ic t"><svg><use href="#i-target"/></svg></span>Average search position</div><div class="nums"><span class="from">12.1</span><span class="arr">&rarr;</span><span class="to">under 10</span></div><div class="bar"><i style="width:80%"></i></div><small>Baseline: October 14 to November 10, 2026.</small></div>
+    <div class="kpi card"><div class="lab"><span class="ic t"><svg><use href="#i-tool"/></svg></span>Broken pages</div><div class="nums"><span class="from">12</span><span class="arr">&rarr;</span><span class="to">0</span></div><div class="bar"><i style="width:100%"></i></div><small>All fixed in December.</small></div>
+  </div>
+
+  <div class="subh">Consideration and engagement: social, blog and newsletter</div>
+  <div class="score">
+    <div class="kpi card pending"><div class="lab"><span class="ic ig"><svg><use href="#i-ig"/></svg></span>Website visits from Instagram</div><div class="nums"><span class="to">Starting number recorded in December</span></div><small>Target set in January, reported monthly.</small></div>
+    <div class="kpi card pending"><div class="lab"><span class="ic t"><svg><use href="#i-star"/></svg></span>Saves and shares per post</div><div class="nums"><span class="to">Starting number recorded in December</span></div><small>Target set in January, reported monthly.</small></div>
+    <div class="kpi card pending"><div class="lab"><span class="ic t"><svg><use href="#i-mail"/></svg></span>Visits per newsletter issue and per blog</div><div class="nums"><span class="to">First tracked issue sets the starting number</span></div><small>Reported monthly from the restart.</small></div>
+  </div>
+</section>
+
+<section id="addons">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-plus"/></svg></span>If you want to go further</div>
+  <h2>What we can add on top, and which step each one lifts.</h2>
+  <div class="adds">
+    <div class="add card lift"><div class="top"><span class="tag t2">Consideration</span><span class="ic ig"><svg><use href="#i-ig"/></svg></span></div><b>Boosted posts</b><dl><dt>Impact</dt><dd>More website visits and followers from social, faster than organic posting alone.</dd><dt>Needs</dt><dd>A monthly boost budget.</dd></dl></div>
+    <div class="add card lift"><div class="top"><span class="tag t4">Conversion</span><span class="ic t"><svg><use href="#i-web"/></svg></span></div><b>Landing pages for ADHD and for child and teen therapy</b><dl><dt>Impact</dt><dd>Ads land on a matching page for the two areas with the most searches, which lifts conversion.</dd><dt>Needs</dt><dd>Added ad budget to run them as separate campaigns.</dd></dl></div>
+    <div class="add card lift"><div class="top"><span class="tag t4">Conversion</span><span class="ic t"><svg><use href="#i-ads"/></svg></span></div><b>Remarketing</b><dl><dt>Impact</dt><dd>Brings back website visitors who did not book.</dd><dt>Needs</dt><dd>Added ad budget, and tracking that is confirmed safe for a healthcare site.</dd></dl></div>
+    <div class="add card lift"><div class="top"><span class="tag t3">Engagement</span><span class="ic t"><svg><use href="#i-video"/></svg></span></div><b>Free webinar</b><dl><dt>Impact</dt><dd>Registrations become leads, and short clips from it feed social.</dd><dt>Needs</dt><dd>A clinician to present, and a promotion budget on Meta.</dd></dl></div>
+    <div class="add card lift"><div class="top"><span class="tag t3">Engagement</span><span class="ic t"><svg><use href="#i-down"/></svg></span></div><b>Free resources to download</b><dl><dt>Impact</dt><dd>Leads from organic visitors, and stronger authority in search. Calming, practical resources, not self-diagnosis checklists.</dd><dt>Needs</dt><dd>Clinical input and sign-off on the content.</dd></dl></div>
+    <div class="add card lift"><div class="top"><span class="tag t1">Awareness</span><span class="ic t"><svg><use href="#i-users"/></svg></span></div><b>More voices than one account</b><dl><dt>Impact</dt><dd>Wider reach and recall when therapists and two or three small local creators also talk about Wellspring. It does not tie directly to leads.</dd><dt>Needs</dt><dd>Therapists willing to appear, and a small fee or offer for creators.</dd></dl></div>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="eyebrow"><span class="ic"><svg><use href="#i-help"/></svg></span>What we need from you</div>
+  <h2>Three answers, and the plan starts on December 1.</h2>
+  <div class="need">
+    <div class="ask card"><span class="when">By Tue, Dec 1</span><b>When does the newsletter restart, and how many people receive it?</b><span>Plus the open and click reports from your email tool.</span></div>
+    <div class="ask card"><span class="when">By Fri, Dec 4</span><b>Which additions are worth a budget in the first three months?</b><span>Boosted posts, landing pages, remarketing, a webinar, resources or more voices.</span></div>
+    <div class="ask card"><span class="when">By Fri, Dec 4</span><b>Would a therapist appear in content, present a webinar or help with a resource?</b><span>People posts get the most engagement nearby.</span></div>
+  </div>
+</section>
+
+<footer><img src="wellspring-2027-plan-assets/wellspring-logo.png" alt="">Prepared by Damco Digital for Wellspring Therapeutic Partners</footer>
+</div>
+
+<script>
+(function(){
+  var big = document.getElementById('big'), bigImg = document.getElementById('big-img'), bigCap = document.getElementById('big-cap');
+  function openShot(s){
+    if (!big || !big.showModal) return;
+    bigImg.src = s.getAttribute('src'); bigImg.alt = s.alt; bigCap.textContent = s.dataset.cap || '';
+    big.showModal();
+  }
+  document.querySelectorAll('.shot').forEach(function(s){
+    s.addEventListener('click', function(){ openShot(s); });
+    s.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openShot(s); } });
+  });
+  if (big) {
+    document.getElementById('big-close').addEventListener('click', function(){ big.close(); });
+    big.addEventListener('click', function(e){ if (e.target === big) big.close(); });
+  }
+  var rungs = document.querySelectorAll('.rung');
+  rungs.forEach(function(r){
+    r.addEventListener('click', function(){
+      rungs.forEach(function(o){
+        var on = o === r;
+        o.setAttribute('aria-pressed', on ? 'true' : 'false');
+        document.getElementById(o.dataset.panel).hidden = !on;
+      });
+    });
+  });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.menu a'));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  function mark(id){
+    links.forEach(function(a){ a.classList.toggle('on', a === map[id]); });
+    var a = map[id];
+    if (a && a.scrollIntoView) {
+      var box = a.parentNode, l = a.offsetLeft, r = l + a.offsetWidth;
+      if (l < box.scrollLeft || r > box.scrollLeft + box.clientWidth) box.scrollTo({left: l - 16, behavior: 'smooth'});
+    }
+  }
+  function go(id){
+    var el = document.getElementById(id);
+    if (el) { el.scrollIntoView({behavior: 'smooth', block: 'start'}); mark(id); }
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = a.getAttribute('href').slice(1);
+      go(id);
+      try { history.replaceState(null, '', '#' + id); } catch (err) {}
+    });
+  });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting) mark(en.target.id); });
+    }, {rootMargin: '-35% 0px -60% 0px'});
+    Object.keys(map).forEach(function(id){ var s = document.getElementById(id); if (s) io.observe(s); });
+  }
+  var start = (location.hash || '').slice(1);
+  if (map[start]) setTimeout(function(){ go(start); }, 60);
+  window.addEventListener('hashchange', function(){ var h = location.hash.slice(1); if (map[h]) go(h); });
+})();
+</script>
+
+</body>
+</html>
